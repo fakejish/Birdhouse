@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Birds</h1>
+    <p>Put in bird and its power, then save</p>
+    <form action="" id="inputForm">
+        <input type="text" placeholder="Card name" name="cardName" id="cardNameId">
+        <br>
+        <input type="text" placeholder="Power" name="cardPower" id="cardPowerId">
+        
+    </form>
+    <br>
+
+    <input type="file" id="imageInput" accept="image/*"/>
+    <br><br>
+
+    <button type="submit" form="inputForm" >Save</button>
+    <button id="viewButton">Console</button>
+
+    <br><br><br>
+    <p>Card to be added:</p>
+    <img id = imagePreview src="#" alt="Card"/>
+
+    <script type ="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+    import { getDatabase, ref as ref_database, set, onValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    import { getStorage, ref as ref_storage, uploadBytes } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"
+        // ------ I imported ref as ref_database/storage because having 2 refs gave an error
+    
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBM1ASrfKZpNwtg4kK-BszW-DxxJBv_wuI",
+        authDomain: "ftb-testing-ed75a.firebaseapp.com",
+        projectId: "ftb-testing-ed75a",
+        storageBucket: "ftb-testing-ed75a.appspot.com",
+        messagingSenderId: "989190067887",
+        appId: "1:989190067887:web:4932b43ca5f89b5c89665a"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    //console.log(app);
+
+    const database = getDatabase();
+    //console.log(database);
+
+    const storage = getStorage();
+    //console.log(storage);
+
+
+
+    
+
+
+    const imageInput = document.getElementById("imageInput");
+    const imagePreview = document.getElementById("imagePreview");
+    imageInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+        const imageDataURL = e.target.result;
+        // Use the imageDataURL as needed (e.g., display or upload the image)
+        // console.log(imageDataURL);
+        imagePreview.src = imageDataURL;
+
+        };
+
+        reader.readAsDataURL(file);
+    }
+    });
+
+
+
+
+
+    // SUBMIT BUTTON ON FORM SENDS CARD TO DATABASE
+    document.getElementById("inputForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission and page reload
+        submitForm();
+    });
+
+    function submitForm() {
+    // Get the input values
+        const cardName = document.getElementById("cardNameId").value;
+        const cardPower = document.getElementById("cardPowerId").value;
+        const cardPicture = new Image();
+        cardPicture.src = imagePreview.src;
+        //console.log(cardPicture.src);
+        
+
+        // Call your function and pass the input values
+        saveToDB(cardName, cardPower, cardPicture);
+        
+        // Prevent the form from submitting and refreshing the page
+        return false;
+    }
+
+    function saveToDB(name, power, picture) {
+        // Perform operations with the input values
+        //console.log("Card Name: " + cardName);
+        //console.log("Card Power: " + cardPower);
+        // Add your logic here:
+        const dataRef = ref_database(database, 'Cards/' + name);
+        const storageRef = ref_storage(storage, 'images/' + name);
+        imageAsBlob(picture.src).then(blob =>
+        {
+            uploadBytes(storageRef, blob).then( (snapshot) =>
+            {
+                console.log("uploaded a file");
+            });
+            
+        })
+
+        
+
+        const data = {
+            power: power,
+            picture: picture.src
+        }
+        set(dataRef, data);
+
+    }
+
+
+    function imageAsBlob(imageURL){
+        return fetch(imageURL).then(response => response.blob());
+    }
+
+
+
+
+
+
+
+
+    // CONSOLE BUTTON READS INFO FROM THE DATABASE
+    document.getElementById("viewButton").addEventListener("click", viewDB);
+    function viewDB() {
+        const dataRef = ref(database, 'Cards/');
+        onValue(dataRef, (snapshot) => {
+         const info = snapshot.val();
+            console.log(info);
+        });
+    }
+
+
+  
+
+
+
+
+
+    </script>
+    
+    
+</body>
+</html>
