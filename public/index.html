@@ -215,7 +215,13 @@
                 <button type="button" id="addTagButton">Add Tag</button>
 
                 <button type="submit" form="inputForm">Submit</button>
-                
+
+                <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+                    <div class="confirmation-message-container">
+                      <div id="confirmationMessage">You Pressed A Button</div>
+                    </div>
+                  </div>
+
                 <br><br><br><br>
                 <button id="closeOverlayButton">Close</button>
                 </form>
@@ -925,6 +931,7 @@
         const cardType = document.getElementById("cardTypeSelect").value;
         console.log(cardType);
         
+        const messageOverlay = document.getElementById("confirmationMessageOverlayId");
 
         // Get the input values
         const cardName = document.getElementById("addCardNameId").value;
@@ -1003,6 +1010,11 @@
 
         }
         
+        messageOverlay.style.display = 'block';
+
+        setTimeout(function() {
+            messageOverlay.style.display = 'none';
+        }, 2000); // Set the delay in ms
 
         // Prevent the form from submitting and refreshing the page
         return false;
@@ -1589,6 +1601,12 @@
 
 
                 <button type="submit" form="inputForm">Submit</button>
+
+                <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+                    <div class="confirmation-message-container">
+                      <div id="confirmationMessage">Card created</div>
+                    </div>
+                  </div>
             </form>
         `;
 
@@ -1644,6 +1662,13 @@
 
                     
              <button type="submit" form="inputForm">Submit</button>
+
+             <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+                    <div class="confirmation-message-container">
+                      <div id="confirmationMessage">Nice, you made a bird</div>
+                    </div>
+                  </div>
+
              </form>
          `;
          extraBirdInfo.classList.remove("hidden");
@@ -1705,6 +1730,12 @@
             <input type="number" id="airInputNumberId" name="airInputNumber">
             <label for="groundInputNumberId">Required Ground:</label>
             <input type="number" id="groundInputNumberId" name="groundInputNumber">
+
+            <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+                    <div class="confirmation-message-container">
+                      <div id="confirmationMessage">Cool Song!</div>
+                    </div>
+                  </div>
             `;
 
             rightColumn.innerHTML = `
