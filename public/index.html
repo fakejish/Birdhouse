@@ -293,7 +293,7 @@
         .then(response => response.json())
         .then(data => {
           // Use the environment variables in your client-side code
-        console.log('here running the loading');
+        console.log(data);
           const tempFirebaseConfig = {
             apiKey: data.API_KEY,
             authDomain: data.AUTH_DOMAIN,
