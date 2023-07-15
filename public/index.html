@@ -1159,6 +1159,8 @@
         option2Button.textContent = cardPower;
         overlayRulesText.textContent = cardRules;
 
+        toggleEditCardInputs();
+
     }
 
 
@@ -1197,6 +1199,7 @@
     // Setting the listeners here
     addCardMenuButton.addEventListener('click', () => {
         addCardOverlay.style.display = 'block';
+        toggleCardInputs();
         hamburgerMenu.classList.toggle('open');
     });
 
@@ -1889,7 +1892,7 @@
         const rightColumn = document.getElementById("innerRightColumnId");
 
         const cardTitle = document.getElementById("overlayCardTitleP");
-
+        const cardTitleText = cardTitle.textContent;
 
         const selectedOption = editSelect.value;
 
@@ -1955,7 +1958,7 @@
 
              rightColumn.innerHTML = `
              <button id="addPreviewButton" >Add to Preview</button>
-             <p id="overlayCardTitleP">` + cardTitle.textContent + `</p>
+             <p id="overlayCardTitleP">` + cardTitleText + `</p>
              
             `;
 
@@ -1967,10 +1970,10 @@
                 const cardStorageRef = ref_storage(storage, 'images/' + cardTitle.textContent);
 
                 const cardPreview = document.getElementById("cardQueuePreviewId");
-                //console.log(cardStorageRef);
-                getDownloadURL(cardStorageRef)
-                .then((url) => {
-                    cardPreview.setAttribute('src', url);
+                console.log(cardStorageRef);
+                    getDownloadURL(cardStorageRef)
+                    .then((url) => {
+                        cardPreview.setAttribute('src', url);
                 })
 
                 // THIS IS WHERE YOU NEED TO ACCESS THE DB TO GET CARD INFO FOR PREVIEW
@@ -1992,7 +1995,7 @@
             `;
 
             rightColumn.innerHTML = `
-            <p id="overlayCardTitleP">` + cardTitle.textContent + `</p>
+            <p id="overlayCardTitleP">` + cardTitleText + `</p>
             <p>Edit</p>
 
             
@@ -2009,7 +2012,7 @@
             
 
             rightColumn.innerHTML = `
-            <p id="overlayCardTitleP">` + cardTitle.textContent + `</p>
+            <p id="overlayCardTitleP">` + cardTitleText + `</p>
             <p>Delete</p>
             `;
 
