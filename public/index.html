@@ -293,7 +293,7 @@
         .then(response => response.json())
         .then(data => {
           // Use the environment variables in your client-side code
-        
+        console.log('here running the loading');
           const tempFirebaseConfig = {
             apiKey: data.API_KEY,
             authDomain: data.AUTH_DOMAIN,
@@ -312,7 +312,7 @@
 
     firebaseConfig = await loadEnvVariables();
     
-    console.log(firebaseConfig);
+    //console.log(firebaseConfig);
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
