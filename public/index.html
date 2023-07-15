@@ -3,49 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" href="card_images/favicon.png?" type="image/x-icon">
+    <title>Wingspan</title>
 </head>
 <body>
 
-    <h1>Birds</h1>
-    <p>Put in bird and its power, then save</p>
-    <form action="" id="inputForm">
-        <input type="text" placeholder="Card name" name="cardName" id="cardNameId">
-        <br>
-        <input type="text" placeholder="Power" name="cardPower" id="cardPowerId">
+    <button id="showHamburgerButton" class="show-hamburger-button">///</button>
+
+    <div id="hamburgerMenu" class="hamburger-menu">
+        <button id="hamburgerButton" class="hamburger-button">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+        <div id="menuContent" class="menu-content">
+          <!-- Your menu items go here -->
+          <br><br><br><br>
+          <button id="addCardMenuButton">Add a card</button>
+          <br><br>
+          <button id="printMenuButton">Page Printer</button>
+          <br><br>
+          <button id="deckBuildMenuButton">Build a deck</button>
+          <br><br>
+          <button id="battleMenuButton">Battleground</button>
+        </div>
+    </div>
+
+
+    <div class="header-container">
+        <img id="iconTopPage"src="card_images/favicon.png" width="50px" height="50px" alt="">
+
+        <h1>The Birdhouse</h1><br><br><br>
+
+        <button id="viewButton">Print the DB</button>
+        <button id="updateButton">Update the DB</button>
+        <input type="file" accept="text/*" id="updateInputTextId">
+        <br><br><br><br><br><br><br>
+
+        <form action="" id="titleSearchForm">
+            <button type="submit" id="titleSearchCardsButton">Search for cards (title)</button>
+            <input type="text" id="titleSearchPrompt">
+        </form>
+        <form action="" id="typeSearchForm">
+            <button type="submit" id="typeSearchCardsButton">Search for cards (type)</button>
+            <input type="text" id="typeSearchPrompt">
+        </form>
+        <form action="" id="tagSearchForm">
+            <button type="submit" id="tagSearchCardsButton">Search for cards (tag)</button>
+            <input type="text" id="tagSearchPrompt">
+        </form>
+
+    </div>
+
+
+
+
+
+
+    <!-- SCROLLING IMAGES FROM CARDS HERE -->
+    <div class="container">
         
-    </form>
-    <br>
+            <div class="scroll-wrapper">
+         
+          
+          
+          <!-- Add more image elements as needed -->
+            </div>
+        
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-    <input type="file" id="imageInput" accept="image/*"/>
-    <br><br>
 
-    <button type="submit" form="inputForm" >Save</button>
-    <button id="viewButton">Console</button>
 
-    <br><br><br>
-    <p>Card to be added:</p>
-    <img id = imagePreview src="#" alt="Card"/>
+    
+
+
+
+    <!-- THIS IS THE CARD PREVIEW OVERLAY
+    
+    To DO: Change the left-column to something totally new (breaks the addCArd overlay as left-column)
+    Change the cardNameTitleTextId to something new, breaks the addCard image display
+    Change the imagePreview to something new, breaks the addCard image display
+    -->
+    <button id="overlayButton">Open Overlay</button>
+
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <div class="content-container">
+                <div class="left-column" id="previewLeftColumn">
+                    <div class="image-container">
+                        <img id = "newImagePreview" src="" alt="Card"/>
+                        <!-- <div class="text-box-card-name">
+                            <h2 id="newCardNameTitleTextId">Card Title</h2>
+                        </div>
+                        <div class="text-box-card-rules">
+                            <p id="newCardRulesTextId">Card Rules</p> 
+                        </div> -->
+                    </div>
+                </div>
+                <div class="right-column" id="previewRightColumn">
+                    <div class="dropdown">
+                        <select id="editSelect">
+                        <option value="view">View</option>
+                        <option value="edit">Edit</option>
+                        <option value="delete">Delete</option>
+                        </select>
+                        <label for="option1"></label>
+                        <input type="radio" id="option1" name="option1">
+                        <label for="option2"></label>
+                        <input type="radio" id="option2" name="option1">
+                        <label for="option3"></label>
+                        <input type="radio" id="option3" name="option1">
+                    </div>
+                    <div class="innerRightColumn" id="innerRightColumnId">
+
+                        
+                        
+
+                        <h2>View Card</h2>
+                        <div id="cardInformation">
+                            <!-- Add fields for the cards to be populated here-->
+                        </div>
+
+                        <p id="overlayTypeTest">Type</p>
+
+                        <p id="overlayCardTitleP">Type</p>
+
+                        <button id="addPreviewButton">Add to Preview</button>
+
+
+                        <button id="option1Button" class="overlay-option">Option 1</button>
+                        <button id="option2Button" class="overlay-option">Option 2</button>
+                        <p id="overlayRulesText" class="overlay-option">Bird text goes in here</p>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <button id="closeButton" class="overlay-close">Close</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- THIS IS THE 'ADD A CARD' OVERLAY -->
+
+    <div id="addCardOverlay" class="overlay">
+        <div class="overlay-content">
+          <div class="content-container">
+            <div class="dropdown-container">
+                <label for="cardTypeSelect">Card Type:</label>
+                <select id="cardTypeSelect">
+                  <option value="bird">Bird</option>
+                  <option value="song">Song</option>
+                  <option value="feather">Feather</option>
+                  <option value="egg">Egg</option>
+                </select>
+              </div>
+            <div class="left-column" id="leftColumn">
+                <h2>Add Bird Card</h2>
+                <form action="" id="inputForm">
+                <label for="cardNameId">Card Name:</label>
+                <input type="text" placeholder="Name" id="cardNameId" name="cardName" required>
+                <br>
+                <label for="cardRulesId">Card Rules:</label>
+                <textarea id="cardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
+
+                <label for="imageInput">Card Image:</label>
+                <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+        
+                <div id="additionalCardInfo">
+                    <div id="extraBirdInfo" class="">
+                        <label for="addSubtypeInputId">Subtype:</label>
+                        <input type="text" id="addSubtypeInputId" name="subTypeInput">
+                        <label for="addCostInputId">Cost:</label>
+                        <input type="text" id="addCostInputId" name="costInput">
+                        <label for="addPowerInputId">Power:</label>
+                        <input type="number" id="addPowerInputId" name="powerInput">
+                    </div>
+                    <div id="extraSongInfo" class = "hidden">
+                        <label for="eggInputNumberId">Required Eggs:</label>
+                        <input type="number" id="eggInputNumberId" name="eggInputNumber">
+                        <label for="nestInputNumberId">Required Nest:</label>
+                        <input type="number" id="nestInputNumberId" name="nestInputNumber">
+                        <label for="airInputNumberId">Required Air:</label>
+                        <input type="number" id="airInputNumberId" name="airInputNumber">
+                        <label for="groundInputNumberId">Required Ground:</label>
+                        <input type="number" id="groundInputNumberId" name="groundInputNumber">
+                    </div>
+                    <div id="extraFeatherInfo">
+
+                    </div>
+                    <div id="extraEggInfo">
+
+                    </div>
+                </div>
+
+                
+                <label for="tagInputId">Tag:</label>
+                <input type="text" id="tagInputId" name="tagInput">
+                <p id="tagListP"></p>
+                <button type="button" id="addTagButton">Add Tag</button>
+
+                <button type="submit" form="inputForm">Submit</button>
+                
+                </form>
+            </div>
+            <div class="right-column" id="rightColumn">
+                    <div class="add-image-container">
+                        <img id="addImageBackground" src="card_images/Bird Template.png" alt="">
+                        <img id = "addImagePreview" src="card_images/favicon.png" alt="Card"/>
+                        <div class="text-box-card-power">
+                            <h2 id="cardPowerTextId">0</h2>
+                        </div>
+                        <div class="text-box-card-name">
+                            <h2 id="cardNameTitleTextId">Card Title</h2>
+                        </div>
+                        <div class="text-box-card-type">
+                            <p id="cardTypeTextId">Card Type</p>
+                        </div>
+                        <div class="text-box-card-rules">
+                            <p id="cardRulesTextId">Card Rules</p>
+                        </div>
+                    </div>
+            </div>
+          </div>
+          <button id="saveImageButton">Save Image</button>
+          <button id="closeOverlayButton">Close</button>
+        </div>
+      </div>
+
+
+
+
+      <!-- THIS IS THE CARD QUEUE OVERLAY 'NOW PLAYING'-->
+
+      <div id="queueOverlayId" class="queueOverlay">
+        <button id="queueHamburgerButton" class="queue-hamburger-button">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+        <div class="queue-overlay-content">
+          <!-- Your menu items or content here -->
+          <img src="card_images/blankCard.PNG" id="cardQueuePreviewId" alt="">
+        </div>
+      </div>
+      
+
+
+
+
+<!--  JAVASCRIPT below ------------------------------------------------------------------>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/json2csv"></script>
 
     <script type ="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
-    import { getDatabase, ref as ref_database, set, onValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
-    import { getStorage, ref as ref_storage, uploadBytes } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"
-        // ------ I imported ref as ref_database/storage because having 2 refs gave an error
-    
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyBM1ASrfKZpNwtg4kK-BszW-DxxJBv_wuI",
-        authDomain: "ftb-testing-ed75a.firebaseapp.com",
-        projectId: "ftb-testing-ed75a",
-        storageBucket: "ftb-testing-ed75a.appspot.com",
-        messagingSenderId: "989190067887",
-        appId: "1:989190067887:web:4932b43ca5f89b5c89665a"
-    };
+    import { getDatabase, ref as ref_database, set, onValue, query, onChildAdded, orderByChild } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"
+    // ------ I imported ref as ref_database/storage because having 2 refs gave an error
 
+    
+    let firebaseConfig = {};
+
+    // Load the env variables to fill in the Firebase APIs
+    function loadEnvVariables () {
+        return fetch('/env')
+        .then(response => response.json())
+        .then(data => {
+          // Use the environment variables in your client-side code
+        
+          const tempFirebaseConfig = {
+            apiKey: data.API_KEY,
+            authDomain: data.AUTH_DOMAIN,
+            projectId: data.PROJECT_ID,
+            storageBucket: data.STORAGE_BUCKET,
+            messagingSenderId: data.MESSAGING_SENDER_ID,
+            appId: data.APP_ID
+          };
+          
+          return tempFirebaseConfig;
+        })
+        .catch(error => {
+          console.error('Error loading environment variables:', error);
+        });
+    }
+
+    firebaseConfig = await loadEnvVariables();
+    
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     //console.log(app);
@@ -56,58 +322,690 @@
     const storage = getStorage();
     //console.log(storage);
 
-
+   
 
     
 
 
-    const imageInput = document.getElementById("imageInput");
-    const imagePreview = document.getElementById("imagePreview");
-    imageInput.addEventListener("change", (event) => {
-    const file = event.target.files[0];
 
-    if (file) {
-        const reader = new FileReader();
 
-        reader.onload = (e) => {
-        const imageDataURL = e.target.result;
-        // Use the imageDataURL as needed (e.g., display or upload the image)
-        // console.log(imageDataURL);
-        imagePreview.src = imageDataURL;
 
-        };
 
-        reader.readAsDataURL(file);
+
+
+
+
+
+
+
+
+
+    // DATA TYPE CARD and DECK
+    class Card {
+        constructor(type, pictureUrl, name, rules)
+        {
+            this.type = type;
+            this.pictureUrl = pictureUrl;
+            this.name = name;
+            this.rules = rules;
+        }
+
+        sayHi(){
+            console.log(this.type, + ' ' + this.name, + ' ' + this.rules)
+        }
     }
+
+    const icon = document.getElementById("iconTopPage");
+    const card1 = new Card("feather", icon.getAttribute('src'), "Feathercard", "Feather rules");
+
+    // DATA TYPE DECK
+    class Deck {
+        constructor()
+        {
+            this.cards = [];
+        }
+
+        addCard(card) {
+            this.cards.push(card);
+        }
+    }
+
+    const deck1 = new Deck();
+
+    function addToDeck()
+    {
+        console.log(card1);
+        deck1.addCard(card1);
+        console.log(deck1);
+    }
+
+    document.getElementById("cardQueuePreviewId").addEventListener("click", function() {
+        addToDeck();
     });
+
+
+
+
+
+
+
+
+
+
+    //  READS INFO FROM THE DATABASE AND SAVES TO TXT
+    document.getElementById("viewButton").addEventListener("click", viewDB);
+    function viewDB() {
+        
+        const DataRef = ref_database(database, '/Cards');
+        onValue(DataRef, (snapshot) => {
+            const jsonData = snapshot.val();
+            //console.log(jsonData); // JSON representation of the database
+
+            const csvData = json2csv.parse(jsonData);
+            //console.log(csvData);
+
+            const combinedDataArray = []; // Array to accumulate the data
+
+                    for (const key in jsonData) {
+                        if (jsonData.hasOwnProperty(key)) {
+                            const element = jsonData[key];
+                            const csvData2 = json2csv.parse(element);
+
+                            const dataArray = csvData2.split('\n');
+                            const dataElement1 = dataArray[1];
+                            const newDataArray = dataElement1.split('[');
+                            const newDataElement1 = newDataArray[1];
+                            const dataArray2 = newDataElement1.split(']');
+
+                            const modifiedElement1 = dataArray[0].replace(/"([^"]*)"/g, (match, content) => {
+                                // Perform desired modifications on the matched content
+                                return content; // Example: Convert the content to uppercase
+                            });
+                            
+                            const modifiedElement2 = newDataArray[0].replace(/"([^"]*)"/g, (match, content) => {
+                                // Perform desired modifications on the matched content
+                                return content; // Example: Convert the content to uppercase
+                            });
+
+                            const modifiedElement3 = dataArray2[0].replace(/"([^"]*)"/g, (match, content) => {
+                                // Perform desired modifications on the matched content
+                                return content; // Example: Convert the content to uppercase
+                            });
+
+                            const modifiedElement4 = dataArray2[1].replace(/"([^"]*)"/g, (match, content) => {
+                                // Perform desired modifications on the matched content
+                                return content; // Example: Convert the content to uppercase
+                            });
+
+                            const parsedMod2 = newDataArray[0].slice(0, -2);
+                            const parsedMod4 = modifiedElement4.replace(/[, "]/g, '').trim();
+                            
+                            
+
+                            const finalDataArray = [];
+                            finalDataArray.push(modifiedElement1, parsedMod2, modifiedElement3, parsedMod4);
+
+                            console.log(finalDataArray);
+                            //console.log(dataArray);
+                            combinedDataArray.push(...finalDataArray); // Accumulate the data
+                        }
+                    }
+                
+                    function downloadArrayAsTextFile(array, fileName) {
+                        const data = array.join('\n');
+
+                        const blob = new Blob([data], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = fileName;
+                        link.click();
+                    }
+
+                    downloadArrayAsTextFile(combinedDataArray, "backup.txt");
+
+
+
+                    
+
+
+
+
+
+
+            // for (const key in jsonData) {
+            //     if (jsonData.hasOwnProperty(key)) {
+            //         const element = jsonData[key];
+            //         // Perform the desired action for each element
+
+            //         const csvData2 = json2csv.parse(element);
+                    
+            //         // Split the CSV data by commas
+            //         const dataArray = csvData2.split(',');
+
+            //        // console.log(dataArray);
+                   
+            //     //    const combinedDataArray = []; // Array to accumulate the data
+
+                    
+            //     //     if (jsonData.hasOwnProperty(key)) {
+            //     //         const element = jsonData[key];
+            //     //         const csvData2 = json2csv.parse(element);
+            //     //         const dataArray = csvData2.split(',');
+
+            //     //         combinedDataArray.push(...dataArray); // Accumulate the data
+            //     //     }
+                    
+                
+            //     //     function downloadArrayAsTextFile(array, fileName) {
+            //     //         const data = array.join(',');
+
+            //     //         const blob = new Blob([data], { type: 'text/plain' });
+            //     //         const url = URL.createObjectURL(blob);
+
+            //     //         const link = document.createElement('a');
+            //     //         link.href = url;
+            //     //         link.download = fileName;
+            //     //         link.click();
+            //     //         }
+
+            //     //     downloadArrayAsTextFile(combinedDataArray, "backup.txt");
+
+            //         // // Usage example:
+            //         // const dataArray = ["item1", "item2", "item3"];
+            //         // const fileName = "data.txt";
+
+            //         // downloadArrayAsTextFile(dataArray, fileName);
+
+
+
+
+            //     }
+            //  }
+           
+        });
+
+
+        
+
+
+    }
+
+    function viewStorage() {
+
+        const storRef = ref_storage(storage, '/images');
+        const imageUrls = [];
+        const zip = new JSZip();
+
+        listAll(storRef)
+            .then((res) => {
+            const promises = res.items.map((itemRef) => {
+                // Track the itemRef
+                //console.log(itemRef.name);
+
+                return getDownloadURL(itemRef).catch((error) => {
+                   console.log('Error retrieving download URL:', error);
+                 });
+             });
+            
+            return Promise.all(promises).then( (urls) => {
+                return { urls, res };
+            });
+            })
+            .then(({urls, res}) => {
+                imageUrls.push(...urls);
+                //console.log(imageUrls);
+
+
+                // Dynamically create the <img> elements and append them to the container
+                imageUrls.forEach((imageUrl, index) => {
+                    const itemRef = res.items[index];
+                    console.log(imageUrl);
+                    //downloadImageFromFirebase(imageUrl, itemRef.name + ".png");
+
+                    
+                    // const imgElement = document.createElement("img");
+                    // imgElement.setAttribute('src', imageUrl);
+                    // console.log(imgElement);
+
+                    // const link = document.createElement('a');
+                    // link.href = imgElement;
+                    // link.download = itemRef.name + '.png';
+                    // link.click();
+                    
+                    
+                    // const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+                    // onValue(dataRef, (snapshot) => {
+                    //     const info = snapshot.val();
+                    //     imgElement.addEventListener("click", function() {
+                    //         openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
+                    //     });
+                    // });
+                    
+                    // imgElement.alt = "Image";
+
+                    // imageContainer.appendChild(imgElement);
+                });
+            })
+            .catch((error) => {
+            console.log('Error retrieving storage files:', error);
+            });
+
+    }
+
+    function downloadImageFromFirebase(url, fileName) {
+        const ref = ref_storage(storage, url);
+        getDownloadURL(ref)
+            .then(downloadUrl => downloadUrl.blob())
+            .then(blob => {
+                const newDownloadUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = newDownloadUrl;
+                link.download = fileName;
+                link.target = '_blank';
+                link.click();
+            })
+            .catch(error => {
+            console.error('Error downloading image from Firebase:', error);
+            });
+        }
+
+
+    // PULL TEXT FILE AND UPDATE THE DB WITH ITS PARSED INFORMATION
+    document.getElementById("updateButton").addEventListener("click", function (event) {
+        const fileInput = document.getElementById("updateInputTextId");
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileContent = e.target.result;
+                // Handle the file content here
+                //console.log(fileContent);
+               
+                // Parse the file content here
+
+                const lines = fileContent.trim().split('\n');
+                
+
+                if (lines.length >= 2) {
+                    const headers = lines[0].split(',');
+
+                    //console.log(headers);
+                    const dataLines = lines.slice(1); // Exclude the header line
+                    //console.log(dataLines);
+
+                    dataLines.forEach(dataLine => {
+                        const data = dataLine.split(',');
+                        
+
+
+
+                        const regex = /(\[.*?\])/;
+                        const matches = dataLine.match(regex);
+
+                        if (matches && matches.length > 0) {
+                            const arrayString = matches[0];
+                            console.log(arrayString);
+                            //const parsedArray = JSON.parse(arrayString);
+                        } else {
+                        console.error('No array found in the text.');
+                        }
+                        
+
+
+
+
+
+                        console.log("Data: " + data.length + ", Header: " + headers.length);
+
+                        if (data.length === headers.length) {
+
+                            
+                            for (let i = 0; i < headers.length; i++) {
+
+                                console.log(headers[i].trim() + ': ' + data[i].trim());
+
+                            }
+                        } else {
+                            console.error('Mismatch between headers and data in line: ' + dataLine);
+                        }
+                    });
+
+                } else {
+                    console.error('Invalid file format');
+                }
+
+
+            };
+            reader.readAsText(file);
+        }
+    });
+
+
+
+
+
+    // Set up a listener on the search buttons that query the database and
+    // update the image wheel with search results
+    
+    document.getElementById("titleSearchForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission and page reload
+        titleSearchDB();
+        //updateCardWheel();
+    });
+
+    function titleSearchDB() {
+        const storageRef = ref_storage(storage, 'images/');
+
+        const imageUrls = [];
+        
+        const searchInputValue = document.getElementById('titleSearchPrompt').value;
+
+        // Get a list of everything in storage, update image array
+        listAll(storageRef)
+            .then((res) => {
+            const promises = res.items.map((itemRef) => {
+                // Track the itemRef
+                //console.log(itemRef.name);
+
+                return getDownloadURL(itemRef).catch((error) => {
+                   console.log('Error retrieving download URL:', error);
+                 });
+             });
+            
+            return Promise.all(promises).then( (urls) => {
+                return { urls, res };
+            });
+            })
+            .then(({urls, res}) => {
+                imageUrls.push(...urls);
+                //console.log(imageUrls);
+
+                const imageContainer = document.querySelector(".scroll-wrapper");
+                imageContainer.innerHTML = '';
+
+                // Dynamically create the <img> elements and append them to the container
+                imageUrls.forEach((imageUrl, index) => {
+
+                    const itemRef = res.items[index];
+
+                    const itemRefString = JSON.stringify(itemRef.name);
+                    
+                    // This is the search parameter
+                    if (itemRefString.includes(searchInputValue))
+                    {
+                        const imgElement = document.createElement("img");
+                        imgElement.setAttribute('src', imageUrl);
+                        
+                        const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+                        onValue(dataRef, (snapshot) => {
+                            const info = snapshot.val();
+                            imgElement.addEventListener("click", function() {
+                                openCardDisplay(imgElement, itemRef.name, info.power, info.rules);
+                            });
+                        });
+                        
+                        imgElement.alt = "Image";
+
+                        imageContainer.appendChild(imgElement);
+                    }
+
+                });
+            })
+            .catch((error) => {
+            console.log('Error retrieving storage files:', error);
+            });
+
+    }
+
+    document.getElementById("typeSearchForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission and page reload
+        typeSearchDB();
+        //updateCardWheel();
+    });
+
+    function typeSearchDB() {
+    const searchInputValue = document.getElementById('typeSearchPrompt').value;
+
+    const imageContainer = document.querySelector(".scroll-wrapper");
+    imageContainer.innerHTML = '';
+
+    const cardsRef = ref_database(database, 'Cards');
+
+    // Query the database based on the search input value
+    onChildAdded(cardsRef, (snapshot) => {
+        const cardData = snapshot.val();
+        const cardId = snapshot.key;
+        if (cardData && cardData.type === searchInputValue) {
+            const imgElement = document.createElement("img");
+            imgElement.setAttribute('src', cardData.picture);
+            imgElement.alt = "Image";
+
+            imgElement.addEventListener("click", function() {
+                openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+            });
+            
+            imageContainer.appendChild(imgElement);
+        }
+    });
+}
+
+    document.getElementById("tagSearchForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission and page reload
+        tagSearchDB();
+        //updateCardWheel();
+    });
+
+    function tagSearchDB() {
+    const searchInputValue = document.getElementById('tagSearchPrompt').value;
+
+    const imageContainer = document.querySelector(".scroll-wrapper");
+    imageContainer.innerHTML = '';
+
+    const cardsRef = ref_database(database, 'Cards');
+
+
+
+
+    // Query the database based on the search input value
+    onChildAdded(cardsRef, (snapshot) => {
+        const cardData = snapshot.val();
+        const cardId = snapshot.key;
+
+
+        // For each card in the db, get a reference and list the ones with certain tags
+        const newCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+        onChildAdded(newCardRef, (newSnapShot) => {
+
+            const newCardData = newSnapShot.val();
+            const newCardId = newSnapShot.key;
+
+            if (newCardData === searchInputValue) {
+                const imgElement = document.createElement("img");
+                imgElement.setAttribute('src', cardData.picture);
+                imgElement.alt = "Image";
+
+                imgElement.addEventListener("click", function() {
+                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                });
+                
+                imageContainer.appendChild(imgElement);
+            }
+
+        })
+
+        
+
+
+
+
+    });
+}
+
+
+
+
+
+
+
+
+    // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE
+    displayCards();
+
+    function displayCards() {
+        const storageRef = ref_storage(storage, 'images/');
+
+        const imageUrls = [];
+        
+        // Get a list of everything in storage, update image array
+        listAll(storageRef)
+            .then((res) => {
+            const promises = res.items.map((itemRef) => {
+                // Track the itemRef
+                //console.log(itemRef.name);
+
+                return getDownloadURL(itemRef).catch((error) => {
+                   console.log('Error retrieving download URL:', error);
+                 });
+             });
+            
+            return Promise.all(promises).then( (urls) => {
+                return { urls, res };
+            });
+            })
+            .then(({urls, res}) => {
+                imageUrls.push(...urls);
+                //console.log(imageUrls);
+
+                const imageContainer = document.querySelector(".scroll-wrapper");
+                imageContainer.innerHTML = '';
+
+                // Dynamically create the <img> elements and append them to the container
+                imageUrls.forEach((imageUrl, index) => {
+                    const imgElement = document.createElement("img");
+                    imgElement.setAttribute('src', imageUrl);
+
+                    
+                    const itemRef = res.items[index];
+                    const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+                    onValue(dataRef, (snapshot) => {
+                        const info = snapshot.val();
+                        imgElement.addEventListener("click", function() {
+                            openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
+                        });
+                    });
+                    
+                    imgElement.alt = "Image";
+
+                    imageContainer.appendChild(imgElement);
+                });
+            })
+            .catch((error) => {
+            console.log('Error retrieving storage files:', error);
+            });
+
+        
+    }
+
+
+
+
 
 
 
 
 
     // SUBMIT BUTTON ON FORM SENDS CARD TO DATABASE
-    document.getElementById("inputForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent form submission and page reload
-        submitForm();
-    });
-
     function submitForm() {
-    // Get the input values
-        const cardName = document.getElementById("cardNameId").value;
-        const cardPower = document.getElementById("cardPowerId").value;
-        const cardPicture = new Image();
-        cardPicture.src = imagePreview.src;
-        //console.log(cardPicture.src);
+
+        const cardType = document.getElementById("cardTypeSelect").value;
+        console.log(cardType);
         
 
-        // Call your function and pass the input values
-        saveToDB(cardName, cardPower, cardPicture);
+        // Get the input values
+        const cardName = document.getElementById("addCardNameId").value;
+        const cardRules = document.getElementById("addCardRulesId").value;
+        const cardTagInput = document.getElementById("tagInputId").value;
+        const tagArray = String(cardTagInput).split(', ');
+
+
+        if (cardType === 'bird')
+        {
+            const cardSubtype = document.getElementById("addSubtypeInputId").value;
+            const cardPower = document.getElementById("addPowerInputId").value;
+            const cardCost = document.getElementById("addCostInputId").value;
+            const cardPicture = new Image();
+
+            // Save image as new card image, then push that into storage
+            saveImage().then((combinedImage) => {
+                cardPicture.src = combinedImage;
+                // Call your function and pass the input values
+                saveBirdToDB(tagArray, cardName, cardType, cardRules, cardPicture, cardSubtype, cardCost, cardPower);
+            });
+
+        }
+        else if (cardType === 'song')
+        {
+            console.log('Song is runnning');
+
+            const reqEggs = document.getElementById("eggInputNumberId").value;
+            const reqNest = document.getElementById("nestInputNumberId").value;
+            const reqAir = document.getElementById("airInputNumberId").value;
+            const reqGround = document.getElementById("groundInputNumberId").value;
+            const cardPicture = new Image();
+
+            // Save image as new card image, then push that into storage
+            saveImage().then((combinedImage) => {
+                cardPicture.src = combinedImage;
+
+
+                // Call your function and pass the input values
+                saveSongToDB(tagArray, cardName, cardType, cardRules, cardPicture, reqEggs, reqNest, reqAir, reqGround);
+            });
+
+
+
+        }
+        else if (cardType === 'feather')
+        {
+            console.log('Feather is runnning');
+            const cardPicture = new Image();
+
+            // Save image as new card image, then push that into storage
+            saveImage().then((combinedImage) => {
+                cardPicture.src = combinedImage;
+
+
+                // Call your function and pass the input values
+                saveFeatherToDB(tagArray, cardName, cardType, cardRules, cardPicture);
+            });
+
+        }
+        else if (cardType === 'egg')
+        {
+            console.log('Egg is runnning');
+            const cardPicture = new Image();
+
+            // Save image as new card image, then push that into storage
+            saveImage().then((combinedImage) => {
+                cardPicture.src = combinedImage;
+
+
+                // Call your function and pass the input values
+                saveEggToDB(tagArray, cardName, cardType, cardRules, cardPicture);
+            });
+
+
+
+        }
         
+
         // Prevent the form from submitting and refreshing the page
         return false;
     }
 
-    function saveToDB(name, power, picture) {
+    function saveBirdToDB(tags, name, type, rules, picture, subtype, cost, power) {
         // Perform operations with the input values
         //console.log("Card Name: " + cardName);
         //console.log("Card Power: " + cardPower);
@@ -122,18 +1020,255 @@
             });
             
         })
-
-        
-
         const data = {
-            power: power,
-            picture: picture.src
+            name: name,
+            tags: tags,
+            type: type,
+            rules: rules,
+            //picture: picture.src,
+            subtype: subtype,
+            cost: cost,
+            power: power
         }
         set(dataRef, data);
+        //displayCards();
+    }
+
+    function saveSongToDB(tags, name, type, rules, picture, eggs, nest, air, ground) {
+        // Perform operations with the input values
+        //console.log("Card Name: " + cardName);
+        //console.log("Card Power: " + cardPower);
+        // Add your logic here:
+        const dataRef = ref_database(database, 'Cards/' + name);
+        const storageRef = ref_storage(storage, 'images/' + name);
+        
+        imageAsBlob(picture.src).then(blob =>
+        {
+            uploadBytes(storageRef, blob).then( (snapshot) =>
+            {
+                console.log("uploaded a file");
+            });
+            
+        })
+        const data = {
+            name: name,
+            tags: tags,
+            type: type,
+            rules: rules,
+            //picture: picture.src,
+            reqEggs: eggs,
+            reqNest: nest,
+            reqAir: air,
+            reqGround: ground,
+        }
+        set(dataRef, data);
+        //displayCards();
+    }
+
+    function saveFeatherToDB(tags, name, type, rules, picture) {
+        // Perform operations with the input values
+        //console.log("Card Name: " + cardName);
+        //console.log("Card Power: " + cardPower);
+        // Add your logic here:
+        const dataRef = ref_database(database, 'Cards/' + name);
+        const storageRef = ref_storage(storage, 'images/' + name);
+        imageAsBlob(picture.src).then(blob =>
+        {
+            uploadBytes(storageRef, blob).then( (snapshot) =>
+            {
+                console.log("uploaded a file");
+            });
+            
+        })
+        const data = {
+            name: name,
+            tags: tags,
+            type: type,
+            rules: rules,
+            //picture: picture.src,
+        }
+        set(dataRef, data);
+        //displayCards();
+    }
+
+    function saveEggToDB(tags, name, type, rules, picture) {
+        // Perform operations with the input values
+        //console.log("Card Name: " + cardName);
+        //console.log("Card Power: " + cardPower);
+        // Add your logic here:
+        const dataRef = ref_database(database, 'Cards/' + name);
+        const storageRef = ref_storage(storage, 'images/' + name);
+        imageAsBlob(picture.src).then(blob =>
+        {
+            uploadBytes(storageRef, blob).then( (snapshot) =>
+            {
+                console.log("uploaded a file");
+            });
+            
+        })
+        const data = {
+            name: name,
+            tags: tags,
+            type: type,
+            rules: rules,
+            //picture: picture.src,
+        }
+        set(dataRef, data);
+        //displayCards();
+    }
+
+
+
+
+
+    // SAVE THE CARD PREVIEW TO YOUR LOCAL DOWNLOADS
+    document.getElementById("saveImageButton").addEventListener("click", function() {
+        saveImage().then((combinedImage) => {
+            const link = document.createElement('a');
+            link.href = combinedImage;
+            link.download = addCardNameId.value + '.png';
+            link.click();
+        })
+    });
+
+   
+
+
+
+
+    // OPENS THE OVERLAY CARD PREVIEW
+    function openCardDisplay(picture, cardType, cardName, cardPower, cardRules) {
+        overlay.style.display = "block";
+
+        const overlayImage = document.getElementById("newImagePreview");
+        overlayImage.setAttribute('src', picture.src);
+
+        const titleParagraph = document.getElementById("overlayCardTitleP");
+        titleParagraph.textContent = cardName;
+
+
+        if (cardType === 'bird')
+        {
+            // Add bird additional info
+        }
+        
+        option1Button.textContent = cardName;
+        option2Button.textContent = cardPower;
+        overlayRulesText.textContent = cardRules;
 
     }
 
 
+
+
+
+
+
+
+    // Buttons
+    const overlayButton = document.getElementById("overlayButton");
+    const overlay = document.getElementById("overlay");
+    const closeButton = document.getElementById("closeButton");
+
+    const option1Button = document.getElementById("option1Button");
+    const option2Button = document.getElementById("option2Button");
+    const overlayRulesText = document.getElementById("overlayRulesText");
+
+    const hamburgerButton = document.getElementById('hamburgerButton');
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const showHamburgerButton = document.getElementById('showHamburgerButton');
+
+    const addCardMenuButton = document.getElementById('addCardMenuButton');
+    const addCardOverlay = document.getElementById('addCardOverlay');
+    const closeOverlayButton = document.getElementById('closeOverlayButton');
+
+    const editCardMenuButton = document.getElementById('editCardMenuButton');
+    const deckBuildMenuButton = document.getElementById('deckBuildMenuButton');
+    const battleMenuButton = document.getElementById('battleMenuButton');
+
+
+    // Setting the listeners here
+    addCardMenuButton.addEventListener('click', () => {
+        addCardOverlay.style.display = 'block';
+        hamburgerMenu.classList.toggle('open');
+    });
+
+    closeOverlayButton.addEventListener('click', () => {
+        addCardOverlay.style.display = 'none';
+    });
+
+    printMenuButton.addEventListener('click', () => {
+        console.log('Edit Card button clicked');
+    });
+
+    deckBuildMenuButton.addEventListener('click', () => {
+        console.log('Build Deck button clicked');
+    });
+
+    battleMenuButton.addEventListener('click', () => {
+        console.log('Battleground button clicked');
+    });
+
+    
+    overlayButton.addEventListener("click", function() {
+        overlay.style.display = "block";
+    });
+
+    overlay.addEventListener("click", function(event) {
+        if (event.target === overlay) {
+            overlay.style.display = "none";
+        }
+    });
+
+    closeButton.addEventListener("click", function() {
+        overlay.style.display = "none";
+    });
+
+    hamburgerButton.addEventListener('click', () => {
+        hamburgerMenu.classList.toggle('open');
+    });
+
+    showHamburgerButton.addEventListener('click', () => {
+        hamburgerMenu.classList.toggle('open');
+    });
+
+
+    // Testing card queue overlay
+    const queueOverlay = document.getElementById('queueOverlayId');
+    const queueHamburgerButton = document.getElementById('queueHamburgerButton');
+
+    queueHamburgerButton.addEventListener('click', function() {
+        queueOverlay.classList.toggle('hide-overlay');
+    });
+
+
+
+
+
+
+    // Sets a listener on the tag update button when adding a card
+    tagUpdate();
+    function tagUpdate() {
+    document.getElementById("addTagButton").addEventListener("click", function(event) {
+                //event.preventDefault(); // Prevent form submission and page reload
+                const input = document.getElementById("tagInputId");
+                 const paragraph = document.getElementById("tagListP");
+                 const newText = input.value;
+                 paragraph.innerHTML += newText;
+                 
+
+                 //const cardTagInput = document.getElementById("tagInputId").value;
+            const tagArray = String(newText).split(', ');
+            console.log(tagArray);
+                input.value = "";
+            });
+    }
+
+
+
+
+
+    // Utility to upload image to storage as a blob
     function imageAsBlob(imageURL){
         return fetch(imageURL).then(response => response.blob());
     }
@@ -141,26 +1276,749 @@
 
 
 
+    // Utility to save an image over another image
+    function saveImage() {
+    return new Promise((resolve) => {
+        // Create a new canvas element
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        const cardTypeSelect = document.getElementById('cardTypeSelect').value;
+
+        const baseImage = new Image();
+        
+        if (cardTypeSelect === 'song') {
+            baseImage.src = 'card_images/Song Template.PNG';
+        }
+        else if (cardTypeSelect === 'feather') {
+            baseImage.src = 'card_images/Feather Egg Template.PNG';
+        }
+        else if (cardTypeSelect === 'egg') {
+            baseImage.src = 'card_images/Feather Egg Template.PNG';
+        }
+        else {
+        // Load the base blank image
+            baseImage.src = 'card_images/Bird Template.PNG'; // Replace with the actual path to the base image
+        }
+
+        // Load the artwork image
+        const secondImage = new Image();
+        secondImage.src = addImagePreview.src; // Replace with the actual path to the  image
+
+        // Wait for both images to load
+        Promise.all([loadImage(baseImage)]).then(() => {
+        // Set canvas size to match the base image dimensions
+        canvas.width = baseImage.width;
+        canvas.height = baseImage.height;
+
+        // Draw the base image onto the canvas
+        context.drawImage(baseImage, 0, 0);
+
+        // Add card title text to the canvas
+        const cardNameText = document.getElementById('addCardNameId');
+        const text = cardNameText.value; // Replace with your desired text
+        context.font = 'bold 42px Times New Roman';
+        context.fillStyle = 'black';
+        context.textAlign = 'center';
+
+
+        // REsize title text for long names
+        if(cardTypeSelect === 'bird'){
+            if (text.length > 20)
+            {
+                console.log('here');
+                context.font = 'bold 24px Times New Roman';
+                console.log(context.font);
+                context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
+            }
+            else {
+                context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
+            }
+        }
+        else {
+            context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
+        }
+       
+
+        
+
+
+        if (cardTypeSelect === 'bird'){
+            // Add card power text to the canvas
+            const cardPowerText = document.getElementById('addPowerInputId');
+            const powerText = cardPowerText.value; // Replace with your desired text
+            context.font = 'bold 80px Times New Roman';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            context.fillText(powerText, 100, 140); // Adjust the y-coordinate to position the text vertically
+        }
+
+
+
+        // Add card type text to the canvas
+        const cardTypeText = document.getElementById('addCardTypeTextId');
+        const typeText = cardTypeText.textContent; // Replace with your desired text
+        context.font = 'bold 32px Times New Roman';
+        context.fillStyle = 'black';
+        context.textAlign = 'center';
+        context.fillText(typeText, canvas.width / 2, 660); // Adjust the y-coordinate to position the text vertically
+
+
+
+        if (cardTypeSelect === 'song'){
+            // Add card requirement to the canvas
+            const eggReq = document.getElementById('eggInputNumberId');
+            let eggText = "egg";
+            if (eggReq.value){
+                eggText = "Egg: " + eggReq.value; // Replace with your desired text
+            }
+
+            const nestReq = document.getElementById('nestInputNumberId');
+            let nestText = "";
+            if (nestReq.value){
+                nestText = " Nest: " + nestReq.value; // Replace with your desired text
+            }
+
+            const airReq = document.getElementById('airInputNumberId');
+            let airText = "";
+            if (airReq.value){
+                airText = " Air: " + airReq.value; // Replace with your desired text
+            }
+            
+
+            const groundReq = document.getElementById('groundInputNumberId');
+            let groundText = "";
+            if (groundReq.value){
+                groundText = " Ground: " + groundReq.value; // Replace with your desired text
+            }
+
+            const fullReqText = eggText + nestText + airText + groundText;
+
+            context.font = 'bold 24px Times New Roman';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            context.fillText(fullReqText, canvas.width / 2, 750); // Adjust the y-coordinate to position the text vertically
+        }
+
+
+        // Add bottom text (card rules) to the canvas (ADD DIFFERENT SIZE FOR SONGS)
+            const cardRulesText = document.getElementById('addCardRulesId');
+            const bottomText = cardRulesText.value; // Replace with your desired bottom text
+
+
+            
+            let textBoxWidth = 600; // Replace with the desired width of the text box
+            let textBoxHeight = 300; // Replace with the desired height of the text box
+            const textBoxX = (canvas.width - textBoxWidth) / 2; // Center horizontally
+            let textBoxY = canvas.height - 350; // Adjust the y-coordinate to position the text box vertically
+
+            if (cardTypeSelect === 'song'){
+                 textBoxWidth = 590;
+                 textBoxHeight = 200;
+                 textBoxY = canvas.height - 240; // Adjust the y-coordinate to position the text box vertically
+             }
+
+
+            context.save();
+            context.beginPath();
+            context.rect(textBoxX, textBoxY, textBoxWidth, textBoxHeight);
+            context.clip();
+
+
+            
+
+            const lineHeight = 30; // Adjust the line height for each wrapped line
+            const maxLines = Math.floor(textBoxHeight / lineHeight); // Maximum number of lines that can fit in the box
+        
+
+            const words = bottomText.split(' ');
+            let line = '';
+            let wrappedText = '';
+            let lineCount = 0;
+
+
+            for (let i = 0; i < words.length; i++) {
+                
+                const testLine = line + words[i] + ' ';
+                const metrics = context.measureText(testLine);
+                const testWidth = metrics.width;
+                
+
+                if (testWidth > textBoxWidth && i > 0) {
+                    if (lineCount < maxLines - 1) {
+                        wrappedText += line.trim() + '\n';
+                        line = words[i] + ' ';
+                        lineCount++;
+                    } else {
+                        wrappedText += '...';
+                        break;
+                    }
+                } else {
+                    line = testLine;
+                }
+            }
+            
+
+            
+            wrappedText += line.trim();
+            const lines = wrappedText.split('\n');
+            
+            context.font = '32px Times New Roman';
+
+            for (let i = 0; i < lines.length; i++) {
+                const textX = textBoxX + textBoxWidth / 2; // x-coordinate remains the same for each line
+                const textLineY = (textBoxY + lineHeight) + i * lineHeight; // y-coordinate for each line
+
+                context.fillText(lines[i], textX, textLineY, textBoxWidth);
+            }
+
+            //context.fillText(wrappedText, textBoxX + textBoxWidth / 2, textBoxY + lineHeight, textBoxWidth); // Adjust the y-coordinate to position the bottom text
+
+            context.restore();
 
 
 
 
-    // CONSOLE BUTTON READS INFO FROM THE DATABASE
-    document.getElementById("viewButton").addEventListener("click", viewDB);
-    function viewDB() {
-        const dataRef = ref(database, 'Cards/');
-        onValue(dataRef, (snapshot) => {
-         const info = snapshot.val();
-            console.log(info);
+        // Define the position and size of the second image
+        const boxWidth = 400; // Replace with the desired width of the box
+        const boxHeight = 400; // Replace with the desired height of the box
+        const x = (canvas.width - boxWidth) / 2; // Center horizontally
+        const y = 180; // Adjust the y-coordinate to move the image down
+
+        // Draw the second image onto the canvas, fitting it within the box
+        context.drawImage(secondImage, x, y, boxWidth, boxHeight);
+
+        // Save the combined image
+        const combinedImage = canvas.toDataURL();
+
+        resolve(combinedImage);
         });
+    });
+    }
+
+    function loadImage(image) {
+    return new Promise((resolve) => {
+        image.onload = resolve;
+    });
     }
 
 
-  
+
+
+
+    // This is a utility that updates the card preview inside the Add a Card overlay
+    updateCardImagePreview();
+    
+    function updateCardImagePreview() {
+        document.getElementById("imageInput").addEventListener("change", (event) => {
+            const imagePreview = document.getElementById("addImagePreview");
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                const imageDataURL = e.target.result;
+                // Use the imageDataURL as needed (e.g., display or upload the image)
+                // console.log(imageDataURL);
+                imagePreview.src = imageDataURL;
+
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+
+
+    }
+
+
+
+    // This changes the Add a Card overlay based on the input selected from dropdown
+    document.getElementById("cardTypeSelect").addEventListener("change", function() {
+        const cardSelect = document.getElementById("cardTypeSelect").value;
+        
+        toggleCardInputs();
+    });
+
+    function toggleCardInputs() {
+        const cardTypeSelect = document.getElementById("cardTypeSelect");
+        const leftColumn = document.getElementById("leftColumn");
+        const rightColumn = document.getElementById("rightColumn");
+
+        
+        
+        const selectedOption = cardTypeSelect.value;
+        
+        // Reset inputs to default state
+        leftColumn.innerHTML = `
+            <h2>Add Card</h2>
+            <form action="" id="inputForm">
+                <label for="addCardNameId">Card Name:</label>
+                <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
+
+                <label for="addCardRulesId">Card Rules:</label>
+                <textarea id="addCardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
+
+                <label for="imageInput">Card Image:</label>
+                <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+
+
+                <label for="tagInputId">Tag:</label>
+                <input type="text" id="tagInputId" name="tagInput">
+                <button type="button" id="addTagButton">Add Tag</button>
+                <p id="tagListP"></p>
+
+
+                <button type="submit" form="inputForm">Submit</button>
+            </form>
+        `;
+
+            
+        // Reset preview to default state (THIS MAKES THE PREVIEW NOT WORK RN)
+        // rightColumn.innerHTML = `
+        //     <label for="imagePreview">Preview</label>
+        //     <div class="image-container">
+        //     <img src="card_images/blankCard.PNG" alt="">
+        //     <img id="imagePreview" src="" alt="Card"/>
+        //     <div class="text-box-card-name">
+        //         <h2 id="cardNameTitleTextId">Card Title</h2>
+        //     </div>
+        //     <div class="text-box-card-rules">
+        //         <p id="cardRulesTextId">Card Rules</p>
+        //     </div>
+        //     </div>
+        // `;
+
+        // Handle different options
+        if (selectedOption === "bird") {
+            // Custom inputs for type 1
+             leftColumn.innerHTML = `
+             <h2>Add Bird Card</h2>
+             <form action="" id="inputForm">
+             <label for="addCardNameId">Card Name:</label>
+             <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
+
+             <label for="addCardRulesId">Card Rules:</label>
+             <textarea id="addCardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
+
+             <label for="imageInput">Card Image:</label>
+             <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+
+                    <div id="extraBirdInfo" class="hidden">
+                        <label for="addSubtypeInputId">Subtype:</label>
+                        <input type="text" id="addSubtypeInputId" name="subTypeInput">
+
+                        <label for="addCostInputId">Cost:</label>
+                        <input type="text" id="addCostInputId" name="costInput">
+
+                        <label for="addPowerInputId">Power:</label>
+                        <input type="number" id="addPowerInputId" name="powerInput">
+                    </div>
+                   
+
+                    <label for="tagInputId">Tag:</label>
+                    <input type="text" id="tagInputId" name="tagInput">
+                    <button type="button" id="addTagButton">Add Tag</button>
+                    <p id="tagListP"></p>
+
+                    
+
+                    
+             <button type="submit" form="inputForm">Submit</button>
+             </form>
+         `;
+         extraBirdInfo.classList.remove("hidden");
+        
+
+             rightColumn.innerHTML = `
+             <div class="add-image-container">
+                <img id="addImageBackground" src="card_images/Bird Template.png" alt="">
+                <img id="addImagePreview" src="card_images/favicon.png" alt="Card"/>
+                <div class="text-box-card-power">
+                    <h2 id="addCardPowerTextId">0</h2>
+                </div>
+                <div class="text-box-card-name">
+                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                </div>
+                <div class="text-box-card-type">
+                    <p id="addCardTypeTextId">Bird</p>
+                </div>
+                <div class="text-box-card-rules">
+                    <p id="addCardRulesTextId">Card Rules</p>
+                </div>
+             </div>
+            `;
+            // Custom preview for type 1
+            // rightColumn.innerHTML += `
+            // <div class="type1-preview">
+            //     <!-- Custom preview content for type 1 -->
+            // </div>
+            // `;
+
+
+            // ADD THE LISTENERS BACK TO BIRD_SPECIFIC ATTRIBUTES
+
+            const cardSubtypeText = document.getElementById('addCardTypeTextId');
+            document.getElementById('addSubtypeInputId').addEventListener('input', function(event) {
+                const enteredText = event.target.value;
+                if (enteredText === ''){
+                    cardSubtypeText.textContent = 'Bird';
+                }
+                else{
+                    cardSubtypeText.textContent = 'Bird - ' + enteredText;
+                }
+            });
+
+            const cardPowerText = document.getElementById('addCardPowerTextId');
+            document.getElementById('addPowerInputId').addEventListener('input', function(event) {
+                const enteredText = event.target.value;
+                cardPowerText.textContent = enteredText;
+            });
+
+        } else if (selectedOption === "song") {
+            // Custom inputs for type 2
+            leftColumn.innerHTML += `
+            <label for="eggInputNumberId">Required Eggs:</label>
+            <input type="number" id="eggInputNumberId" name="eggInputNumber">
+            <label for="nestInputNumberId">Required Nest:</label>
+            <input type="number" id="nestInputNumberId" name="nestInputNumber">
+            <label for="airInputNumberId">Required Air:</label>
+            <input type="number" id="airInputNumberId" name="airInputNumber">
+            <label for="groundInputNumberId">Required Ground:</label>
+            <input type="number" id="groundInputNumberId" name="groundInputNumber">
+            `;
+
+            rightColumn.innerHTML = `
+            <div class="add-image-container">
+                <img id="addImageBackground" src="card_images/Song Template.png" alt="">
+                <img id="addImagePreview" src="card_images/songIcon.png" alt="Card"/>
+                <div class="text-box-card-name">
+                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                </div>
+                <div class="text-box-card-type">
+                    <p id="addCardTypeTextId">Song</p>
+                </div>
+                <div class = "text-box-card-req">
+                    <div class="egg-req">
+                        <p id="addEggReqId"></p>
+                    </div><div class="nest-req">
+                        <p id="addNestReqId"></p>
+                    </div><div class="air-req">
+                        <p id="addAirReqId"></p>
+                    </div><div class="ground-req">
+                        <p id="addGroundReqId"></p>
+                    </div>
+                </div>
+                <div class="text-box-card-rules-song">
+                    <p id="addCardRulesTextId">Card Rules</p>
+                </div>
+             </div>
+            `;
+
+            // Custom preview for type 2
+            // rightColumn.innerHTML += `
+            // <div class="type2-preview">
+            //     <!-- Custom preview content for type 2 -->
+            // </div>
+            // `;
+
+            // Reset listeners on the Requirements for Songs
+            const eggReq = document.getElementById('addEggReqId');
+            document.getElementById('eggInputNumberId').addEventListener('input', function(event) {
+
+                const enteredText = event.target.value;
+                if (enteredText === '0'){
+                    eggReq.textContent = '';
+                }
+                else{
+                    const newEnteredText = "Eggs: " + enteredText;
+                    eggReq.textContent = newEnteredText;
+                }
+            });
+
+            const nestReq = document.getElementById('addNestReqId');
+            document.getElementById('nestInputNumberId').addEventListener('input', function(event) {
+
+                const enteredText = event.target.value;
+                if (enteredText === '0'){
+                    nestReq.textContent = '';
+                }
+                else{
+                    const newEnteredText = "Nest: " + enteredText;
+                    nestReq.textContent = newEnteredText;
+                }
+            });
+
+            const airReq = document.getElementById('addAirReqId');
+            document.getElementById('airInputNumberId').addEventListener('input', function(event) {
+
+                const enteredText = event.target.value;
+                if (enteredText === '0'){
+                    airReq.textContent = '';
+                }
+                else{
+                    const newEnteredText = "Air: " + enteredText;
+                    airReq.textContent = newEnteredText;
+                }
+            });
+
+            const groundReq = document.getElementById('addGroundReqId');
+            document.getElementById('groundInputNumberId').addEventListener('input', function(event) {
+
+                const enteredText = event.target.value;
+                if (enteredText === '0'){
+                    groundReq.textContent = '';
+                }
+                else{
+                    const newEnteredText = "Ground: " + enteredText;
+                    groundReq.textContent = newEnteredText;
+                }
+            });
+
+
+        } else if (selectedOption === "feather") {
+            // Custom inputs for type 3
+            
+
+            rightColumn.innerHTML = `
+            <div class="add-image-container">
+                <img id="addImageBackground" src="card_images/Feather Egg Template.png" alt="">
+                <img id="addImagePreview" src="card_images/featherIcon.png" alt="Card"/>
+                <div class="text-box-card-name">
+                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                </div>
+                <div class="text-box-card-type">
+                    <p id="addCardTypeTextId">Feather</p>
+                </div>
+                <div class="text-box-card-rules">
+                    <p id="addCardRulesTextId">Card Rules</p>
+                </div>
+             </div>
+            `;
+
+            // Custom preview for type 3
+            // rightColumn.innerHTML += `
+            // <div class="type3-preview">
+            //     <!-- Custom preview content for type 3 -->
+            // </div>
+            // `;
+        }
+        else if (selectedOption === "egg") {
+            // Custom inputs for type 3
+            
+
+            rightColumn.innerHTML = `
+            <div class="add-image-container">
+                <img id="addImageBackground" src="card_images/Feather Egg Template.png" alt="">
+                <img id="addImagePreview" src="card_images/eggIcon.png" alt="Card"/>
+                <div class="text-box-card-name">
+                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                </div>
+                <div class="text-box-card-type">
+                    <p id="addCardTypeTextId">Egg</p>
+                </div>
+                <div class="text-box-card-rules">
+                    <p id="addCardRulesTextId">Card Rules</p>
+                </div>
+             </div>
+            `;
+
+            // Custom preview for type 3
+            // rightColumn.innerHTML += `
+            // <div class="type3-preview">
+            //     <!-- Custom preview content for type 3 -->
+            // </div>
+            // `;
+        }
 
 
 
 
+            // Since there is new HTML being written here, new listeners need to attach to the card preview image/text
+            updateCardImagePreview();
+
+            const cardNameTitleText = document.getElementById('addCardNameTitleTextId');
+            document.getElementById('addCardNameId').addEventListener('input', function(event) {
+                const enteredText = event.target.value;
+                cardNameTitleText.textContent = enteredText;
+            });
+
+            const cardRulesText = document.getElementById('addCardRulesTextId');
+            document.getElementById('addCardRulesId').addEventListener('input', function(event) {
+                const enteredText = event.target.value;
+                cardRulesText.textContent = enteredText;
+            });
+
+            // Add the listener to the submit button again
+            document.getElementById("inputForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent form submission and page reload
+                submitForm();
+            });
+
+            // Add the listener to the add tag button again
+            tagUpdate();
+            
+        }
+
+
+    // This changes the Edit Card overlay based on the input selected from dropdown
+    document.getElementById("editSelect").addEventListener("change", function() {
+        //const cardSelect = document.getElementById("cardTypeSelect").value;
+        toggleEditCardInputs();
+    });
+
+    function toggleEditCardInputs() {
+        const editSelect = document.getElementById("editSelect");
+        const leftColumn = document.getElementById("leftColumn");
+        const rightColumn = document.getElementById("innerRightColumnId");
+
+        const cardTitle = document.getElementById("overlayCardTitleP");
+
+
+        const selectedOption = editSelect.value;
+
+        // Reset inputs to default state
+        // leftColumn.innerHTML = `
+        //     <h2>Add Card</h2>
+        //     <form action="" id="inputForm">
+        //     <label for="cardNameId">Card Name:</label>
+        //     <input type="text" placeholder="Name" id="cardNameId" name="cardName" required>
+
+        //     <label for="cardRulesId">Card Rules:</label>
+        //     <textarea id="cardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
+
+        //     <label for="imageInput">Card Image:</label>
+        //     <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+
+
+        //     <label for="tagInputId">Tag:</label>
+        //     <input type="text" id="tagInputId" name="tagInput">
+        //     <button type="button" id="addTagButton">Add Tag</button>
+        //     <p id="tagListP"></p>
+
+
+        //     <button type="submit" form="inputForm">Submit</button>
+        //     </form>
+        // `;
+
+        // rightColumn.innerHTML = `
+            
+        //     <div class="preview-right-column" id="previewRightColumn">
+
+        //         <h2>Add Card</h2>
+        //         <div id="cardInformation">
+        //             <!-- Add fields for the cards to be populated here-->
+        //         </div>
+
+        //         <p id="overlayTypeTest">Type</p>
+
+
+
+        //         <button id="">Add to Prevsdsdiew</button>
+
+
+        //         <button id="option1Button" class="overlay-option">Option 1</button>
+        //         <button id="option2Button" class="overlay-option">Option 2</button>
+        //         <p id="overlayRulesText" class="overlay-option">Bird text goes in here</p>
+
+
+
+
+
+        //     </div>
+        // `;
+
+
+        // Handle different options
+        if (selectedOption === "view") {
+            // Custom inputs for type 1
+             leftColumn.innerHTML = `
+             
+            `;
+        
+
+             rightColumn.innerHTML = `
+             <button id="addPreviewButton" >Add to Preview</button>
+             <p id="overlayCardTitleP">` + cardTitle.textContent + `</p>
+             
+            `;
+
+            // Here is where we want to set a listener for the preview button, after the View is selected
+            // THIS IS WHERE THE CARD OBJECT WILL BE CREATED AND STORED INTO THE CARD PREVIEW IMAGE
+            document.getElementById("addPreviewButton").addEventListener("click", function() {
+
+
+                const cardStorageRef = ref_storage(storage, 'images/' + cardTitle.textContent);
+
+                const cardPreview = document.getElementById("cardQueuePreviewId");
+                //console.log(cardStorageRef);
+                getDownloadURL(cardStorageRef)
+                .then((url) => {
+                    cardPreview.setAttribute('src', url);
+                })
+
+                // THIS IS WHERE YOU NEED TO ACCESS THE DB TO GET CARD INFO FOR PREVIEW
+
+
+
+            });
+
+            // Custom preview for type 1
+            // rightColumn.innerHTML += `
+            // <div class="type1-preview">
+            //     <!-- Custom preview content for type 1 -->
+            // </div>
+            // `;
+        } else if (selectedOption === "edit") {
+            // Custom inputs for type 2
+            leftColumn.innerHTML += `
+            
+            `;
+
+            rightColumn.innerHTML = `
+            <p id="overlayCardTitleP">` + cardTitle.textContent + `</p>
+            <p>Edit</p>
+
+            
+            `;
+
+            // Custom preview for type 2
+            // rightColumn.innerHTML += `
+            // <div class="type2-preview">
+            //     <!-- Custom preview content for type 2 -->
+            // </div>
+            // `;
+        } else if (selectedOption === "delete") {
+            // Custom inputs for type 3
+            
+
+            rightColumn.innerHTML = `
+            <p id="overlayCardTitleP">` + cardTitle.textContent + `</p>
+            <p>Delete</p>
+            `;
+
+            // Custom preview for type 3
+            // rightColumn.innerHTML += `
+            // <div class="type3-preview">
+            //     <!-- Custom preview content for type 3 -->
+            // </div>
+            // `;
+        }
+
+
+        // Set a listener for the dropdown selection
+        document.getElementById("editSelect").addEventListener("change", function() {
+            toggleEditCardInputs();
+        });
+
+        
+
+
+    }
+
+    
 
     </script>
     
