@@ -223,25 +223,28 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    overflow:hidden;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    object-fit: contain;
   }
   
 
   #addImagePreview {
     position: absolute;
     top: 15%;
-    left: 16%;
-    width: 387px;
+    left: 20%;
+    width: 60%;
     height: 348px;
-    object-fit:contain;
+    /* object-fit:contain; */
   }
 
   #addImageBackground {
     position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: contain; */
   }
 
 
