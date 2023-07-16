@@ -1362,6 +1362,7 @@
 
         // Add special Bird parts of the card
         if (cardTypeSelect === 'bird'){
+
             // Add card faction color to the canvas
             const factionImage = new Image();
             if (factionSelect === 'red') {
@@ -1376,13 +1377,21 @@
                 factionImage.src = 'card_images/blackFactionPip.png';
                 context.drawImage(factionImage, 28, 42);
             }
+            else {
+                context.fillStyle = 'black';
+            }
 
 
             // Add card power text to the canvas
             const cardPowerText = document.getElementById('addPowerInputId');
             const powerText = cardPowerText.value; // Replace with your desired text
             context.font = 'bold 80px Times New Roman';
-            context.fillStyle = 'white';
+            if (factionSelect === '') {
+                context.fillStyle = 'black';
+            }
+            else {
+                context.fillStyle = 'white';
+            }
             context.textAlign = 'center';
             context.fillText(powerText, 100, 140); // Adjust the y-coordinate to position the text vertically
 
