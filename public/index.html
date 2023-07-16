@@ -8,7 +8,7 @@
     <title>For the Birdhouse</title>
 </head>
 <body>
-
+    
     <button id="showHamburgerButton" class="show-hamburger-button">///</button>
 
     <div id="hamburgerMenu" class="hamburger-menu">
@@ -172,15 +172,15 @@
             <div class="left-column" id="leftColumn">
                 <h2>Add Bird Card</h2>
                 <form action="" id="inputForm">
-                <label for="cardNameId">Card Name:</label>
-                <input type="text" placeholder="Name" id="cardNameId" name="cardName" required>
-                <br>
-                <label for="cardRulesId">Card Rules:</label>
-                <textarea id="cardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
+                    <label for="cardNameId">Card Name:</label>
+                    <input type="text" placeholder="Name" id="cardNameId" name="cardName" required>
+                    <br>
+                    <label for="cardRulesId">Card Rules:</label>
+                    <textarea id="cardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
 
-                <label for="imageInput">Card Image:</label>
-                <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
-        
+                    <label for="imageInput">Card Image:</label>
+                    <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+            
                 <div id="additionalCardInfo">
                     <div id="extraBirdInfo" class="">
                         <label for="addSubtypeInputId">Subtype:</label>
@@ -331,22 +331,6 @@
     //console.log(storage);
 
    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // DATA TYPE CARD and DECK
     class Card {
@@ -694,8 +678,7 @@
 
 
 
-    // Set up a listener on the search buttons that query the database and
-    // update the image wheel with search results
+    // SEARCH AND UPDATE IMAGE WHEEL FUNCTIONS
     
     document.getElementById("titleSearchForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent form submission and page reload
@@ -943,14 +926,19 @@
         {
             const cardSubtype = document.getElementById("addSubtypeInputId").value;
             const cardPower = document.getElementById("addPowerInputId").value;
-            const cardCost = document.getElementById("addCostInputId").value;
+
+            const cardRedCost = document.getElementById("addRedCostInputId").value;
+            const cardBlueCost = document.getElementById("addBlueCostInputId").value;
+            const cardBlackCost = document.getElementById("addBlackCostInputId").value;
+
+
             const cardPicture = new Image();
 
             // Save image as new card image, then push that into storage
             saveImage().then((combinedImage) => {
                 cardPicture.src = combinedImage;
                 // Call your function and pass the input values
-                saveBirdToDB(tagArray, cardName, cardType, cardRules, cardPicture, cardSubtype, cardCost, cardPower);
+                saveBirdToDB(tagArray, cardName, cardType, cardRules, cardPicture, cardSubtype, cardRedCost, cardBlueCost, cardBlackCost, cardPower);
             });
 
         }
@@ -1019,7 +1007,7 @@
         return false;
     }
 
-    function saveBirdToDB(tags, name, type, rules, picture, subtype, cost, power) {
+    function saveBirdToDB(tags, name, type, rules, picture, subtype, red, blue, black, power) {
         // Perform operations with the input values
         //console.log("Card Name: " + cardName);
         //console.log("Card Power: " + cardPower);
@@ -1041,7 +1029,9 @@
             rules: rules,
             //picture: picture.src,
             subtype: subtype,
-            cost: cost,
+            red: red,
+            blue: blue,
+            black: black,
             power: power
         }
         set(dataRef, data);
@@ -1312,6 +1302,7 @@
         const context = canvas.getContext('2d');
 
         const cardTypeSelect = document.getElementById('cardTypeSelect').value;
+        const factionSelect = document.getElementById('addFactionSelectId').value;
 
         const baseImage = new Image();
         
@@ -1352,9 +1343,8 @@
 
         // REsize title text for long names
         if(cardTypeSelect === 'bird'){
-            if (text.length > 20)
+            if (text.length > 19)
             {
-                console.log('here');
                 context.font = 'bold 24px Times New Roman';
                 console.log(context.font);
                 context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
@@ -1370,15 +1360,74 @@
 
         
 
-
+        // Add special Bird parts of the card
         if (cardTypeSelect === 'bird'){
+            // Add card faction color to the canvas
+            const factionImage = new Image();
+            if (factionSelect === 'red') {
+                factionImage.src = 'card_images/redFactionPip.png';
+                context.drawImage(factionImage, 28, 42);
+            }
+            else if (factionSelect === 'blue') {
+                factionImage.src = 'card_images/blueFactionPip.png';
+                context.drawImage(factionImage, 28, 42);
+            }
+            else if (factionSelect === 'black') {
+                factionImage.src = 'card_images/blackFactionPip.png';
+                context.drawImage(factionImage, 28, 42);
+            }
+
+
             // Add card power text to the canvas
             const cardPowerText = document.getElementById('addPowerInputId');
             const powerText = cardPowerText.value; // Replace with your desired text
             context.font = 'bold 80px Times New Roman';
-            context.fillStyle = 'black';
+            context.fillStyle = 'white';
             context.textAlign = 'center';
             context.fillText(powerText, 100, 140); // Adjust the y-coordinate to position the text vertically
+
+
+            // Add card color cost to the canvas
+            const redCount = document.getElementById('addRedCostInputId').value;
+            const blueCount = document.getElementById('addBlueCostInputId').value;
+            const blackCount = document.getElementById('addBlackCostInputId').value;
+
+            console.log(redCount, ", ", blueCount, ", ", blackCount);
+
+            const boundaryX = 590; // X-coordinate of the top-left corner of the box
+            const boundaryY = 70; // Y-coordinate of the top-left corner of the box
+            const boundaryWidth = 200; // Width of the box
+            const boundaryHeight = 150; // Height of the box
+
+            const redPipImage = '/card_images/redPip.png';
+            const bluePipImage = '/card_images/bluePip.png';
+            const blackPipImage = '/card_images/blackPip.png';
+            const imageArray = [];
+
+            for (let i = 0; i < redCount; i++) {
+                const redImage = new Image();
+                redImage.src = redPipImage;
+                imageArray.push(redImage);
+            }
+            for (let i = 0; i < blueCount; i++) {
+                const blueImage = new Image();
+                blueImage.src = bluePipImage;
+                imageArray.push(blueImage);
+            }
+            for (let i = 0; i < blackCount; i++) {
+                const blackImage = new Image();
+                blackImage.src = blackPipImage;
+                imageArray.push(blackImage);
+            }
+
+            
+            for (let i = 0; i < imageArray.length; i++) {
+                const x = boundaryX + (i % imageArray.length) * 25; // Adjust the positioning of the images within the box
+                const y = boundaryY + Math.floor(i / imageArray.length) * 50; // Adjust the positioning of the images within the box
+
+                context.drawImage(imageArray[i], x, y, 20, 20); // Draw the image at the specified coords
+            }
+
         }
 
 
@@ -1627,6 +1676,7 @@
 
         // Handle different options
         if (selectedOption === "bird") {
+
             // Custom inputs for type 1
              leftColumn.innerHTML = `
              <h2>Add Bird Card</h2>
@@ -1641,14 +1691,44 @@
              <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
 
                     <div id="extraBirdInfo" class="hidden">
-                        <label for="addSubtypeInputId">Subtype:</label>
-                        <input type="text" id="addSubtypeInputId" name="subTypeInput">
 
-                        <label for="addCostInputId">Cost:</label>
-                        <input type="text" id="addCostInputId" name="costInput">
+                        <div class="faction-subtype-power-container">
+                            <div class="faction-subtype-sub-container">
+                                <div class="faction-container">
+                                    <label for="addFactionInputId">Faction:</label>
+                                    <select id="addFactionSelectId">
+                                        <option value=""></option>
+                                        <option value="red">Red</option>
+                                        <option value="blue">Blue</option>
+                                        <option value="black">Black</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="subtype-container">
+                                    <label for="addSubtypeInputId">Subtype:</label>
+                                    <input type="text" id="addSubtypeInputId" name="subtypeInput">
+                                </div>
+                            </div>
+                            
+                            <div class="power-container">
+                                <label for="addPowerInputId">Power:</label>
+                                <input type="number" id="addPowerInputId" name="powerInput" value="0">
+                            </div>
+                        </div>
 
-                        <label for="addPowerInputId">Power:</label>
-                        <input type="number" id="addPowerInputId" name="powerInput">
+
+                        <div class="color-cost-input-container">
+                            <label for="addRedCostInputId">Red:</label>
+                            <input type="number" id="addRedCostInputId" name="redCostInput" value="0">
+
+                            <label for="addBlueCostInputId">Blue:</label>
+                            <input type="number" id="addBlueCostInputId" name="blueCostInput" value="0">
+
+                            <label for="addBlackCostInputId">Black:</label>
+                            <input type="number" id="addBlackCostInputId" name="blackCostInput" value="0">
+                        </div>
+
+
                     </div>
                    
 
@@ -1673,13 +1753,29 @@
          extraBirdInfo.classList.remove("hidden");
         
 
+
+
              rightColumn.innerHTML = `
              <div class="add-image-container">
                 <img id="addImageBackground" src="card_images/Bird Template.png" alt="">
                 <img id="addImagePreview" src="card_images/favicon.png" alt="Card"/>
+
                 <div class="text-box-card-power">
                     <h2 id="addCardPowerTextId">0</h2>
                 </div>
+
+                <div class="faction-img-container" id="factionContainerId">
+                    <div class="img-box-card-faction" id="imgBoxCardFactionId"></div>
+                </div>
+
+                <div class="pips-container" id="pipsContainerId">
+                    <div class="img-box-card-red" id="imgBoxCardRedId"></div>
+                    <div class="img-box-card-blue" id="imgBoxCardBlueId"></div>
+                    <div class="img-box-card-black" id="imgBoxCardBlackId"></div>
+                </div>
+
+
+
                 <div class="text-box-card-name">
                     <h2 id="addCardNameTitleTextId">Card Title</h2>
                 </div>
@@ -1691,12 +1787,8 @@
                 </div>
              </div>
             `;
-            // Custom preview for type 1
-            // rightColumn.innerHTML += `
-            // <div class="type1-preview">
-            //     <!-- Custom preview content for type 1 -->
-            // </div>
-            // `;
+
+
 
 
             // ADD THE LISTENERS BACK TO BIRD_SPECIFIC ATTRIBUTES
@@ -1718,17 +1810,93 @@
                 cardPowerText.textContent = enteredText;
             });
 
+            // Listener for the faction color
+            const cardFactionColor = document.getElementById('imgBoxCardFactionId');
+            document.getElementById('addFactionSelectId').addEventListener('input', function(event) {
+                const faction = event.target.value;
+
+                console.log(cardFactionColor);
+
+                if (faction === 'red') {
+                    cardFactionColor.innerHTML = ``;
+                    cardFactionColor.innerHTML += `
+                        <img id="factionColorId" src="card_images/redFactionPip.png">
+                    `;
+                }
+                else if (faction === 'blue') {
+                    cardFactionColor.innerHTML = ``;
+                    cardFactionColor.innerHTML += `
+                        <img id="factionColorId" src="card_images/blueFactionPip.png">
+                    `;
+                }
+                else if (faction === 'black') {
+                    cardFactionColor.innerHTML = ``;
+                    cardFactionColor.innerHTML += `
+                        <img id="factionColorId" src="card_images/blackFactionPip.png">
+                    `;
+                }
+                else {
+                    cardFactionColor.innerHTML = ``;
+                }
+            });
+
+            // Set up listeners on the color pips
+            const cardRedCostPips = document.getElementById('imgBoxCardRedId');
+            document.getElementById('addRedCostInputId').addEventListener('input', function(event) {
+                const pipNumber = event.target.value;
+                cardRedCostPips.innerHTML = ``;
+
+                for (let i = 0; i < pipNumber; i++) {
+                    cardRedCostPips.innerHTML += `
+                        <img id="addCardRedImageId" src="card_images/redPip.png">
+                    `;
+                }
+                
+            });
+
+            const cardBlueCostPips = document.getElementById('imgBoxCardBlueId');
+            document.getElementById('addBlueCostInputId').addEventListener('input', function(event) {
+                const pipNumber = event.target.value;
+                cardBlueCostPips.innerHTML = ``;
+
+                for (let i = 0; i < pipNumber; i++) {
+                    cardBlueCostPips.innerHTML += `
+                        <img id="addCardBlueImageId" src="card_images/bluePip.png">
+                    `;
+                }
+
+            });
+
+            const cardBlackCostPips = document.getElementById('imgBoxCardBlackId');
+            document.getElementById('addBlackCostInputId').addEventListener('input', function(event) {
+                const pipNumber = event.target.value;
+                cardBlackCostPips.innerHTML = ``;
+
+                for (let i = 0; i < pipNumber; i++) {
+                    cardBlackCostPips.innerHTML += `
+                        <img id="addCardBlackImageId" src="card_images/blackPip.png">
+                    `;
+                }
+
+            });
+
+
+
+
+
+
+
         } else if (selectedOption === "song") {
             // Custom inputs for type 2
             leftColumn.innerHTML += `
             <label for="eggInputNumberId">Required Eggs:</label>
-            <input type="number" id="eggInputNumberId" name="eggInputNumber">
+            <input type="number" id="eggInputNumberId" name="eggInputNumber" value="0">
             <label for="nestInputNumberId">Required Nest:</label>
-            <input type="number" id="nestInputNumberId" name="nestInputNumber">
+            <input type="number" id="nestInputNumberId" name="nestInputNumber" value="0">
             <label for="airInputNumberId">Required Air:</label>
-            <input type="number" id="airInputNumberId" name="airInputNumber">
+            <input type="number" id="airInputNumberId" name="airInputNumber" value="0">
             <label for="groundInputNumberId">Required Ground:</label>
-            <input type="number" id="groundInputNumberId" name="groundInputNumber">
+            <input type="number" id="groundInputNumberId" name="groundInputNumber" value="0">
 
             <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
                     <div class="confirmation-message-container">
@@ -1780,7 +1948,7 @@
                     eggReq.textContent = '';
                 }
                 else{
-                    const newEnteredText = "Eggs: " + enteredText;
+                    const newEnteredText = "Eggs: " + enteredText + "  ";
                     eggReq.textContent = newEnteredText;
                 }
             });
@@ -1793,7 +1961,7 @@
                     nestReq.textContent = '';
                 }
                 else{
-                    const newEnteredText = "Nest: " + enteredText;
+                    const newEnteredText = "Nest: " + enteredText + "  ";
                     nestReq.textContent = newEnteredText;
                 }
             });
@@ -1806,7 +1974,7 @@
                     airReq.textContent = '';
                 }
                 else{
-                    const newEnteredText = "Air: " + enteredText;
+                    const newEnteredText = "Air: " + enteredText + "  ";
                     airReq.textContent = newEnteredText;
                 }
             });
@@ -1819,7 +1987,7 @@
                     groundReq.textContent = '';
                 }
                 else{
-                    const newEnteredText = "Ground: " + enteredText;
+                    const newEnteredText = "Ground: " + enteredText + "  ";
                     groundReq.textContent = newEnteredText;
                 }
             });

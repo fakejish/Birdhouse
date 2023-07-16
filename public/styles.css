@@ -10,6 +10,10 @@ body {
 
 
 
+
+
+
+
 .header-container {
   display: flex;
   justify-content: center;
@@ -217,7 +221,38 @@ body {
     margin-top: 10px;
   }
 
-  
+  #addPowerInputId, #addRedCostInputId, #addBlueCostInputId, #addBlackCostInputId {
+    width: 40px;
+    height: 40px;
+  }
+
+  .color-cost-input-container {
+    display: flex;
+  }
+
+  .faction-subtype-power-container {
+    display: flex;
+    flex-direction: row;
+}
+
+  .faction-subtype-sub-container {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .faction-container {
+      order: 1;
+  }
+
+  .subtype-container {
+      order: 1;
+  }
+
+  .power-container {
+      order: 3;
+      margin: 30px;
+  }
+
 
   .add-image-container {
     position: relative;
@@ -264,6 +299,7 @@ body {
   
   .text-box-card-name h2 {
     font-size: 32px;
+    /* background-color: #0c7ca8; */
   }
 
   .text-box-card-rules {
@@ -302,23 +338,6 @@ body {
     text-align: center;
   }
 
-  .text-box-card-power {
-    position: absolute;
-    top: 2%;
-    left: 12%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100px;
-    /* background-color: rgba(0, 0, 0, 0.5); */
-    color: rgb(0, 0, 0);
-  }
-
-  .text-box-card-power h2 {
-    font-size: 72px;
-  }
 
   .text-box-card-type {
     position: absolute;
@@ -338,6 +357,8 @@ body {
     font-size: 22px;
   }
 
+
+  /* SONG requirement styles */
   .text-box-card-req {
     position: absolute;
     top: 65%;
@@ -352,15 +373,153 @@ body {
     color: rgb(0, 0, 0);
   }
 
-  .text-box-card-type p {
-    font-size: 22px;
+ 
+
+
+
+  /* BIRD requirement STYLES */
+  .text-box-card-power {
+    position: absolute;
+    top: 2%;
+    left: 12%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    color: rgb(255, 255, 255);
+    z-index: 9999;
   }
+
+  .text-box-card-power h2 {
+    font-size: 72px;
+    /* background-color: #11f51c; */
+  }
+
+
+  .pips-container {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    width: 20%;
+    /* Align images to the start of the container */
+    display: flex; /* Use flexbox to align and center images */
+    flex-wrap: wrap; /* Wrap images to new lines if needed */
+    justify-content: right; /* Align images to the start of the container */
+    align-items: center; /* Align images to the start of the container */
+    height: 5%;
+    overflow: visible;
+  }
+
+/* Styles for Bird faction color view */
+
+.faction-img-container {
+  position: absolute;
+    left: 3%;
+    top: 3.9%;
+    width: 20%;
+    /* Align images to the start of the container */
+    display: flex; /* Use flexbox to align and center images */
+    flex-wrap: wrap; /* Wrap images to new lines if needed */
+    justify-content: right; /* Align images to the start of the container */
+    align-items: center; /* Align images to the start of the container */
+    height: 4%;
+    overflow: visible;
+}
+
+.img-box-card-faction {
+  position: relative;
+  /* transform: translateX(-50%); */
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(50, 5, 248);
+  z-index: 999;
+}
+
+.img-box-card-faction img {
+  width: 115px;
+  height: 115px;
+  margin: 2px;
+}
+
+
+
+/* Styles for Bird Cost and color views */
+  .img-box-card-red {
+    position: relative;
+    /* transform: translateX(-50%); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    color: rgb(248, 5, 5);
+    z-index: 999;
+  }
+
+.img-box-card-red img {
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+}
+
+  .img-box-card-blue {
+    position: relative;
+    /* transform: translateX(-50%); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    color: rgb(50, 5, 248);
+    z-index: 999;
+  }
+
+  .img-box-card-blue img {
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+}
+
+  .img-box-card-black {
+    position: relative;
+    /* transform: translateX(-50%); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    color: rgb(0, 0, 0);
+    z-index: 999;
+  }
+
+  .img-box-card-black img {
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+}
+
+
+
+
+
+
 
 
 /*Hides the card inputs in the add overlay screen*/
   .hidden {
     display: none;
 }
+
+
+
+
+
+
+
+
+
 
 
 /* Confirmation message when you press the submit button */
@@ -371,7 +530,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Example background color */
-  z-index: 999; /* Set a high z-index to make sure it appears on top */
+  z-index: 9999; /* Set a high z-index to make sure it appears on top */
   display: none; /* Hide the overlay by default */
 }
 
