@@ -34,7 +34,7 @@
     <div class="header-container">
         <img id="iconTopPage"src="card_images/favicon.png" width="50px" height="50px" alt="">
 
-        <h1>The Birdhouse</h1><br><br><br>
+        <h1>The Birdhouse V2 Broooo</h1><br><br><br>
 
         <button id="viewButton">Print the DB</button>
         <button id="updateButton">Update the DB</button>
@@ -791,49 +791,63 @@
     });
 
     function tagSearchDB() {
-    const searchInputValue = document.getElementById('tagSearchPrompt').value;
+        const searchInputValue = document.getElementById('tagSearchPrompt').value;
 
-    const imageContainer = document.querySelector(".scroll-wrapper");
-    imageContainer.innerHTML = '';
+        const imageContainer = document.querySelector(".scroll-wrapper");
+        imageContainer.innerHTML = '';
 
-    const cardsRef = ref_database(database, 'Cards');
+        const cardsRef = ref_database(database, 'Cards');
+        const storageRef = ref_storage(storage, 'images/');
 
-
-
-
-    // Query the database based on the search input value
-    onChildAdded(cardsRef, (snapshot) => {
-        const cardData = snapshot.val();
-        const cardId = snapshot.key;
-
-
-        // For each card in the db, get a reference and list the ones with certain tags
-        const newCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
-        onChildAdded(newCardRef, (newSnapShot) => {
-
-            const newCardData = newSnapShot.val();
-            const newCardId = newSnapShot.key;
-
-            if (newCardData === searchInputValue) {
-                const imgElement = document.createElement("img");
-                imgElement.setAttribute('src', cardData.picture);
-                imgElement.alt = "Image";
-
-                imgElement.addEventListener("click", function() {
-                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
-                });
-                
-                imageContainer.appendChild(imgElement);
-            }
-
-        })
-
-        
+        const imageUrls = [];
 
 
 
+        // Query the database based on the search input value
+        onChildAdded(cardsRef, (snapshot) => {
+            const cardData = snapshot.val();
+            const cardId = snapshot.key;
 
-    });
+
+            // For each card in the db, get a reference and list the ones with certain tags
+            const newCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+
+            onChildAdded(newCardRef, (newSnapShot) => {
+
+                const newCardData = newSnapShot.val();
+                const newCardId = newSnapShot.key;
+
+                if (newCardData === searchInputValue) {
+                    const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                    const imgElement = document.createElement("img");
+
+                    getDownloadURL(newCardImageRef)
+                        .then((url) => {
+                            imgElement.setAttribute('src', url);
+                        })
+                        .catch((error) => {
+                            // Handle any errors
+                        });
+
+
+                    
+                    imgElement.alt = "Image";
+
+                    imgElement.addEventListener("click", function() {
+                        openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                    });
+                    
+                    imageContainer.appendChild(imgElement);
+                }
+
+            })
+
+            
+
+
+
+
+        });
 }
 
 
@@ -900,6 +914,8 @@
 
         
     }
+
+
 
 
 
@@ -1009,15 +1025,15 @@
         // Add your logic here:
         const dataRef = ref_database(database, 'Cards/' + name);
         const storageRef = ref_storage(storage, 'images/' + name);
-        imageAsBlob(picture.src).then(blob =>
-        {
-            uploadBytes(storageRef, blob).then( (snapshot) =>
-            {
-                console.log("uploaded a file");
-                displayConfirmationMessage();
-            });
+        // imageAsBlob(picture.src).then(blob =>
+        // {
+        //     uploadBytes(storageRef, blob).then( (snapshot) =>
+        //     {
+        //         console.log("uploaded a file");
+        //         displayConfirmationMessage();
+        //     });
             
-        })
+        // })
         const data = {
             name: name,
             tags: tags,
@@ -1042,6 +1058,8 @@
         const dataRef = ref_database(database, 'Cards/' + name);
         const storageRef = ref_storage(storage, 'images/' + name);
         
+        
+
         imageAsBlob(picture.src).then(blob =>
         {
             uploadBytes(storageRef, blob).then( (snapshot) =>
@@ -1120,8 +1138,7 @@
         //displayCards();
     }
 
-
-
+    // CONFIRMS WHEN YOU SAVE A CARD
     function displayConfirmationMessage () {
 
         const messageOverlay = document.getElementById("confirmationMessageOverlayId");
@@ -1132,6 +1149,11 @@
             messageOverlay.style.display = 'none';
         }, 2000); // Set the delay in ms
     }
+
+
+
+
+
 
 
 
@@ -1154,6 +1176,7 @@
     function openCardDisplay(picture, cardType, cardName, cardPower, cardRules) {
         viewCardOverlay.style.display = "block";
 
+    
         const overlayImage = document.getElementById("newImagePreview");
         overlayImage.setAttribute('src', picture.src);
 
@@ -2517,7 +2540,7 @@
         } else if (selectedOption === "edit") {
             // Custom inputs for type 2
             leftColumn.innerHTML += `
-            
+    
             `;
 
             rightColumn.innerHTML = `
