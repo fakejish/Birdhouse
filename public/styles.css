@@ -7,6 +7,7 @@ body {
 #iconTopPage {
   top: 20%;
   left: 50%;
+  margin: 10px;
 }
 
 
@@ -20,7 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 50vh;
+  height: 25vh;
   /* background: linear-gradient(to top, transparent, #ffffff); */
   position: relative;
 }
@@ -31,6 +32,10 @@ body {
   justify-content: center;
   color: white;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.header-icon-title button {
+  margin: 10px;
 }
 
 #searchIconId {
@@ -98,13 +103,16 @@ body {
 
 
 
-/* SCROLLING IMAGES ON THE FRONT PAGE*/
-.container {
-    width: 80%; /* Adjust the width as per your preference */
+
+.lower-content-container {
+    width: 90%; /* Adjust the width as per your preference */
     margin: 0 auto;
     overflow: visible;
+    display: flex;
+    flex-direction: column;
   }
   
+  /* SCROLLING IMAGES ON THE FRONT PAGE*/
   .scroll-wrapper {
      /* Align images to the start of the container */
      display: flex; /* Use flexbox to align and center images */
@@ -134,8 +142,49 @@ body {
   
 
 
+/* Notes page styles */
+
+.add-note-button-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  margin: 20px;
+}
+
+.left-right-note-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.left-note-page-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-note-page-container button {
+  margin: 10px;
+  width: fit-content;
+}
 
 
+.right-note-page-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  background-color: antiquewhite;
+}
+
+.right-note-page-container textarea, input {
+  width: 100%;
+  margin: 10px;
+}
+
+.right-note-page-container button {
+  width: 10%;
+  margin: 10px;
+}
 
 
 
@@ -168,6 +217,10 @@ body {
     flex: 1;
   }
 
+  .left-column form {
+    width: 50%;
+  }
+
   .right-column {
     flex: 1;
     display: flex;
@@ -189,7 +242,7 @@ body {
     display: flex;
     justify-content: flex-start;
     height: 100%;
-    width: 60%;
+    width: 1200px;
     position:relative;
   }
 

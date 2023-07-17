@@ -39,6 +39,9 @@
             <div class="header-icon-title">
                 <img id="iconTopPage" src="card_images/favicon.png" width="50px" height="50px" alt="">
                 <h1>The Birdhouse</h1>
+                <button id="displayScrollWrapperId">Home</button>
+                <button id="displayNotesId">Notes</button>
+                <button id="addCardNavButton">Add</button>
             </div>
        
        
@@ -71,9 +74,12 @@
 
 
     <!-- SCROLLING IMAGES FROM CARDS HERE -->
-    <div class="container">
+    <div class="lower-content-container" id = "lowerContentId">
         
-            <div class="scroll-wrapper">
+       
+
+
+            <div class="scroll-wrapper" id = "scrollWrapperId">
          
           
           
@@ -95,7 +101,6 @@
     Change the cardNameTitleTextId to something new, breaks the addCard image display
     Change the imagePreview to something new, breaks the addCard image display
     -->
-    <button id="overlayButton">Open Overlay</button>
 
     <div id="viewCardOverlayId" class="overlay">
         <div class="overlay-content" id="viewOverlayContainerId">
@@ -118,12 +123,6 @@
                         <option value="edit">Edit</option>
                         <option value="delete">Delete</option>
                         </select>
-                        <label for="option1"></label>
-                        <input type="radio" id="option1" name="option1">
-                        <label for="option2"></label>
-                        <input type="radio" id="option2" name="option1">
-                        <label for="option3"></label>
-                        <input type="radio" id="option3" name="option1">
                     </div>
                     <div class="innerRightColumn" id="innerRightColumnId">
 
@@ -140,11 +139,6 @@
                         <p id="overlayCardTitleP">Type</p>
 
                         <button id="addPreviewButton">Add to Preview</button>
-
-
-                        <button id="option1Button" class="overlay-option">Option 1</button>
-                        <button id="option2Button" class="overlay-option">Option 2</button>
-                        <p id="overlayRulesText" class="overlay-option">Bird text goes in here</p>
 
                         
                     </div>
@@ -383,6 +377,71 @@
     document.getElementById("cardQueuePreviewId").addEventListener("click", function() {
         addToDeck();
     });
+
+
+
+
+
+
+
+    
+    // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE
+    displayCards();
+
+    function displayCards() {
+        const storageRef = ref_storage(storage, 'images/');
+
+        const imageUrls = [];
+        
+        // Get a list of everything in storage, update image array
+        listAll(storageRef)
+            .then((res) => {
+            const promises = res.items.map((itemRef) => {
+                // Track the itemRef
+                //console.log(itemRef.name);
+
+                return getDownloadURL(itemRef).catch((error) => {
+                   console.log('Error retrieving download URL:', error);
+                 });
+             });
+            
+            return Promise.all(promises).then( (urls) => {
+                return { urls, res };
+            });
+            })
+            .then(({urls, res}) => {
+                imageUrls.push(...urls);
+                //console.log(imageUrls);
+
+                const imageContainer = document.querySelector(".scroll-wrapper");
+                imageContainer.innerHTML = '';
+
+                // Dynamically create the <img> elements and append them to the container
+                imageUrls.forEach((imageUrl, index) => {
+                    const imgElement = document.createElement("img");
+                    imgElement.setAttribute('src', imageUrl);
+
+                    
+                    const itemRef = res.items[index];
+                    const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+                    onValue(dataRef, (snapshot) => {
+                        const info = snapshot.val();
+                        imgElement.addEventListener("click", function() {
+                            openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
+                        });
+                    });
+                    
+                    imgElement.alt = "Image";
+
+                    imageContainer.appendChild(imgElement);
+                });
+            })
+            .catch((error) => {
+            console.log('Error retrieving storage files:', error);
+            });
+
+        
+    }
 
 
 
@@ -888,69 +947,124 @@
 }
 
 
+    // DISPLAY NOTES TAB, SET LISTENERS AND ADD NOTES
+    document.getElementById("displayNotesId").addEventListener("click", function(event) {
+
+        // set the default page html
+        const lowerPage = document.getElementById("lowerContentId");
+        lowerPage.innerHTML = `
+        <div class= "add-note-button-container">
+            <button id="addNoteButtonId">Add Note</button>    
+        </div>
+        <div class = "left-right-note-container">
+            <div class = "left-note-page-container" id = "leftNotePageId">
+                
+            </div>
+            <div class = "right-note-page-container" id = "rightNotePageId">
+                
+            </div>
+        </div>
+        `;
+
+        const leftNotesPage = document.getElementById("leftNotePageId");
+        const rightNotesPage = document.getElementById("rightNotePageId");
 
 
+        rightNotesPage.innerHTML = `
+                
+        <p id="notePreviewParagraph">The Note is Here</p>
 
+        `;
 
+        const paragraphPreview = document.getElementById("notePreviewParagraph");
 
+        // Set listener on add note button
+        const addNoteButton = document.getElementById("addNoteButtonId");
+        addNoteButton.addEventListener("click", function() {
+            rightNotesPage.innerHTML = `
+            <input type="text" id="addNoteTitleText" placeholder="Title" ></input>
+            <textarea id="addNotePreviewTextarea" placeholder="Fill out the note"></textarea>
+            <button id ="addNoteToDatabaseId">Add</button>
+            `;
 
-    // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE
-    displayCards();
+            // Set a listener on the upload new note button
+            const inputTextarea = document.getElementById("addNotePreviewTextarea");
+            const inputTitleText = document.getElementById("addNoteTitleText");
 
-    function displayCards() {
-        const storageRef = ref_storage(storage, 'images/');
+            const uploadNoteButton = document.getElementById("addNoteToDatabaseId");
+            uploadNoteButton.addEventListener("click", function() {
+                const inputText = inputTextarea.value;
+                const inputTitle = inputTitleText.value;
 
-        const imageUrls = [];
-        
-        // Get a list of everything in storage, update image array
-        listAll(storageRef)
-            .then((res) => {
-            const promises = res.items.map((itemRef) => {
-                // Track the itemRef
-                //console.log(itemRef.name);
+                // Set the date and DB ID for each new note
+                const currentTime = new Date();
+                const noteKeyId = inputTitle + " - " + currentTime;
+                const stringTime = "" + currentTime;
 
-                return getDownloadURL(itemRef).catch((error) => {
-                   console.log('Error retrieving download URL:', error);
-                 });
-             });
-            
-            return Promise.all(promises).then( (urls) => {
-                return { urls, res };
+                // Upload the note to the database
+                const dataRef = ref_database(database, 'Notes/' + noteKeyId);
+                const data = {
+                            title: inputTitle,
+                            content: inputText,
+                            user: 'Testuser',
+                            date: stringTime
+                        }
+
+                        set(dataRef, data);
+
+                        console.log('Data set');
             });
-            })
-            .then(({urls, res}) => {
-                imageUrls.push(...urls);
-                //console.log(imageUrls);
 
-                const imageContainer = document.querySelector(".scroll-wrapper");
-                imageContainer.innerHTML = '';
+        });
 
-                // Dynamically create the <img> elements and append them to the container
-                imageUrls.forEach((imageUrl, index) => {
-                    const imgElement = document.createElement("img");
-                    imgElement.setAttribute('src', imageUrl);
 
-                    
-                    const itemRef = res.items[index];
-                    const dataRef = ref_database(database, 'Cards/' + itemRef.name);
-                    onValue(dataRef, (snapshot) => {
-                        const info = snapshot.val();
-                        imgElement.addEventListener("click", function() {
-                            openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
-                        });
-                    });
-                    
-                    imgElement.alt = "Image";
+        // load the current notes in the db
+        const notesRef = ref_database(database, 'Notes');
 
-                    imageContainer.appendChild(imgElement);
-                });
-            })
-            .catch((error) => {
-            console.log('Error retrieving storage files:', error);
+        onChildAdded(notesRef, (snapshot) => {
+            const noteData = snapshot.val();
+            const noteId = snapshot.key;
+
+            const btnElement = document.createElement("button");
+            btnElement.id = "openNoteButtonId";
+            btnElement.textContent = noteData.title;
+            btnElement.addEventListener("click", function() {
+                rightNotesPage.innerHTML = `
+                <p id="notePreviewParagraph">The Note is Here</p>
+                `;
+                const paragraphPreview = document.getElementById("notePreviewParagraph");
+                paragraphPreview.textContent = noteData.content;
+                //showNoteOnPage();
+
             });
 
+            leftNotesPage.appendChild(btnElement);
+
+
+        });
+
         
-    }
+
+    });
+
+    // DISPLAY HOME/SCROLL VIEW
+    document.getElementById("displayScrollWrapperId").addEventListener("click", function(event) {
+        const lowerPage = document.getElementById("lowerContentId");
+
+        lowerPage.innerHTML = `
+        <div class="scroll-wrapper" id = "scrollWrapperId">
+           </div>
+        `;
+
+        displayCards();
+
+    });
+
+
+
+
+
+
 
 
 
@@ -1259,6 +1373,7 @@
     const showHamburgerButton = document.getElementById('showHamburgerButton');
 
     const addCardMenuButton = document.getElementById('addCardMenuButton');
+    const addCardNavButton = document.getElementById('addCardNavButton');
     const addCardOverlay = document.getElementById('addCardOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButton');
 
@@ -1274,6 +1389,11 @@
         hamburgerMenu.classList.toggle('open');
     });
 
+    addCardNavButton.addEventListener('click', () => {
+        addCardOverlay.style.display = 'block';
+        toggleCardInputs();
+    });
+
     closeOverlayButton.addEventListener('click', () => {
         addCardOverlay.style.display = 'none';
     });
@@ -1285,12 +1405,6 @@
     battleMenuButton.addEventListener('click', () => {
         console.log('Battleground button clicked');
     });
-
-    
-    overlayButton.addEventListener("click", function() {
-        viewCardOverlay.style.display = "block";
-    });
-
     
     viewOverlayContainer.addEventListener("click", function(event) {
         if (event.target === viewOverlayContainer) {
@@ -1559,7 +1673,7 @@
             let textBoxWidth = 600; // Replace with the desired width of the text box
             let textBoxHeight = 300; // Replace with the desired height of the text box
             const textBoxX = (canvas.width - textBoxWidth) / 2; // Center horizontally
-            let textBoxY = canvas.height - 350; // Adjust the y-coordinate to position the text box vertically
+            let textBoxY = (canvas.height - textBoxHeight) + 50; // Center v. Adjust the y-coordinate to position the text box vertically
 
             if (cardTypeSelect === 'song'){
                  textBoxWidth = 590;
@@ -1612,7 +1726,7 @@
             wrappedText += line.trim();
             const lines = wrappedText.split('\n');
             
-            context.font = '32px Times New Roman';
+            context.font = '38px Times New Roman';
 
             for (let i = 0; i < lines.length; i++) {
                 const textX = textBoxX + textBoxWidth / 2; // x-coordinate remains the same for each line
