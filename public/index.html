@@ -19,10 +19,13 @@
         </button>
         <div id="menuContent" class="menu-content">
           <!-- Your menu items go here -->
-          <br><br><br><br>
+          <br><br><br><br><br><br><br><br><br>
           <button id="addCardMenuButton">Add a card</button>
+          <br><br><br><br><br><br><br><br><br>
+          <button id="viewButton">Save DB as text file</button>
           <br><br>
-          <button id="printMenuButton">Page Printer</button>
+          <button id="updateButton">Save text file to DB</button>
+          <input type="file" accept="text/*" id="updateInputTextId">
           <br><br>
           <button id="deckBuildMenuButton">Build a deck</button>
           <br><br>
@@ -32,29 +35,35 @@
 
 
     <div class="header-container">
-        <img id="iconTopPage"src="card_images/favicon.png" width="50px" height="50px" alt="">
-
-        <h1>The Birdhouse V2 Broooo</h1><br><br><br>
-
-        <button id="viewButton">Print the DB</button>
-        <button id="updateButton">Update the DB</button>
-        <input type="file" accept="text/*" id="updateInputTextId">
-        <br><br><br><br><br><br><br>
-
-        <form action="" id="titleSearchForm">
-            <button type="submit" id="titleSearchCardsButton">Search for cards (title)</button>
-            <input type="text" id="titleSearchPrompt">
-        </form>
-        <form action="" id="typeSearchForm">
-            <button type="submit" id="typeSearchCardsButton">Search for cards (type)</button>
-            <input type="text" id="typeSearchPrompt">
-        </form>
-        <form action="" id="tagSearchForm">
-            <button type="submit" id="tagSearchCardsButton">Search for cards (tag)</button>
-            <input type="text" id="tagSearchPrompt">
-        </form>
-
+       
+            <div class="header-icon-title">
+                <img id="iconTopPage" src="card_images/favicon.png" width="50px" height="50px" alt="">
+                <h1>The Birdhouse</h1>
+            </div>
+       
+       
+            <div class="search-bar-container">
+                <div id="toggleSearchButton" class="toggle-search-button">
+                    <img src="card_images/searchIcon.png" id="searchIconId" alt="">
+                </div>
+                <div id="searchFormsContainer" class="search-forms-container">
+                    <form class="search-form" action="" id="titleSearchForm">
+                        <button type="submit" id="titleSearchCardsButton">Search for cards (title)</button>
+                        <input type="text" id="titleSearchPrompt">
+                    </form>
+                    <form class="search-form" action="" id="typeSearchForm">
+                        <button type="submit" id="typeSearchCardsButton">Search for cards (type)</button>
+                        <input type="text" id="typeSearchPrompt">
+                    </form>
+                    <form class="search-form" action="" id="tagSearchForm">
+                        <button type="submit" id="tagSearchCardsButton">Search for cards (tag)</button>
+                        <input type="text" id="tagSearchPrompt">
+                    </form>
+                </div>
+            </div>
+        
     </div>
+    
 
 
 
@@ -676,8 +685,28 @@
 
 
 
+    // MAKE SEARCHES VISIBLE
+    let searchToggleState = false;
+    document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
+            const button = document.getElementById("toggleSearchButton");
+            const formsContainer = document.getElementById("searchFormsContainer");
+            const forms = document.getElementsByClassName("search-form");
 
-
+            if (searchToggleState) {
+                button.style.left = "50%";
+                formsContainer.style.left = "100%";
+                searchToggleState = false;
+            }
+            else {
+                button.style.left = "10%";
+                formsContainer.style.left = "20%";
+                searchToggleState = true;
+                
+                for (let i = 0; i < forms.length; i++) {
+                    forms[i].style.display = "block";
+                }
+            }
+    });
 
 
     // SEARCH AND UPDATE IMAGE WHEEL FUNCTIONS
@@ -771,8 +800,17 @@
         const cardData = snapshot.val();
         const cardId = snapshot.key;
         if (cardData && cardData.type === searchInputValue) {
+            const newCardImageRef = ref_storage(storage, 'images/' + cardId);
             const imgElement = document.createElement("img");
-            imgElement.setAttribute('src', cardData.picture);
+
+            getDownloadURL(newCardImageRef)
+                        .then((url) => {
+                            imgElement.setAttribute('src', url);
+                        })
+                        .catch((error) => {
+                            // Handle any errors
+                        });
+    
             imgElement.alt = "Image";
 
             imgElement.addEventListener("click", function() {
@@ -797,7 +835,6 @@
         imageContainer.innerHTML = '';
 
         const cardsRef = ref_database(database, 'Cards');
-        const storageRef = ref_storage(storage, 'images/');
 
         const imageUrls = [];
 
@@ -1025,15 +1062,15 @@
         // Add your logic here:
         const dataRef = ref_database(database, 'Cards/' + name);
         const storageRef = ref_storage(storage, 'images/' + name);
-        // imageAsBlob(picture.src).then(blob =>
-        // {
-        //     uploadBytes(storageRef, blob).then( (snapshot) =>
-        //     {
-        //         console.log("uploaded a file");
-        //         displayConfirmationMessage();
-        //     });
+        imageAsBlob(picture.src).then(blob =>
+        {
+            uploadBytes(storageRef, blob).then( (snapshot) =>
+            {
+                console.log("uploaded a file");
+                displayConfirmationMessage();
+            });
             
-        // })
+         })
         const data = {
             name: name,
             tags: tags,
@@ -1239,10 +1276,6 @@
 
     closeOverlayButton.addEventListener('click', () => {
         addCardOverlay.style.display = 'none';
-    });
-
-    printMenuButton.addEventListener('click', () => {
-        console.log('Edit Card button clicked');
     });
 
     deckBuildMenuButton.addEventListener('click', () => {
