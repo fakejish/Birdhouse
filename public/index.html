@@ -42,6 +42,7 @@
                 <button id="displayScrollWrapperId">Home</button>
                 <button id="displayNotesId">Notes</button>
                 <button id="addCardNavButton">Add</button>
+                <!-- <img id="testingCardQueueId"src="" alt="Test"> -->
             </div>
        
        
@@ -385,7 +386,7 @@
 
 
     
-    // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE
+    // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE (displays 5 random cards right now)
     displayCards();
 
     function displayCards() {
@@ -416,8 +417,14 @@
                 const imageContainer = document.querySelector(".scroll-wrapper");
                 imageContainer.innerHTML = '';
 
+                // Shuffle the available cards
+                const shuffledImgUrls = shuffleArray(imageUrls);
+                if (shuffledImgUrls.length > 5) {
+                    shuffledImgUrls.splice(5);
+                }
+
                 // Dynamically create the <img> elements and append them to the container
-                imageUrls.forEach((imageUrl, index) => {
+                shuffledImgUrls.forEach((imageUrl, index) => {
                     const imgElement = document.createElement("img");
                     imgElement.setAttribute('src', imageUrl);
 
@@ -442,7 +449,14 @@
 
         
     }
-
+    // Shuffle array for the scroll image display
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 
 
 
@@ -672,6 +686,7 @@
         }
 
 
+
     // PULL TEXT FILE AND UPDATE THE DB WITH ITS PARSED INFORMATION
     document.getElementById("updateButton").addEventListener("click", function (event) {
         const fileInput = document.getElementById("updateInputTextId");
@@ -801,7 +816,7 @@
             })
             .then(({urls, res}) => {
                 imageUrls.push(...urls);
-                //console.log(imageUrls);
+                
 
                 const imageContainer = document.querySelector(".scroll-wrapper");
                 imageContainer.innerHTML = '';
@@ -809,6 +824,7 @@
                 // Dynamically create the <img> elements and append them to the container
                 imageUrls.forEach((imageUrl, index) => {
 
+                    
                     const itemRef = res.items[index];
 
                     const itemRefString = JSON.stringify(itemRef.name);
@@ -847,39 +863,40 @@
     });
 
     function typeSearchDB() {
-    const searchInputValue = document.getElementById('typeSearchPrompt').value;
+        const searchInputValue = document.getElementById('typeSearchPrompt').value;
 
-    const imageContainer = document.querySelector(".scroll-wrapper");
-    imageContainer.innerHTML = '';
+        const imageContainer = document.querySelector(".scroll-wrapper");
+        imageContainer.innerHTML = '';
 
-    const cardsRef = ref_database(database, 'Cards');
+        const cardsRef = ref_database(database, 'Cards');
 
-    // Query the database based on the search input value
-    onChildAdded(cardsRef, (snapshot) => {
-        const cardData = snapshot.val();
-        const cardId = snapshot.key;
-        if (cardData && cardData.type === searchInputValue) {
-            const newCardImageRef = ref_storage(storage, 'images/' + cardId);
-            const imgElement = document.createElement("img");
+        // Query the database based on the search input value
+        onChildAdded(cardsRef, (snapshot) => {
+            const cardData = snapshot.val();
+            const cardId = snapshot.key;
 
-            getDownloadURL(newCardImageRef)
-                        .then((url) => {
-                            imgElement.setAttribute('src', url);
-                        })
-                        .catch((error) => {
-                            // Handle any errors
-                        });
-    
-            imgElement.alt = "Image";
+            if (cardData && cardData.type === searchInputValue) {
+                const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                const imgElement = document.createElement("img");
 
-            imgElement.addEventListener("click", function() {
-                openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
-            });
-            
-            imageContainer.appendChild(imgElement);
-        }
-    });
-}
+                getDownloadURL(newCardImageRef)
+                            .then((url) => {
+                                imgElement.setAttribute('src', url);
+                            })
+                            .catch((error) => {
+                                // Handle any errors
+                            });
+        
+                imgElement.alt = "Image";
+
+                imgElement.addEventListener("click", function() {
+                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                });
+                
+                imageContainer.appendChild(imgElement);
+            }
+        });
+    }
 
     document.getElementById("tagSearchForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent form submission and page reload
@@ -913,6 +930,7 @@
                 const newCardData = newSnapShot.val();
                 const newCardId = newSnapShot.key;
 
+                
                 if (newCardData === searchInputValue) {
                     const newCardImageRef = ref_storage(storage, 'images/' + cardId);
                     const imgElement = document.createElement("img");
@@ -1340,9 +1358,6 @@
             // Add bird additional info
         }
         
-        option1Button.textContent = cardName;
-        option2Button.textContent = cardPower;
-        overlayRulesText.textContent = cardRules;
 
         toggleEditCardInputs();
 
@@ -1766,309 +1781,7 @@
     }
 
 
-    // Utility to save an image over another image
-    function printCardSheet() {
-    return new Promise((resolve) => {
-        // Create a new canvas element
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        console.log(cardQueueImageArray);
-
-        const baseImage = new Image();
-        
-        if (cardTypeSelect === 'song') {
-            baseImage.src = '/card_images/Song Template.png';
-        }
-        else if (cardTypeSelect === 'feather') {
-            baseImage.src = '/card_images/Feather Egg Template.png';
-        }
-        else if (cardTypeSelect === 'egg') {
-            baseImage.src = '/card_images/Feather Egg Template.png';
-        }
-        else {
-        // Load the base blank image
-            baseImage.src = '/card_images/Bird Template.png'; // Replace with the actual path to the base image
-        }
-
-        // Load the artwork image
-        const secondImage = new Image();
-        secondImage.src = addImagePreview.src; // Replace with the actual path to the  image
-
-        // Wait for both images to load
-        Promise.all([loadImage(baseImage)]).then(() => {
-        // Set canvas size to match the base image dimensions
-        canvas.width = baseImage.width;
-        canvas.height = baseImage.height;
-
-        // Draw the base image onto the canvas
-        context.drawImage(baseImage, 0, 0);
-
-        // Add card title text to the canvas
-        const cardNameText = document.getElementById('addCardNameId');
-        const text = cardNameText.value; // Replace with your desired text
-        context.font = 'bold 42px Times New Roman';
-        context.fillStyle = 'black';
-        context.textAlign = 'center';
-
-
-        // REsize title text for long names
-        if(cardTypeSelect === 'bird'){
-            if (text.length > 19)
-            {
-                context.font = 'bold 24px Times New Roman';
-                console.log(context.font);
-                context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
-            }
-            else {
-                context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
-            }
-        }
-        else {
-            context.fillText(text, canvas.width / 2, 95); // Adjust the y-coordinate to position the text vertically
-        }
-       
-
-        
-
-        // Add special Bird parts of the card
-        if (cardTypeSelect === 'bird'){
-
-            // Add card faction color to the canvas
-            const factionImage = new Image();
-            if (factionSelect === 'red') {
-                factionImage.src = 'card_images/redFactionPip.png';
-                context.drawImage(factionImage, 28, 42);
-            }
-            else if (factionSelect === 'blue') {
-                factionImage.src = 'card_images/blueFactionPip.png';
-                context.drawImage(factionImage, 28, 42);
-            }
-            else if (factionSelect === 'black') {
-                factionImage.src = 'card_images/blackFactionPip.png';
-                context.drawImage(factionImage, 28, 42);
-            }
-            else {
-                context.fillStyle = 'black';
-            }
-
-
-            // Add card power text to the canvas
-            const cardPowerText = document.getElementById('addPowerInputId');
-            const powerText = cardPowerText.value; // Replace with your desired text
-            context.font = 'bold 80px Times New Roman';
-            if (factionSelect === '') {
-                context.fillStyle = 'black';
-            }
-            else {
-                context.fillStyle = 'white';
-            }
-            context.textAlign = 'center';
-            context.fillText(powerText, 100, 140); // Adjust the y-coordinate to position the text vertically
-
-
-            // Add card color cost to the canvas
-            const redCount = document.getElementById('addRedCostInputId').value;
-            const blueCount = document.getElementById('addBlueCostInputId').value;
-            const blackCount = document.getElementById('addBlackCostInputId').value;
-
-            console.log(redCount, ", ", blueCount, ", ", blackCount);
-
-            const boundaryX = 590; // X-coordinate of the top-left corner of the box
-            const boundaryY = 70; // Y-coordinate of the top-left corner of the box
-            const boundaryWidth = 200; // Width of the box
-            const boundaryHeight = 150; // Height of the box
-
-            const redPipImage = '/card_images/redPip.png';
-            const bluePipImage = '/card_images/bluePip.png';
-            const blackPipImage = '/card_images/blackPip.png';
-            const imageArray = [];
-
-            for (let i = 0; i < redCount; i++) {
-                const redImage = new Image();
-                redImage.src = redPipImage;
-                imageArray.push(redImage);
-            }
-            for (let i = 0; i < blueCount; i++) {
-                const blueImage = new Image();
-                blueImage.src = bluePipImage;
-                imageArray.push(blueImage);
-            }
-            for (let i = 0; i < blackCount; i++) {
-                const blackImage = new Image();
-                blackImage.src = blackPipImage;
-                imageArray.push(blackImage);
-            }
-
-            
-            for (let i = 0; i < imageArray.length; i++) {
-                const x = boundaryX + (i % imageArray.length) * 25; // Adjust the positioning of the images within the box
-                const y = boundaryY + Math.floor(i / imageArray.length) * 50; // Adjust the positioning of the images within the box
-
-                context.drawImage(imageArray[i], x, y, 20, 20); // Draw the image at the specified coords
-            }
-
-        }
-
-
-
-        // Add card type text to the canvas
-        const cardTypeText = document.getElementById('addCardTypeTextId');
-        const typeText = cardTypeText.textContent; // Replace with your desired text
-        context.font = 'bold 32px Times New Roman';
-        context.fillStyle = 'black';
-        context.textAlign = 'center';
-        context.fillText(typeText, canvas.width / 2, 660); // Adjust the y-coordinate to position the text vertically
-
-
-
-        if (cardTypeSelect === 'song'){
-            // Add card requirement to the canvas
-            const eggReq = document.getElementById('eggInputNumberId');
-            let eggText = "egg";
-            if (eggReq.value){
-                eggText = "Egg: " + eggReq.value; // Replace with your desired text
-            }
-
-            const nestReq = document.getElementById('nestInputNumberId');
-            let nestText = "";
-            if (nestReq.value){
-                nestText = " Nest: " + nestReq.value; // Replace with your desired text
-            }
-
-            const airReq = document.getElementById('airInputNumberId');
-            let airText = "";
-            if (airReq.value){
-                airText = " Air: " + airReq.value; // Replace with your desired text
-            }
-            
-
-            const groundReq = document.getElementById('groundInputNumberId');
-            let groundText = "";
-            if (groundReq.value){
-                groundText = " Ground: " + groundReq.value; // Replace with your desired text
-            }
-
-            const fullReqText = eggText + nestText + airText + groundText;
-
-            context.font = 'bold 24px Times New Roman';
-            context.fillStyle = 'black';
-            context.textAlign = 'center';
-            context.fillText(fullReqText, canvas.width / 2, 750); // Adjust the y-coordinate to position the text vertically
-        }
-
-
-        // Add bottom text (card rules) to the canvas (ADD DIFFERENT SIZE FOR SONGS)
-            const cardRulesText = document.getElementById('addCardRulesId');
-            const bottomText = cardRulesText.value; // Replace with your desired bottom text
-
-
-            
-            let textBoxWidth = 600; // Replace with the desired width of the text box
-            let textBoxHeight = 300; // Replace with the desired height of the text box
-            const textBoxX = (canvas.width - textBoxWidth) / 2; // Center horizontally
-            let textBoxY = canvas.height - 350; // Adjust the y-coordinate to position the text box vertically
-
-            if (cardTypeSelect === 'song'){
-                 textBoxWidth = 590;
-                 textBoxHeight = 200;
-                 textBoxY = canvas.height - 240; // Adjust the y-coordinate to position the text box vertically
-             }
-
-
-            context.save();
-            context.beginPath();
-            context.rect(textBoxX, textBoxY, textBoxWidth, textBoxHeight);
-            context.clip();
-
-
-            
-
-            const lineHeight = 30; // Adjust the line height for each wrapped line
-            const maxLines = Math.floor(textBoxHeight / lineHeight); // Maximum number of lines that can fit in the box
-        
-
-            const words = bottomText.split(' ');
-            let line = '';
-            let wrappedText = '';
-            let lineCount = 0;
-
-
-            for (let i = 0; i < words.length; i++) {
-                
-                const testLine = line + words[i] + ' ';
-                const metrics = context.measureText(testLine);
-                const testWidth = metrics.width;
-                
-
-                if (testWidth > textBoxWidth && i > 0) {
-                    if (lineCount < maxLines - 1) {
-                        wrappedText += line.trim() + '\n';
-                        line = words[i] + ' ';
-                        lineCount++;
-                    } else {
-                        wrappedText += '...';
-                        break;
-                    }
-                } else {
-                    line = testLine;
-                }
-            }
-            
-
-            
-            wrappedText += line.trim();
-            const lines = wrappedText.split('\n');
-            
-            context.font = '32px Times New Roman';
-
-            for (let i = 0; i < lines.length; i++) {
-                const textX = textBoxX + textBoxWidth / 2; // x-coordinate remains the same for each line
-                const textLineY = (textBoxY + lineHeight) + i * lineHeight; // y-coordinate for each line
-
-                context.fillText(lines[i], textX, textLineY, textBoxWidth);
-            }
-
-            //context.fillText(wrappedText, textBoxX + textBoxWidth / 2, textBoxY + lineHeight, textBoxWidth); // Adjust the y-coordinate to position the bottom text
-
-            context.restore();
-
-
-
-
-        // Define the position and size of the second image
-        const boxWidth = 400; // Replace with the desired width of the box
-        const boxHeight = 400; // Replace with the desired height of the box
-        const x = (canvas.width - boxWidth) / 2; // Center horizontally
-        const y = 180; // Adjust the y-coordinate to move the image down
-
-        // Draw the second image onto the canvas, fitting it within the box
-        context.drawImage(secondImage, x, y, boxWidth, boxHeight);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Save the combined image
-        const combinedImage = canvas.toDataURL();
-
-        resolve(combinedImage);
-        });
-    });
-    }
-
-
-
-
+  
 
 
 
@@ -2674,8 +2387,7 @@
 
             // Here is where we want to set a listener for the preview button, after the View is selected
             document.getElementById("addPreviewButton").addEventListener("click", function() {
-                    addCardToPreviewQueue();
-                    console.log(cardQueueImageArray);
+                    //addCardToPreviewQueue();
             });
 
             // Custom preview for type 1
@@ -2734,31 +2446,115 @@
 
 
 
+
+
+
+    // PRINT CARD BUTTON IN QUEUE SHOULD DOWNLOAD THE QUEUE OF CURRENT CARD
+    document.getElementById("printCardSheetId").addEventListener("click", function(event) {
+        const newImage = new Image();
+        
+        // returnCardSheet().then((printSheetImage) => {
+        //     const testImage = document.getElementById("testingCardQueueId");
+        //     testImage.src = printSheetImage;
+        //     console.log(printSheetImage);
+        //     const link = document.createElement('a');
+        //     link.href = printSheetImage;
+        //     link.download = "printedSheet.png";
+        //     link.click();
+        // });
+
+    
+            
+    });
+
+    // Utility to convert img to base64
+    function convertImageToBase64(imageUrl) {
+        return new Promise((resolve, reject) => {
+
+            convertedUrl = convertFirebaseUrlToProxyUrl(imageUrl);
+            console.log(convertedUrl);
+
+            fetch(convertedUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                    const base64data = reader.result;
+                    resolve(base64data);
+                };
+                reader.readAsDataURL(blob);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
+
+    function convertFirebaseUrlToProxyUrl(firebaseUrl) {
+        const urlObject = new URL(firebaseUrl);
+
+        // Extract the path from the Firebase Storage URL
+        const path = urlObject.pathname.substring(1);
+
+        // URL encode the path
+        //const encodedPath = encodeURIComponent(path);
+
+        // Construct the final proxy URL
+        const proxyUrl = `/proxy-storage/${path}?${urlObject.searchParams.toString()}`;
+
+        return proxyUrl;
+    }
+
+
     const cardQueueImageArray = [];
+
+
     function addCardToPreviewQueue() {
-        // THIS IS WHERE THE CARD OBJECT WILL BE CREATED AND STORED INTO THE CARD PREVIEW IMAGE
-
-
-
-        // YOU COULD ACCESS STORAGE FOR IMAGES THIS WAY
-                // const cardTitle = document.getElementById("overlayCardTitleP");
-                // const cardStorageRef = ref_storage(storage, 'images/' + cardTitle.textContent);
-                // console.log(cardStorageRef);
-                //     getDownloadURL(cardStorageRef)
-                //     .then((url) => {
-                //         cardPreview.setAttribute('src', url);
-                // });
-
-
-
-
         // FILL AN IMAGE QUEUE WHEN YOU ADD A CARD
 
 
         const overlayPreview = document.getElementById("newImagePreview");
         const imageToBeAdded = new Image();
+
         imageToBeAdded.src = overlayPreview.src;
-        cardQueueImageArray.push(imageToBeAdded);
+       
+        console.log(overlayPreview.src);
+        overlayPreview.src = convertFirebaseUrlToProxyUrl(overlayPreview.src);
+        console.log(overlayPreview.src);
+
+        const testImagez = document.getElementById("testingCardQueueId");
+        testImagez.src = overlayPreview.src;
+
+        convertImageToBase64(imageToBeAdded.src)
+            .then(b64Data => {
+                console.log('Base 64 image: ' + b64Data);
+            })
+            .catch(error => {
+                console.error('Error, image unable to convert');
+            });
+
+
+        imageToBeAdded.onload = function() {
+            
+
+            cardQueueImageArray.push(imageToBeAdded.src);
+
+            //console.log(cardQueueImageArray);
+
+            const cardPreview = document.getElementById("cardQueuePreviewId");
+            cardPreview.setAttribute('src', overlayPreview.src);
+        };
+
+        //imageToBeAdded.src = overlayPreview.src;
+
+
+        //console.log(imageToBeAdded);
+        //console.log(cardQueueImageArray);
+
+
+
+
+
 
 
         const cardPreview = document.getElementById("cardQueuePreviewId");
@@ -2780,8 +2576,58 @@
 
 
 
+    
+
+
+
+
+  // Utility to combine print queue cards together and return one print sheet
+    function returnCardSheet() {
+        return new Promise((resolve) => {
+            // Create a new canvas element
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+          
+            canvas.width = 400; // Set the desired width of the canvas
+            canvas.height = 400; // Set the desired height of the canvas
+            //document.body.appendChild(canvas);
+
+            // Get the 2D rendering context of the canvas
+
+            // Loop through the image array and draw each square image onto the canvas
+            cardQueueImageArray.forEach((imagePath, index) => {
+                const squareImage = new Image();
+                squareImage.src = imagePath;
+                console.log(squareImage);
+                    const x = index * 100; // Adjust the position of each square image
+                    const y = 0;
+                    context.drawImage(squareImage, x, y);
+                
+            });
+
+
+
+            // Save the combined image
+            const combinedImage = canvas.toDataURL();
+            
+            resolve(combinedImage);
+           
+        });
+    }
+
+
+
+
+
+
+
+
+
     </script>
     
+    
+
     
 </body>
 </html>
