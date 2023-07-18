@@ -40,6 +40,7 @@
                 <img id="iconTopPage" src="card_images/favicon.png" width="50px" height="50px" alt="">
                 <h1>The Birdhouse</h1>
                 <button id="displayScrollWrapperId">Home</button>
+                <button id="displayScrollWrapperRandomId">Random Hand</button>
                 <button id="displayNotesId">Notes</button>
                 <button id="addCardNavButton">Add</button>
                 <!-- <img id="testingCardQueueId"src="" alt="Test"> -->
@@ -279,7 +280,7 @@
 
 
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
@@ -387,9 +388,9 @@
 
     
     // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE (displays 5 random cards right now)
-    displayCards();
+    displayCards('true');
 
-    function displayCards() {
+    function displayCards(isRandom) {
         const storageRef = ref_storage(storage, 'images/');
 
         const imageUrls = [];
@@ -414,13 +415,18 @@
                 imageUrls.push(...urls);
                 //console.log(imageUrls);
 
+
                 const imageContainer = document.querySelector(".scroll-wrapper");
                 imageContainer.innerHTML = '';
 
-                // Shuffle the available cards
-                const shuffledImgUrls = shuffleArray(imageUrls);
-                if (shuffledImgUrls.length > 5) {
-                    shuffledImgUrls.splice(5);
+                const shuffledImgUrls = imageUrls;
+
+                if (isRandom === 'true'){
+                    // Shuffle and cut the available cards
+                    const shuffledImgUrls = shuffleArray(imageUrls);
+                    if (shuffledImgUrls.length > 5) {
+                        shuffledImgUrls.splice(5);
+                    }
                 }
 
                 // Dynamically create the <img> elements and append them to the container
@@ -428,13 +434,14 @@
                     const imgElement = document.createElement("img");
                     imgElement.setAttribute('src', imageUrl);
 
-                    
                     const itemRef = res.items[index];
+                    
                     const dataRef = ref_database(database, 'Cards/' + itemRef.name);
                     onValue(dataRef, (snapshot) => {
                         const info = snapshot.val();
                         imgElement.addEventListener("click", function() {
-                            openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
+                            
+                            openCardDisplay(imgElement, info.name);
                         });
                     });
                     
@@ -449,6 +456,8 @@
 
         
     }
+    
+    
     // Shuffle array for the scroll image display
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -457,6 +466,160 @@
         }
         return array;
     }
+
+
+    function displayCards2() {
+        const dataRef = ref_database(database, 'Cards/');
+
+        const imageContainer = document.querySelector(".scroll-wrapper");
+        imageContainer.innerHTML = '';
+
+        const cardIds = [];
+
+        onChildAdded(dataRef, (snapshot) => {
+
+            const cardData = snapshot.val();
+            const cardId = snapshot.key;
+
+            cardIds.push(cardId);
+            
+        });
+
+        
+        const shuffledCardIds = shuffleArray(cardIds);
+        console.log(shuffledCardIds,length);
+
+        shuffledCardIds.forEach((id, index) => {
+
+            const cardImageRef = ref_storage(storage, 'images/' + id);
+            console.log(id);
+            const imgElement = document.createElement("img");
+
+            getDownloadURL(cardImageRef)
+                .then((url) => {
+                    imgElement.setAttribute('src', url);
+                })
+                .catch((error) => {
+                    // Handle any errors
+                });
+
+                imgElement.alt = "Image";
+
+                imgElement.addEventListener("click", function() {
+                    openCardDisplay(imgElement, cardId);
+                });
+
+                imageContainer.appendChild(imgElement);
+
+        });
+
+
+
+
+        
+            // const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+            // const imgElement = document.createElement("img");
+
+            // getDownloadURL(newCardImageRef)
+            //             .then((url) => {
+            //                 imgElement.setAttribute('src', url);
+            //             })
+            //             .catch((error) => {
+            //                 // Handle any errors
+            //             });
+    
+            // imgElement.alt = "Image";
+
+            // imgElement.addEventListener("click", function() {
+            //     openCardDisplay(imgElement, cardId);
+            // });
+            
+            // imageContainer.appendChild(imgElement);
+            
+       
+
+        // // Get a list of everything in storage, update image array
+        // listAll(storageRef)
+        //     .then((res) => {
+        //     const promises = res.items.map((itemRef) => {
+        //         // Track the itemRef
+        //         //console.log(itemRef.name);
+
+        //         return getDownloadURL(itemRef).catch((error) => {
+        //            console.log('Error retrieving download URL:', error);
+        //          });
+        //      });
+            
+        //     return Promise.all(promises).then( (urls) => {
+        //         return { urls, res };
+        //     });
+        //     })
+        //     .then(({urls, res}) => {
+        //         imageUrls.push(...urls);
+        //         //console.log(imageUrls);
+
+
+        //         const imageContainer = document.querySelector(".scroll-wrapper");
+        //         imageContainer.innerHTML = '';
+
+        //         // Shuffle the available cards
+        //         const shuffledImgUrls = shuffleArray(imageUrls);
+        //         if (shuffledImgUrls.length > 5) {
+        //             shuffledImgUrls.splice(5);
+        //         }
+
+
+        //         // Dynamically create the <img> elements and append them to the container
+        //         shuffledImgUrls.forEach((imageUrl, index) => {
+        //             const imgElement = document.createElement("img");
+        //             imgElement.setAttribute('src', imageUrl);
+
+        //             const itemRef = res.items[index];
+                    
+        //             const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+        //             onValue(dataRef, (snapshot) => {
+        //                 const info = snapshot.val();
+        //                 imgElement.addEventListener("click", function() {
+                            
+        //                     openCardDisplay(imgElement, info.name);
+        //                 });
+        //             });
+                    
+        //             imgElement.alt = "Image";
+
+        //             imageContainer.appendChild(imgElement);
+        //         });
+        //     })
+        //     .catch((error) => {
+        //     console.log('Error retrieving storage files:', error);
+        //     });
+
+        
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1078,6 +1241,20 @@
 
     });
 
+    // DISPLAY RANDOM CARD HOME PAGE
+    document.getElementById("displayScrollWrapperRandomId").addEventListener("click", function(event) {
+        const lowerPage = document.getElementById("lowerContentId");
+
+        lowerPage.innerHTML = `
+        <div class="scroll-wrapper" id = "scrollWrapperId">
+           </div>
+        `;
+        
+        // Display the scroll wrapper with Random parameter set to true
+        displayCards('true');
+
+    });
+
 
 
 
@@ -1342,10 +1519,10 @@
 
 
     // OPENS THE OVERLAY CARD PREVIEW
-    function openCardDisplay(picture, cardType, cardName, cardPower, cardRules) {
+    function openCardDisplay(picture, cardName) {
         viewCardOverlay.style.display = "block";
 
-    
+
         const overlayImage = document.getElementById("newImagePreview");
         overlayImage.setAttribute('src', picture.src);
 
@@ -1353,10 +1530,7 @@
         titleParagraph.textContent = cardName;
 
 
-        if (cardType === 'bird')
-        {
-            // Add bird additional info
-        }
+        
         
 
         toggleEditCardInputs();
@@ -2028,8 +2202,6 @@
             document.getElementById('addFactionSelectId').addEventListener('input', function(event) {
                 const faction = event.target.value;
 
-                console.log(cardFactionColor);
-
                 if (faction === 'red') {
                     cardFactionColor.innerHTML = ``;
                     cardFactionColor.innerHTML += `
@@ -2387,7 +2559,7 @@
 
             // Here is where we want to set a listener for the preview button, after the View is selected
             document.getElementById("addPreviewButton").addEventListener("click", function() {
-                    //addCardToPreviewQueue();
+                    addCardToPreviewQueue();
             });
 
             // Custom preview for type 1
@@ -2506,6 +2678,32 @@
     }
 
 
+    // JavaScript function that takes an HTML element and returns the screenshot as an image URL
+    function takeAndReturnScreenshot(element) {
+        return new Promise((resolve, reject) => {
+            html2canvas(element).then(function (canvas) {
+            try {
+                // Convert the canvas to an image URL
+                const imgURL = canvas.toDataURL('image/png');
+
+                const link = document.createElement('a');
+                link.href = imgURL;
+                link.download = "printedSheet.png";
+                link.click();
+
+                // Return the image URL
+                resolve(imgURL);
+            } catch (error) {
+                // If there's an error during the screenshot capture process, reject the promise
+                reject(error);
+            }
+            });
+        });
+    }
+
+
+
+
     const cardQueueImageArray = [];
 
 
@@ -2516,69 +2714,58 @@
         const overlayPreview = document.getElementById("newImagePreview");
         const imageToBeAdded = new Image();
 
-        imageToBeAdded.src = overlayPreview.src;
-       
-        console.log(overlayPreview.src);
-        overlayPreview.src = convertFirebaseUrlToProxyUrl(overlayPreview.src);
-        console.log(overlayPreview.src);
+        takeAndReturnScreenshot(overlayPreview).then(screenshot => {
 
-        const testImagez = document.getElementById("testingCardQueueId");
-        testImagez.src = overlayPreview.src;
+            cardQueueImageArray.push(screenshot);
 
-        convertImageToBase64(imageToBeAdded.src)
-            .then(b64Data => {
-                console.log('Base 64 image: ' + b64Data);
-            })
-            .catch(error => {
-                console.error('Error, image unable to convert');
-            });
+            console.log(cardQueueImageArray);
+
+            const cardPreview = document.getElementById("cardQueuePreviewId");
+            cardPreview.setAttribute('src', screenshot);
+
+
+        })
+        .catch(error => {
+            console.log("Error: screenshot");
+        });
+
+        //imageToBeAdded.src = takeAndReturnScreenshot(overlayPreview).result;
+        
+        
+        // console.log(overlayPreview.src);
+        // overlayPreview.src = convertFirebaseUrlToProxyUrl(overlayPreview.src);
+        // console.log(overlayPreview.src);
+
+        // const testImagez = document.getElementById("testingCardQueueId");
+        // testImagez.src = overlayPreview.src;
+
+        // convertImageToBase64(imageToBeAdded.src)
+        //     .then(b64Data => {
+        //         console.log('Base 64 image: ' + b64Data);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error, image unable to convert');
+        //     });
 
 
         imageToBeAdded.onload = function() {
             
-
-            cardQueueImageArray.push(imageToBeAdded.src);
-
-            //console.log(cardQueueImageArray);
-
-            const cardPreview = document.getElementById("cardQueuePreviewId");
-            cardPreview.setAttribute('src', overlayPreview.src);
+           
+            
         };
 
-        //imageToBeAdded.src = overlayPreview.src;
+    
+
+        // const cardPreview = document.getElementById("cardQueuePreviewId");
+        // cardPreview.setAttribute('src', overlayPreview.src);
 
 
-        //console.log(imageToBeAdded);
-        //console.log(cardQueueImageArray);
-
-
-
-
-
-
-
-        const cardPreview = document.getElementById("cardQueuePreviewId");
-        cardPreview.setAttribute('src', overlayPreview.src);
-
-
-
-
-
-
-
-                    // THIS IS WHERE YOU NEED TO ACCESS THE DB TO GET CARD INFO FOR PREVIEW
 
 
 
 
 
     }
-
-
-
-    
-
-
 
 
   // Utility to combine print queue cards together and return one print sheet
