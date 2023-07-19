@@ -158,16 +158,14 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   transition: left 0.5s;
+  background-color: rgba(157, 0, 255, 0.2);
 }
 
-.search-form {
-  padding: 20px;
+.search-input-container  {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
 }
 
 #searchCardsButton {

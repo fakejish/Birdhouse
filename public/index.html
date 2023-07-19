@@ -66,7 +66,7 @@
                     
                     <input type="text" placeholder="Type" id="typeSearchPrompt">
                     
-                    <input type="text" placeholder="Tags" id="tagSearchPrompt">
+                    <input type="text" placeholder="Tag" id="tagSearchPrompt">
                 </div>
                     <button type="submit" id="searchCardsButton">SEARCH</button>
                 </div>
@@ -978,7 +978,7 @@
     });
 
 
-    // SEARCH AND UPDATE IMAGE WHEEL FUNCTIONS
+    // SEARCH AND UPDATE IMAGE WHEEL FUNCTIONS (DEPRECATED)
     
     // document.getElementById("titleSearchForm").addEventListener("submit", function(event) {
     //     event.preventDefault(); // Prevent form submission and page reload
@@ -1160,8 +1160,13 @@
 }
 
 
+
     // TRUE SEARCH BUTTON
     document.getElementById("searchCardsButton").addEventListener("click", function (event) {
+        searchDB();
+    });
+
+    function searchDB() {
         const titleInputValue = document.getElementById('titleSearchPrompt').value;
         const typeInputValue = document.getElementById('typeSearchPrompt').value;
         const tagInputValue = document.getElementById('tagSearchPrompt').value;
@@ -1173,72 +1178,319 @@
 
         const imageUrls = [];
 
+            
 
-
-        // Query the database based on the search input value
+        // Query all Cards in database based on the search input value
         onChildAdded(cardsRef, (snapshot) => {
             const cardData = snapshot.val();
             const cardId = snapshot.key;
 
+            const cardTitleString = JSON.stringify(cardData.name);
 
             // For each card in the db, get a reference for each searchable field
             // Start by searching Title, then Type, then Tags
 
 
-
+            // If Title isn't blank
             if (titleInputValue !== '') {
 
-                if (cardData && cardData.name === titleInputValue) {
+                // If Title searched is in the DB
+                if (cardData && cardTitleString.includes(titleInputValue)) {
+
+
+
+
+                    // If Type select isn't blank
+                    if (typeInputValue !== '') {
+
+
+                        // If Type selected is in the DB
+                        if (cardData.type === typeInputValue) {
+
+
+
+
+                            // If Tag search isn't blank
+                            if (tagInputValue !== '') {
+
+                                const tagCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+                                onChildAdded(tagCardRef, (newSnapShot) => {
+
+                                    const newCardData = newSnapShot.val();
+                                    const newCardId = newSnapShot.key;
+
+
+                                    // If this card that matches Title and any Tags is in there, make imgs
+                                    if (newCardData === tagInputValue) {
+
+                                        const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                                        const imgElement = document.createElement("img");
+
+                                        getDownloadURL(newCardImageRef)
+                                            .then((url) => {
+                                                imgElement.setAttribute('src', url);
+                                            })
+                                            .catch((error) => {
+                                                // Handle any errors
+                                            });
+
+
+                                        
+                                        imgElement.alt = "Image";
+
+                                        imgElement.addEventListener("click", function() {
+                                            openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                        });
+                                        
+                                        imageContainer.appendChild(imgElement);
+                                    }
+
+                                });
+
+
+                            }
+                            else { // Title and Type are matched, Tag is blank
+
+                                const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                                const imgElement = document.createElement("img");
+
+                                getDownloadURL(newCardImageRef)
+                                    .then((url) => {
+                                        imgElement.setAttribute('src', url);
+                                    })
+                                    .catch((error) => {
+                                        // Handle any errors
+                                    });
+
+
+                                
+                                imgElement.alt = "Image";
+
+                                imgElement.addEventListener("click", function() {
+                                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                });
+                                
+                                imageContainer.appendChild(imgElement);
+                            }
+
+
+
+                        }
+
+                    }
+                    else { // If Type select is blank, but title is in DB
+
+                        // If Tag search isn't blank
+                        if (tagInputValue !== '') {
+
+                            const tagCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+                            onChildAdded(tagCardRef, (newSnapShot) => {
+
+                                const newCardData = newSnapShot.val();
+                                const newCardId = newSnapShot.key;
+
+
+                                // If this card that matches Title and any Tags is in there, make imgs
+                                if (newCardData === tagInputValue) {
+
+                                    const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                                    const imgElement = document.createElement("img");
+
+                                    getDownloadURL(newCardImageRef)
+                                        .then((url) => {
+                                            imgElement.setAttribute('src', url);
+                                        })
+                                        .catch((error) => {
+                                            // Handle any errors
+                                        });
+
+
+                                    
+                                    imgElement.alt = "Image";
+
+                                    imgElement.addEventListener("click", function() {
+                                        openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                    });
+                                    
+                                    imageContainer.appendChild(imgElement);
+                                }
+
+                            });
+
+
+                        }
+                        else { // Type and tag select are blank, title is in DB
+
+                            const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                            const imgElement = document.createElement("img");
+
+                            getDownloadURL(newCardImageRef)
+                                .then((url) => {
+                                    imgElement.setAttribute('src', url);
+                                })
+                                .catch((error) => {
+                                    // Handle any errors
+                                });
+
+
+                            
+                            imgElement.alt = "Image";
+
+                            imgElement.addEventListener("click", function() {
+                                openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                            });
+                            
+                            imageContainer.appendChild(imgElement);
+                        }
+
+
+                    }
+
+
 
                 }
+                
+
             }
 
+            else { // If the Title search is blank
+                
+
+                // If Type select isn't blank
+                if (typeInputValue !== '') {
 
 
+                // If Type selected is in the DB
+                if (cardData.type === typeInputValue) {
 
-            const tagCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+                    console.log(typeInputValue);
 
-            onChildAdded(tagCardRef, (newSnapShot) => {
 
-                const newCardData = newSnapShot.val();
-                const newCardId = newSnapShot.key;
+                    // If Tag search isn't blank
+                    if (tagInputValue !== '') {
 
-                // Define the search parameters
-                if (newCardData === tagInputValue) {
+                        const tagCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+                        onChildAdded(tagCardRef, (newSnapShot) => {
 
-                    const newCardImageRef = ref_storage(storage, 'images/' + cardId);
-                    const imgElement = document.createElement("img");
+                            const newCardData = newSnapShot.val();
+                            const newCardId = newSnapShot.key;
 
-                    getDownloadURL(newCardImageRef)
-                        .then((url) => {
-                            imgElement.setAttribute('src', url);
-                        })
-                        .catch((error) => {
-                            // Handle any errors
+
+                            // If this card that matches Title and any Tags is in there, make imgs
+                            if (newCardData === tagInputValue) {
+
+                                const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                                const imgElement = document.createElement("img");
+
+                                getDownloadURL(newCardImageRef)
+                                    .then((url) => {
+                                        imgElement.setAttribute('src', url);
+                                    })
+                                    .catch((error) => {
+                                        // Handle any errors
+                                    });
+
+
+                                
+                                imgElement.alt = "Image";
+
+                                imgElement.addEventListener("click", function() {
+                                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                });
+                                
+                                imageContainer.appendChild(imgElement);
+                            }
+
                         });
 
 
-                    
-                    imgElement.alt = "Image";
+                    }
+                    else { // Title is blank, Tag is blank, Type is correct, return all of said type
 
-                    imgElement.addEventListener("click", function() {
-                        openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
-                    });
-                    
-                    imageContainer.appendChild(imgElement);
+                        const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                        const imgElement = document.createElement("img");
+
+                        getDownloadURL(newCardImageRef)
+                            .then((url) => {
+                                imgElement.setAttribute('src', url);
+                            })
+                            .catch((error) => {
+                                // Handle any errors
+                            });
+
+
+                        
+                        imgElement.alt = "Image";
+
+                        imgElement.addEventListener("click", function() {
+                            openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                        });
+                        
+                        imageContainer.appendChild(imgElement);
+                    }
+
+
+
                 }
 
-            })
+                }
+                else { // If Type select is blank and title is blank, search tags
 
-            
+                // If Tag search isn't blank
+                if (tagInputValue !== '') {
+
+                    const tagCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+                    onChildAdded(tagCardRef, (newSnapShot) => {
+
+                        const newCardData = newSnapShot.val();
+                        const newCardId = newSnapShot.key;
+
+
+                        // If this card that matches Title and any Tags is in there, make imgs
+                        if (newCardData === tagInputValue) {
+
+                            const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                            const imgElement = document.createElement("img");
+
+                            getDownloadURL(newCardImageRef)
+                                .then((url) => {
+                                    imgElement.setAttribute('src', url);
+                                })
+                                .catch((error) => {
+                                    // Handle any errors
+                                });
+
+
+                            
+                            imgElement.alt = "Image";
+
+                            imgElement.addEventListener("click", function() {
+                                openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                            });
+                            
+                            imageContainer.appendChild(imgElement);
+                        }
+
+                    });
+
+
+                }
+                
+
+
+                }
 
 
 
+
+            }
 
         });
-    });
 
 
+
+
+    }
 
 
 
@@ -1451,6 +1703,7 @@
                     <button type="submit" id="searchCardsButton">SEARCH</button>
                 </div>
         `;
+
         document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
                 const button = document.getElementById("toggleSearchButton");
                 const formsContainer = document.getElementById("searchFormsContainer");
@@ -1470,6 +1723,11 @@
                         forms[i].style.display = "block";
                     }
                 }
+        });
+
+
+        document.getElementById("searchCardsButton").addEventListener("click", function (event) {
+            searchDB();
         });
 
 
@@ -1526,7 +1784,9 @@
                 }
         });
 
-        
+        document.getElementById("searchCardsButton").addEventListener("click", function (event) {
+            searchDB();
+        });
         
         const lowerPage = document.getElementById("lowerContentId");
 
