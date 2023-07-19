@@ -1,14 +1,14 @@
 body {
   background: linear-gradient(to bottom, #9afcff, #143e44);
   background-image: url(card_images/treeBackground.jpg);
-  background-size: cover;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-#iconTopPage {
-  top: 20%;
-  left: 50%;
-  margin: 10px;
-}
+/* #iconTopPage {
+
+} */
 
 
 
@@ -18,25 +18,105 @@ body {
 
 .header-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   height: 25vh;
+  width: 100%;
   /* background: linear-gradient(to top, transparent, #ffffff); */
   position: relative;
 }
 
 .header-icon-title {
+  width: 80%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   color: white;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  position: relative;
 }
 
-.header-icon-title button {
+.header-container button {
   margin: 10px;
+  height: 50px;
+  width: 120px;
+  border-radius: 20%;
+  border-style:groove;
+  border-color: #9afcff;
+  color: white;
+  background: none;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  position: relative; /* Required for the bobbing effect */
+  overflow: hidden;
+  transition: transform 0.6s ease;
 }
+
+.header-icon-title button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  /* transform: scale(1.2); */
+}
+
+#displayScrollWrapperRandomId:hover {
+  background-color: rgba(252, 4, 4, 0.7);
+}
+
+#displayNotesId:hover {
+  background-color: rgba(4, 8, 252, 0.7);
+}
+
+#addCardNavButton:hover {
+  background-color: rgb(255, 238, 0);
+  animation: growAnimation 1.5s infinite; /* Animation to repeat every 3 seconds */
+  color: black;
+}
+
+
+/* Keyframes for the shine animation */
+@keyframes bobAnimation {
+  0%, 100% { transform: translateY(0); height: 60px;}
+  50% { transform: translateY(-8px); height: 50px;}
+}
+
+@keyframes growAnimation {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.icon-and-title {
+  display: flex;
+}
+
+.nav-button-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 20px;
+}
+
+/* .user-id-container {
+  
+} */
+
+
+
+
+
+
 
 #searchIconId {
   margin-top: 15px;
@@ -73,11 +153,12 @@ body {
   top: 50%;
   left: 100%;
   transform: translate(0, -50%);
-  width: 100%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   transition: left 0.5s;
 }
 
@@ -89,6 +170,14 @@ body {
   height: 100%;
 }
 
+#searchCardsButton {
+  margin: 50px;
+}
+
+#searchCardsButton:hover {
+  color: white;
+  background-color: rgba(120, 4, 252, 0.979);
+}
 
 
 
@@ -149,6 +238,17 @@ body {
   flex: 1;
   justify-content: center;
   margin: 20px;
+}
+
+#addNoteButtonId {
+  color:white;
+  height: 25px;
+  background-color: rgba(255, 174, 0, 0.904);
+}
+
+#addNoteButtonId:hover {
+  background-color: rgba(255, 198, 75, 0.904);
+  
 }
 
 .left-right-note-container {
@@ -847,3 +947,19 @@ body {
   display: block;
 }
 
+
+
+
+.account-page-container {
+  color: white;
+  background-color: #0c7ca8;
+}
+
+.account-page-container input {
+  width: 50%;
+}
+
+.account-page-container input,
+.account-page-container button {
+  margin: 20px;
+}

@@ -30,6 +30,8 @@
           <button id="deckBuildMenuButton">Build a deck</button>
           <br><br>
           <button id="battleMenuButton">Battleground</button>
+          <br><br><br><br><br><br><br><br>
+          <button id="accountButton">Account</button>
         </div>
     </div>
 
@@ -37,33 +39,36 @@
     <div class="header-container">
        
             <div class="header-icon-title">
-                <img id="iconTopPage" src="card_images/favicon.png" width="50px" height="50px" alt="">
-                <h1>The Birdhouse</h1>
-                <button id="displayScrollWrapperId">Home</button>
-                <button id="displayScrollWrapperRandomId">Random Hand</button>
-                <button id="displayNotesId">Notes</button>
-                <button id="addCardNavButton">Add</button>
+                <div class="icon-and-title">
+                    <img id="iconTopPage" src="card_images/favicon.png" width="50px" height="50px" alt="">
+                    <h1>The Birdhouse</h1>
+                </div>
+                <div class="nav-button-container">
+                    <button id="displayScrollWrapperId">HOME</button>
+                    <button id="displayScrollWrapperRandomId">RANDOM</button>
+                    <button id="displayNotesId">NOTES</button>
+                    <button id="addCardNavButton">ADD</button>
+                </div>
+                
+                <div class="user-id-container" id = userIdContainer></div>
                 <!-- <img id="testingCardQueueId"src="" alt="Test"> -->
             </div>
        
        
-            <div class="search-bar-container">
+            <div class="search-bar-container" id="searchBarContainer">
                 <div id="toggleSearchButton" class="toggle-search-button">
                     <img src="card_images/searchIcon.png" id="searchIconId" alt="">
                 </div>
                 <div id="searchFormsContainer" class="search-forms-container">
-                    <form class="search-form" action="" id="titleSearchForm">
-                        <button type="submit" id="titleSearchCardsButton">Search for cards (title)</button>
-                        <input type="text" id="titleSearchPrompt">
-                    </form>
-                    <form class="search-form" action="" id="typeSearchForm">
-                        <button type="submit" id="typeSearchCardsButton">Search for cards (type)</button>
-                        <input type="text" id="typeSearchPrompt">
-                    </form>
-                    <form class="search-form" action="" id="tagSearchForm">
-                        <button type="submit" id="tagSearchCardsButton">Search for cards (tag)</button>
-                        <input type="text" id="tagSearchPrompt">
-                    </form>
+                    
+                <div class="search-input-container">
+                    <input type="text" placeholder="Title" id="titleSearchPrompt">
+                    
+                    <input type="text" placeholder="Type" id="typeSearchPrompt">
+                    
+                    <input type="text" placeholder="Tags" id="tagSearchPrompt">
+                </div>
+                    <button type="submit" id="searchCardsButton">SEARCH</button>
                 </div>
             </div>
         
@@ -291,9 +296,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
-    import { getDatabase, ref as ref_database, set, onValue, query, onChildAdded, orderByChild } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    import { getDatabase, ref as ref_database, push, set, onValue, query, onChildAdded, orderByChild } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
     import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
     // ------ I imported ref as ref_database/storage because having 2 refs gave an error
 
     
@@ -337,14 +342,25 @@
     const auth = getAuth(app);
     //console.log(auth)
 
-    
 
 
+    // Set the user's name in the corner
+    auth.onAuthStateChanged(function(user) {
+        const userIdContainer = document.getElementById('userIdContainer');
+        if (user) {
+            // User is signed in
+            const dataRef = ref_database(database, 'Users/' + user.uid);
 
-
-
-
-
+            onValue(dataRef, (snapshot) => {
+                const data = snapshot.val();
+                userIdContainer.textContent = data.name;
+            })
+            
+        } else {
+            // User is signed out
+            userIdContainer.textContent = "";
+        }
+    });
 
 
 
@@ -933,6 +949,11 @@
 
 
 
+
+
+
+
+
     // MAKE SEARCHES VISIBLE
     let searchToggleState = false;
     document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
@@ -959,11 +980,11 @@
 
     // SEARCH AND UPDATE IMAGE WHEEL FUNCTIONS
     
-    document.getElementById("titleSearchForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent form submission and page reload
-        titleSearchDB();
-        //updateCardWheel();
-    });
+    // document.getElementById("titleSearchForm").addEventListener("submit", function(event) {
+    //     event.preventDefault(); // Prevent form submission and page reload
+    //     titleSearchDB();
+    //     //updateCardWheel();
+    // });
 
     function titleSearchDB() {
         const storageRef = ref_storage(storage, 'images/');
@@ -1030,11 +1051,11 @@
 
     }
 
-    document.getElementById("typeSearchForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent form submission and page reload
-        typeSearchDB();
-        //updateCardWheel();
-    });
+    // document.getElementById("typeSearchForm").addEventListener("submit", function(event) {
+    //     event.preventDefault(); // Prevent form submission and page reload
+    //     typeSearchDB();
+    //     //updateCardWheel();
+    // });
 
     function typeSearchDB() {
         const searchInputValue = document.getElementById('typeSearchPrompt').value;
@@ -1072,11 +1093,11 @@
         });
     }
 
-    document.getElementById("tagSearchForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent form submission and page reload
-        tagSearchDB();
-        //updateCardWheel();
-    });
+    // document.getElementById("tagSearchForm").addEventListener("submit", function(event) {
+    //     event.preventDefault(); // Prevent form submission and page reload
+    //     tagSearchDB();
+    //     //updateCardWheel();
+    // });
 
     function tagSearchDB() {
         const searchInputValue = document.getElementById('tagSearchPrompt').value;
@@ -1139,15 +1160,108 @@
 }
 
 
+    // TRUE SEARCH BUTTON
+    document.getElementById("searchCardsButton").addEventListener("click", function (event) {
+        const titleInputValue = document.getElementById('titleSearchPrompt').value;
+        const typeInputValue = document.getElementById('typeSearchPrompt').value;
+        const tagInputValue = document.getElementById('tagSearchPrompt').value;
+
+        const imageContainer = document.querySelector(".scroll-wrapper");
+        imageContainer.innerHTML = '';
+
+        const cardsRef = ref_database(database, 'Cards');
+
+        const imageUrls = [];
+
+
+
+        // Query the database based on the search input value
+        onChildAdded(cardsRef, (snapshot) => {
+            const cardData = snapshot.val();
+            const cardId = snapshot.key;
+
+
+            // For each card in the db, get a reference for each searchable field
+            // Start by searching Title, then Type, then Tags
+
+
+
+            if (titleInputValue !== '') {
+
+                if (cardData && cardData.name === titleInputValue) {
+
+                }
+            }
+
+
+
+
+            const tagCardRef = ref_database(database, 'Cards/' + cardId + '/tags');
+
+            onChildAdded(tagCardRef, (newSnapShot) => {
+
+                const newCardData = newSnapShot.val();
+                const newCardId = newSnapShot.key;
+
+                // Define the search parameters
+                if (newCardData === tagInputValue) {
+
+                    const newCardImageRef = ref_storage(storage, 'images/' + cardId);
+                    const imgElement = document.createElement("img");
+
+                    getDownloadURL(newCardImageRef)
+                        .then((url) => {
+                            imgElement.setAttribute('src', url);
+                        })
+                        .catch((error) => {
+                            // Handle any errors
+                        });
+
+
+                    
+                    imgElement.alt = "Image";
+
+                    imgElement.addEventListener("click", function() {
+                        openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                    });
+                    
+                    imageContainer.appendChild(imgElement);
+                }
+
+            })
+
+            
+
+
+
+
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
     // DISPLAY NOTES TAB, SET LISTENERS AND ADD NOTES
     document.getElementById("displayNotesId").addEventListener("click", function(event) {
+
+        // hide the search bar above
+        const searchContainer = document.getElementById("searchBarContainer");
+        searchContainer.innerHTML = `
+        <div class= "add-note-button-container">
+            <button id="addNoteButtonId">Add Note</button>
+        </div>
+        `;
 
         // set the default page html
         const lowerPage = document.getElementById("lowerContentId");
         lowerPage.innerHTML = `
-        <div class= "add-note-button-container">
-            <button id="addNoteButtonId">Add Note</button>    
-        </div>
         <div class = "left-right-note-container">
             <div class = "left-note-page-container" id = "leftNotePageId">
                 
@@ -1318,6 +1432,48 @@
 
     // DISPLAY HOME/SCROLL VIEW ALL DB
     document.getElementById("displayScrollWrapperId").addEventListener("click", function(event) {
+
+        // Reset the Search HTML
+        const searchContainer = document.getElementById("searchBarContainer");
+        searchContainer.innerHTML = `
+        <div id="toggleSearchButton" class="toggle-search-button">
+                    <img src="card_images/searchIcon.png" id="searchIconId" alt="">
+                </div>
+                <div id="searchFormsContainer" class="search-forms-container">
+                    
+                <div class="search-input-container">
+                    <input type="text" placeholder="Title" id="titleSearchPrompt">
+                    
+                    <input type="text" placeholder="Type" id="typeSearchPrompt">
+                    
+                    <input type="text" placeholder="Tags" id="tagSearchPrompt">
+                </div>
+                    <button type="submit" id="searchCardsButton">SEARCH</button>
+                </div>
+        `;
+        document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
+                const button = document.getElementById("toggleSearchButton");
+                const formsContainer = document.getElementById("searchFormsContainer");
+                const forms = document.getElementsByClassName("search-form");
+
+                if (searchToggleState) {
+                    button.style.left = "50%";
+                    formsContainer.style.left = "100%";
+                    searchToggleState = false;
+                }
+                else {
+                    button.style.left = "10%";
+                    formsContainer.style.left = "20%";
+                    searchToggleState = true;
+                    
+                    for (let i = 0; i < forms.length; i++) {
+                        forms[i].style.display = "block";
+                    }
+                }
+        });
+
+
+
         const lowerPage = document.getElementById("lowerContentId");
 
         lowerPage.innerHTML = `
@@ -1331,6 +1487,47 @@
 
     // DISPLAY RANDOM CARD HOME PAGE
     document.getElementById("displayScrollWrapperRandomId").addEventListener("click", function(event) {
+        // Reset the Search HTML
+        const searchContainer = document.getElementById("searchBarContainer");
+        searchContainer.innerHTML = `
+        <div id="toggleSearchButton" class="toggle-search-button">
+                    <img src="card_images/searchIcon.png" id="searchIconId" alt="">
+                </div>
+                <div id="searchFormsContainer" class="search-forms-container">
+                    
+                <div class="search-input-container">
+                    <input type="text" placeholder="Title" id="titleSearchPrompt">
+                    
+                    <input type="text" placeholder="Type" id="typeSearchPrompt">
+                    
+                    <input type="text" placeholder="Tags" id="tagSearchPrompt">
+                </div>
+                    <button type="submit" id="searchCardsButton">SEARCH</button>
+                </div>
+        `;
+        document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
+                const button = document.getElementById("toggleSearchButton");
+                const formsContainer = document.getElementById("searchFormsContainer");
+                const forms = document.getElementsByClassName("search-form");
+
+                if (searchToggleState) {
+                    button.style.left = "50%";
+                    formsContainer.style.left = "100%";
+                    searchToggleState = false;
+                }
+                else {
+                    button.style.left = "10%";
+                    formsContainer.style.left = "20%";
+                    searchToggleState = true;
+                    
+                    for (let i = 0; i < forms.length; i++) {
+                        forms[i].style.display = "block";
+                    }
+                }
+        });
+
+        
+        
         const lowerPage = document.getElementById("lowerContentId");
 
         lowerPage.innerHTML = `
@@ -1638,6 +1835,7 @@
     const viewOverlayContainer = document.getElementById("viewOverlayContainerId");
     const addOverlayContainer = document.getElementById("addOverlayContainerId");
     const contentOverlay = document.getElementById("contentContainerId");
+    const lowerContentContainer = document.getElementById("lowerContentId");
 
     const closeButton = document.getElementById("closeButton");
 
@@ -1649,6 +1847,7 @@
     const hamburgerMenu = document.getElementById('hamburgerMenu');
     const showHamburgerButton = document.getElementById('showHamburgerButton');
 
+    const accountButton = document.getElementById('accountButton');
     const addCardMenuButton = document.getElementById('addCardMenuButton');
     const addCardNavButton = document.getElementById('addCardNavButton');
     const addCardOverlay = document.getElementById('addCardOverlay');
@@ -1673,6 +1872,115 @@
 
     closeOverlayButton.addEventListener('click', () => {
         addCardOverlay.style.display = 'none';
+    });
+
+    //Log in
+    accountButton.addEventListener('click', () => {
+        
+        hamburgerMenu.classList.toggle('open');
+
+        lowerContentContainer.innerHTML = `
+        <div class="account-page-container">
+            <form id="createAccountForm">
+                <label for="createEmail">Email:</label>
+                <input type="email" id="createEmail" name="email" required>
+                <br>
+                <label for="createPassword">Password:</label>
+                <input type="password" id="createPassword" name="password" required>
+                <br>
+                <label for="createPassword">Name:</label>
+                <input type="text" id="createName" name="name" required>
+                <br>
+                <button type="submit">Create Account</button>
+            </form>
+            <form id="loginForm">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" name="email" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="loginPassword" name="password" required>
+                <br>
+                <button type="submit">Log In</button>
+            </form>
+            <button id="signOutButtonId">Sign Out</button>
+        </div>
+        `;
+
+          // LOG A USER IN WHEN THEY PRESS THE BUTTON
+                // Get a reference to the login form
+                const loginForm = document.getElementById("loginForm");
+
+            // Handle form submission
+                loginForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                // Get user input
+                const email = loginForm.email.value;
+                const password = loginForm.password.value;
+
+                // Sign in with email and password using Firebase Authentication
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        // User successfully logged in
+                        const user = userCredential.user;
+                        console.log("User logged in:", user);
+                        // You can redirect to another page or handle the login state as needed
+                    })
+                    .catch((error) => {
+                        // Handle login error
+                        console.error("Login error:", error.message);
+                    });
+            });
+
+
+            // SIGN A USER OUT WHEN THEY PRESS BUTTON
+            document.getElementById("signOutButtonId").addEventListener("click", function() {
+                
+                signOut(auth).then(() => {
+                    // Sign-out successful.
+                }).catch((error) => {
+                    // An error happened.
+                });
+            });
+
+            // CREATE A NEW ACCOUNT
+            // Get a reference to the create account form
+            const createAccountForm = document.getElementById("createAccountForm");
+
+            // Handle form submission
+            createAccountForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                // Get user input
+                const email = createAccountForm.email.value;
+                const password = createAccountForm.password.value;
+                const name = createAccountForm.name.value;
+
+                // Create user account with email and password using Firebase Authentication
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        // User account successfully created
+                        const user = userCredential.user;
+
+                        // Add user to DB
+                        const dataRef = ref_database(database, 'Users/' + user.uid);
+                        const data = {
+                            name: name
+                        }
+                        set (dataRef, data);
+
+                        console.log("User account created");
+                        // You can redirect to another page or handle the login state as needed
+
+
+                    })
+                    .catch((error) => {
+                        // Handle account creation error
+                        console.error("Account creation error:", error.message);
+                    });
+            });
+
+
     });
 
     deckBuildMenuButton.addEventListener('click', () => {
@@ -2687,6 +2995,7 @@
 
              rightColumn.innerHTML = `
              <button id="addPreviewButton" >Add to Preview</button>
+             <button id="addToDeckButton" >Add to Deck</button>
              <p id="overlayCardTitleP">` + cardTitleText + `</p>
              
             `;
@@ -2694,6 +3003,18 @@
             // Here is where we want to set a listener for the preview button, after the View is selected
             document.getElementById("addPreviewButton").addEventListener("click", function() {
                     addCardToPreviewQueue();
+            });
+
+             //set a listener for the deck button, after the View is selected
+             document.getElementById("addToDeckButton").addEventListener("click", function() {
+                    const cardToBeAdded = document.getElementById("overlayCardTitleP").textContent;
+                    const currentUser = auth.currentUser.uid;
+                    const dataRef = ref_database(database, 'Users/' + currentUser + '/Decks/Deck1');
+                    const newDataRef = push(dataRef);
+                    const data = {
+                        card: cardToBeAdded
+                    }
+                    set (newDataRef, data);
             });
 
             // Custom preview for type 1
