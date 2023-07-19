@@ -172,7 +172,7 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  justify-content: center;
+  align-items: center;
   background-color: antiquewhite;
 }
 
@@ -186,6 +186,12 @@ body {
   margin: 10px;
 }
 
+.right-note-page-container p {
+  
+  line-height: 1.5;
+  width: 50%;
+  font-size: larger;
+}
 
 
 
@@ -217,8 +223,13 @@ body {
     flex: 1;
   }
 
-  .left-column form {
+  .left-column input {
     width: 50%;
+  }
+
+  .left-column button {
+    width: 20%;
+    height: 5%
   }
 
   .right-column {
@@ -677,6 +688,16 @@ body {
 }
 
 
+
+/*Add a note from the Add a Card overlay*/
+.add-card-add-note-container{ 
+  display: flex;
+  flex-direction: row;
+}
+
+.add-card-add-note-container p {
+  margin: 20px;
+}
 
 
 

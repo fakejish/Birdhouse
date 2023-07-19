@@ -292,7 +292,8 @@
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
     import { getDatabase, ref as ref_database, set, onValue, query, onChildAdded, orderByChild } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
-    import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"
+    import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
     // ------ I imported ref as ref_database/storage because having 2 refs gave an error
 
     
@@ -322,8 +323,6 @@
     }
 
     firebaseConfig = await loadEnvVariables();
-    
-    //console.log(firebaseConfig);
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -335,7 +334,19 @@
     const storage = getStorage();
     //console.log(storage);
 
-   
+    const auth = getAuth(app);
+    //console.log(auth)
+
+    
+
+
+
+
+
+
+
+
+
 
     // DATA TYPE CARD and DECK
     class Card {
@@ -1153,12 +1164,93 @@
 
         rightNotesPage.innerHTML = `
                 
-        <p id="notePreviewParagraph">The Note is Here</p>
+        <p id="notePreviewParagraph"></p>
 
         `;
 
         const paragraphPreview = document.getElementById("notePreviewParagraph");
 
+        
+
+        // load the current notes in the db
+        const notesRef = ref_database(database, 'Notes');
+
+        onChildAdded(notesRef, (snapshot) => {
+            const noteData = snapshot.val();
+            const noteId = snapshot.key;
+
+            const btnElement = document.createElement("button");
+            btnElement.id = "openNoteButtonId";
+            btnElement.textContent = noteData.title;
+            btnElement.addEventListener("click", function() {
+                rightNotesPage.innerHTML = `
+                    <p id="notePreviewParagraph"></p>
+                    <button id="editNoteButtonId">Edit</button>
+                `;
+
+                document.getElementById("editNoteButtonId").addEventListener("click", function() {
+                    rightNotesPage.innerHTML = `
+                    <input type="text" id="addNoteTitleText" placeholder="Title" value="` + noteData.title + `">
+                    <textarea id="addNotePreviewTextarea">` + noteData.content + `</textarea>
+                    <button id ="addNoteToDatabaseId">Add</button>
+                    <button id ="cancelAddNewNoteButton">Cancel</button>
+                `;
+
+                    // Set a listener on the add note button
+                    const inputTextarea = document.getElementById("addNotePreviewTextarea");
+                    const inputTitleText = document.getElementById("addNoteTitleText");
+
+                    const uploadNoteButton = document.getElementById("addNoteToDatabaseId");
+                    uploadNoteButton.addEventListener("click", function() {
+                        const inputText = inputTextarea.value;
+                        const inputTitle = inputTitleText.value;
+
+                        // Set the date and DB ID for updated note
+                        const currentTime = new Date();
+                        const stringTime = "" + currentTime;
+
+                        // Upload the note to the database
+                        const dataRef = ref_database(database, 'Notes/' + noteId);
+                        const data = {
+                                    title: inputTitle,
+                                    content: inputText,
+                                    user: 'Testuser',
+                                    created: "" + noteData.created,
+                                    updated: stringTime
+                                }
+
+                                set(dataRef, data);
+
+                                console.log('Data set');
+
+                                rightNotesPage.innerHTML = `
+                                <p>` + inputText + `</p>
+                                `;
+                    });
+
+                    // Set listener on the Cancel button
+                    const cancelAddNoteButton = document.getElementById("cancelAddNewNoteButton");
+                    cancelAddNoteButton.addEventListener("click", function() {
+                        rightNotesPage.innerHTML = `
+                        <p id="notePreviewParagraph">` + noteData.content +`</p>
+                        `;
+                    });
+
+
+                });
+
+                const paragraphPreview = document.getElementById("notePreviewParagraph");
+                paragraphPreview.textContent = noteData.content;
+                //showNoteOnPage();
+
+            });
+
+            leftNotesPage.appendChild(btnElement);
+
+
+        });
+
+        
         // Set listener on add note button
         const addNoteButton = document.getElementById("addNoteButtonId");
         addNoteButton.addEventListener("click", function() {
@@ -1188,47 +1280,43 @@
                             title: inputTitle,
                             content: inputText,
                             user: 'Testuser',
-                            date: stringTime
+                            created: stringTime,
+                            updated: stringTime
                         }
 
                         set(dataRef, data);
 
                         console.log('Data set');
+                        
+                        rightNotesPage.innerHTML = `
+                        <p>Note successfully added.</p>
+                        
+                        `;
+                        // TO DO, RIGHT ABOVE: Refresh the particular button whose data was changed
+
+
+
+
+                        // 
+
+
             });
 
         });
 
 
-        // load the current notes in the db
-        const notesRef = ref_database(database, 'Notes');
-
-        onChildAdded(notesRef, (snapshot) => {
-            const noteData = snapshot.val();
-            const noteId = snapshot.key;
-
-            const btnElement = document.createElement("button");
-            btnElement.id = "openNoteButtonId";
-            btnElement.textContent = noteData.title;
-            btnElement.addEventListener("click", function() {
-                rightNotesPage.innerHTML = `
-                <p id="notePreviewParagraph">The Note is Here</p>
-                `;
-                const paragraphPreview = document.getElementById("notePreviewParagraph");
-                paragraphPreview.textContent = noteData.content;
-                //showNoteOnPage();
-
-            });
-
-            leftNotesPage.appendChild(btnElement);
-
-
-        });
-
-        
 
     });
 
-    // DISPLAY HOME/SCROLL VIEW
+
+
+
+
+
+
+
+
+    // DISPLAY HOME/SCROLL VIEW ALL DB
     document.getElementById("displayScrollWrapperId").addEventListener("click", function(event) {
         const lowerPage = document.getElementById("lowerContentId");
 
@@ -2125,8 +2213,6 @@
                     <p id="tagListP"></p>
 
                     
-
-                    
              <button type="submit" form="inputForm">Submit</button>
 
              <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
@@ -2136,6 +2222,11 @@
                   </div>
 
              </form>
+
+             <div class="add-card-add-note-container">
+                <button id="createNoteFromBird">Create New Note</button>
+                <p id="noteConfirmParagraphId"></p>
+             </div>
          `;
          extraBirdInfo.classList.remove("hidden");
         
@@ -2164,13 +2255,13 @@
 
 
                 <div class="text-box-card-name">
-                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                    <h2 id="addCardNameTitleTextId"></h2>
                 </div>
                 <div class="text-box-card-type">
                     <p id="addCardTypeTextId">Bird</p>
                 </div>
                 <div class="text-box-card-rules">
-                    <p id="addCardRulesTextId">Card Rules</p>
+                    <p id="addCardRulesTextId"></p>
                 </div>
              </div>
             `;
@@ -2295,7 +2386,7 @@
                 <img id="addImageBackground" src="card_images/Song Template.png" alt="">
                 <img id="addImagePreview" src="card_images/songIcon.png" alt="Card"/>
                 <div class="text-box-card-name">
-                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                    <h2 id="addCardNameTitleTextId"></h2>
                 </div>
                 <div class="text-box-card-type">
                     <p id="addCardTypeTextId">Song</p>
@@ -2312,7 +2403,7 @@
                     </div>
                 </div>
                 <div class="text-box-card-rules-song">
-                    <p id="addCardRulesTextId">Card Rules</p>
+                    <p id="addCardRulesTextId"></p>
                 </div>
              </div>
             `;
@@ -2393,13 +2484,13 @@
                 <img id="addImageBackground" src="card_images/Feather Egg Template.png" alt="">
                 <img id="addImagePreview" src="card_images/featherIcon.png" alt="Card"/>
                 <div class="text-box-card-name">
-                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                    <h2 id="addCardNameTitleTextId"></h2>
                 </div>
                 <div class="text-box-card-type">
                     <p id="addCardTypeTextId">Feather</p>
                 </div>
                 <div class="text-box-card-rules">
-                    <p id="addCardRulesTextId">Card Rules</p>
+                    <p id="addCardRulesTextId"></p>
                 </div>
              </div>
             `;
@@ -2426,13 +2517,13 @@
                 <img id="addImageBackground" src="card_images/Feather Egg Template.png" alt="">
                 <img id="addImagePreview" src="card_images/eggIcon.png" alt="Card"/>
                 <div class="text-box-card-name">
-                    <h2 id="addCardNameTitleTextId">Card Title</h2>
+                    <h2 id="addCardNameTitleTextId"></h2>
                 </div>
                 <div class="text-box-card-type">
                     <p id="addCardTypeTextId">Egg</p>
                 </div>
                 <div class="text-box-card-rules">
-                    <p id="addCardRulesTextId">Card Rules</p>
+                    <p id="addCardRulesTextId"></p>
                 </div>
              </div>
             `;
@@ -2471,6 +2562,49 @@
 
             // Add the listener to the add tag button again
             tagUpdate();
+
+            // Add listener to the Create New Note button
+            document.getElementById("createNoteFromBird").addEventListener("click", function(event) {
+               
+                const noteConfirmP = document.getElementById("noteConfirmParagraphId");
+
+                if (cardNameTitleText.textContent !== '') {
+
+                    const theDate = new Date();
+                    const newNoteId = theDate + " - " + cardNameTitleText.textContent;
+
+                    // Create a new note with the card title as it's title
+                    const dataRef = ref_database(database, 'Notes/' + newNoteId);
+                    
+                    const stringTime = "" + theDate;
+                    const data = {
+                        title: cardNameTitleText.textContent,
+                        content: 'Created ' + cardNameTitleText.textContent,
+                        user: 'Testuser',   // user that first created note
+                        created: stringTime // date created
+                    }
+                    set (dataRef, data);
+
+
+                    
+                    noteConfirmP.textContent = "Note created";
+
+                    setTimeout(function() {
+                        noteConfirmP.textContent = '';
+                    }, 2000);
+
+                    
+                }
+                else {
+                    noteConfirmP.textContent = "Note still needs a title";
+
+                    setTimeout(function() {
+                        noteConfirmP.textContent = '';
+                    }, 2000);
+                }
+
+
+            });
             
         }
 
