@@ -1685,6 +1685,7 @@
     // DISPLAY HOME/SCROLL VIEW ALL DB
     document.getElementById("displayScrollWrapperId").addEventListener("click", function(event) {
 
+        searchToggleState = false;
         // Reset the Search HTML
         const searchContainer = document.getElementById("searchBarContainer");
         searchContainer.innerHTML = `
@@ -1745,6 +1746,8 @@
 
     // DISPLAY RANDOM CARD HOME PAGE
     document.getElementById("displayScrollWrapperRandomId").addEventListener("click", function(event) {
+
+        searchToggleState = false;
         // Reset the Search HTML
         const searchContainer = document.getElementById("searchBarContainer");
         searchContainer.innerHTML = `
