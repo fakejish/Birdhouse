@@ -22,14 +22,14 @@
           <br><br><br><br><br><br><br><br><br>
           <button id="addCardMenuButton">Add a card</button>
           <br><br><br><br><br><br><br><br><br>
-          <button id="viewButton">Save DB as text file</button>
+          <!-- <button id="viewButton">Save DB as text file</button>
           <br><br>
           <button id="updateButton">Save text file to DB</button>
           <input type="file" accept="text/*" id="updateInputTextId">
           <br><br>
-          <button id="deckBuildMenuButton">Build a deck</button>
+          <button id="displayDecksButtonId">Deck Builder</button>
           <br><br>
-          <button id="battleMenuButton">Battleground</button>
+          <button id="battleMenuButtonId">Battleground</button> -->
           <br><br><br><br><br><br><br><br>
           <button id="accountButton">Account</button>
         </div>
@@ -48,6 +48,7 @@
                     <button id="displayScrollWrapperRandomId">RANDOM</button>
                     <button id="displayNotesId">NOTES</button>
                     <button id="addCardNavButton">ADD</button>
+                    <!-- <button id="displayDecksButtonId">DECKS</button> -->
                 </div>
                 
                 <div class="user-id-container" id = userIdContainer></div>
@@ -55,28 +56,28 @@
             </div>
        
        
-            <div class="search-bar-container" id="searchBarContainer">
-                <div id="toggleSearchButton" class="toggle-search-button">
-                    <img src="card_images/searchIcon.png" id="searchIconId" alt="">
-                </div>
-                <div id="searchFormsContainer" class="search-forms-container">
-                    
-                <div class="search-input-container">
-                    <input type="text" placeholder="Title" id="titleSearchPrompt">
-                    
-                    <input type="text" placeholder="Type" id="typeSearchPrompt">
-                    
-                    <input type="text" placeholder="Tag" id="tagSearchPrompt">
-                </div>
-                    <button type="submit" id="searchCardsButton">SEARCH</button>
-                </div>
-            </div>
+            
         
     </div>
     
 
-
-
+    <!-- SEARCH CONTAINER -->
+    <div class="search-bar-container" id="searchBarContainer">
+        <div id="toggleSearchButton" class="toggle-search-button">
+            <img src="card_images/searchIcon.png" id="searchIconId" alt="">
+        </div>
+        <div id="searchFormsContainer" class="search-forms-container">
+            
+        <div class="search-input-container">
+            <input type="text" placeholder="Title" id="titleSearchPrompt">
+            
+            <input type="text" placeholder="Type" id="typeSearchPrompt">
+            
+            <input type="text" placeholder="Tag" id="tagSearchPrompt">
+        </div>
+            <button type="submit" id="searchCardsButton">SEARCH</button>
+        </div>
+    </div>
 
 
 
@@ -113,14 +114,16 @@
         <div class="overlay-content" id="viewOverlayContainerId">
             <div class="content-container" id="contentContainerId">
                 <div class="left-column" id="previewLeftColumn">
-                    <div class="new-image-container">
-                        <img id = "newImagePreview" src="" alt="Card"/>
+                    <div class = "view-card-inner-left-column" id="viewCardInnerLeftColumn">
+                        <div class="new-image-container">
+                            <img id = "newImagePreview" src="" alt="Card"/>
                         <!-- <div class="text-box-card-name">
                             <h2 id="newCardNameTitleTextId">Card Title</h2>
                         </div>
                         <div class="text-box-card-rules">
                             <p id="newCardRulesTextId">Card Rules</p> 
                         </div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="right-column" id="previewRightColumn">
@@ -169,71 +172,74 @@
     <div id="addCardOverlay" class="overlay">
         <div class="overlay-content" id="addOverlayContainerId">
           <div class="content-container" id="contentContainerId">
-            <div class="dropdown-container">
-                <label for="cardTypeSelect">Card Type:</label>
-                <select id="cardTypeSelect">
-                  <option value="bird">Bird</option>
-                  <option value="song">Song</option>
-                  <option value="feather">Feather</option>
-                  <option value="egg">Egg</option>
-                </select>
-              </div>
             <div class="left-column" id="leftColumn">
-                <h2>Add Bird Card</h2>
-                <form action="" id="inputForm">
-                    <label for="cardNameId">Card Name:</label>
-                    <input type="text" placeholder="Name" id="cardNameId" name="cardName" required>
-                    <br>
-                    <label for="cardRulesId">Card Rules:</label>
-                    <textarea id="cardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
-
-                    <label for="imageInput">Card Image:</label>
-                    <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
-            
-                <div id="additionalCardInfo">
-                    <div id="extraBirdInfo" class="">
-                        <label for="addSubtypeInputId">Subtype:</label>
-                        <input type="text" id="addSubtypeInputId" name="subTypeInput">
-                        <label for="addCostInputId">Cost:</label>
-                        <input type="text" id="addCostInputId" name="costInput">
-                        <label for="addPowerInputId">Power:</label>
-                        <input type="number" id="addPowerInputId" name="powerInput">
+                <div class="add-card-inner-left-column" id="addCardInnerLeftColumn">
+                    <div class="dropdown-container">
+                        <h2>Add</h2>
+                        <select class="add-dropdown-select" id="cardTypeSelect">
+                          <option value="bird">Bird</option>
+                          <option value="song">Song</option>
+                          <option value="feather">Feather</option>
+                          <option value="egg">Egg</option>
+                        </select>
+                        <h2>Card</h2>
                     </div>
-                    <div id="extraSongInfo" class = "hidden">
-                        <label for="eggInputNumberId">Required Eggs:</label>
-                        <input type="number" id="eggInputNumberId" name="eggInputNumber">
-                        <label for="nestInputNumberId">Required Nest:</label>
-                        <input type="number" id="nestInputNumberId" name="nestInputNumber">
-                        <label for="airInputNumberId">Required Air:</label>
-                        <input type="number" id="airInputNumberId" name="airInputNumber">
-                        <label for="groundInputNumberId">Required Ground:</label>
-                        <input type="number" id="groundInputNumberId" name="groundInputNumber">
-                    </div>
-                    <div id="extraFeatherInfo">
+                    <!-- <h2>Add Bird Card</h2> -->
+                    <form action="" id="inputForm">
+                        <label for="cardNameId">Card Name:</label>
+                        <input type="text" placeholder="Name" id="cardNameId" name="cardName" required>
+                        <br>
+                        <label for="cardRulesId">Card Rules:</label>
+                        <textarea id="cardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
 
-                    </div>
-                    <div id="extraEggInfo">
-
-                    </div>
-                </div>
-
+                        <label for="imageInput">Card Image:</label>
+                        <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
                 
-                <label for="tagInputId">Tag:</label>
-                <input type="text" id="tagInputId" name="tagInput">
-                <p id="tagListP"></p>
-                <button type="button" id="addTagButton">Add Tag</button>
+                    <div id="additionalCardInfo">
+                        <div id="extraBirdInfo" class="">
+                            <label for="addSubtypeInputId">Subtype:</label>
+                            <input type="text" id="addSubtypeInputId" name="subTypeInput">
+                            <label for="addCostInputId">Cost:</label>
+                            <input type="text" id="addCostInputId" name="costInput">
+                            <label for="addPowerInputId">Power:</label>
+                            <input type="number" id="addPowerInputId" name="powerInput">
+                        </div>
+                        <div id="extraSongInfo" class = "hidden">
+                            <label for="eggInputNumberId">Required Eggs:</label>
+                            <input type="number" id="eggInputNumberId" name="eggInputNumber">
+                            <label for="nestInputNumberId">Required Nest:</label>
+                            <input type="number" id="nestInputNumberId" name="nestInputNumber">
+                            <label for="airInputNumberId">Required Air:</label>
+                            <input type="number" id="airInputNumberId" name="airInputNumber">
+                            <label for="groundInputNumberId">Required Ground:</label>
+                            <input type="number" id="groundInputNumberId" name="groundInputNumber">
+                        </div>
+                        <div id="extraFeatherInfo">
 
-                <button type="submit" form="inputForm">Submit</button>
+                        </div>
+                        <div id="extraEggInfo">
 
-                <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
-                    <div class="confirmation-message-container">
-                      <div id="confirmationMessage">You Pressed A Button</div>
+                        </div>
                     </div>
-                  </div>
 
-                <br><br><br><br>
-                <button id="closeOverlayButton">Close</button>
-                </form>
+                    
+                    <label for="tagInputId">Tag:</label>
+                    <input type="text" id="tagInputId" name="tagInput">
+                    <p id="tagListP"></p>
+                    <button type="button" id="addTagButton">Add Tag</button>
+
+                    <button type="submit" form="inputForm">Submit</button>
+
+                    <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+                        <div class="confirmation-message-container">
+                        <div id="confirmationMessage">You Pressed A Button</div>
+                        </div>
+                    </div>
+
+                    <br><br><br><br>
+                    <button id="closeOverlayButton">Close</button>
+                    </form>
+                </div>
             </div>
             <div class="right-column" id="rightColumn">
                     <div class="add-image-container">
@@ -255,7 +261,6 @@
             </div>
 
           </div>
-          <button id="saveImageButton">Save Image</button>
         </div>
       </div>
 
@@ -408,80 +413,148 @@
     });
 
 
-
-
-
+    // AUTHENTICATION CHECK TO DISPLAY CARDS ON THE FRONT PAGE, DELAYED TO LOAD FIREBASE DATA
+    // let isAdmin = false;
+    // // CHECK IF USER IS AN ADMIN BEFORE ANYTHING HAPPENS
+    // const userRef = ref_database(database, 'Users/' + auth + "/admin");
+    // onValue(userRef, (snapshot) => {
+    //     if (admin)
+    //     {
+    //         isAdmin = true;
+    //     }
+    // });
 
 
     
     // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE (displays 5 random cards right now)
-    displayCards('true');
+    let isAdmin = false;
+    function checkUserLoggedIn() {
+    // Delay the execution of the onAuthStateChanged callback function
+        setTimeout(() => {
+            auth.onAuthStateChanged((user) => {
+
+                    if (user) {
+                        // User is logged in, call your function to display the cards or perform other actions
+                        
+                        const dataRef = ref_database(database, 'Users/' + user.uid);
+
+                        onValue(dataRef, (snapshot) => {
+                            const data = snapshot.val();
+                            
+                            if (data.admin == true)
+                            {
+                                console.log('truth');
+                                isAdmin = true;
+                                displayCards('true');
+                            }
+
+
+                        });
+
+                        // onValue(dataRef, (snapshot) => {
+                        //     const data = snapshot.val;
+                        //     console.log(data.admin);
+                        // });
+                    }
+
+                });
+
+            }, 1000); // Change 3000 to the number of milliseconds you want to delay (e.g., 3000 milliseconds = 3 seconds)
+    }
+
+    // Start the delayed authentication check
+    checkUserLoggedIn();
+
+
+
+
+
+
+
+
+
+    // auth.onAuthStateChanged (function(user) {
+    //     if (user) {
+    //         displayCards('true');
+    //     }
+    // });
+
+    
 
     function displayCards(isRandom) {
-        const storageRef = ref_storage(storage, 'images/');
 
-        const imageUrls = [];
-        
-        // Get a list of everything in storage, update image array
-        listAll(storageRef)
-            .then((res) => {
-            const promises = res.items.map((itemRef) => {
-                // Track the itemRef
-                //console.log(itemRef.name);
+        if (isAdmin) {
+            const storageRef = ref_storage(storage, 'images/');
 
-                return getDownloadURL(itemRef).catch((error) => {
-                   console.log('Error retrieving download URL:', error);
-                 });
-             });
+            const imageUrls = [];
             
-            return Promise.all(promises).then( (urls) => {
-                return { urls, res };
-            });
-            })
-            .then(({urls, res}) => {
-                imageUrls.push(...urls);
-                //console.log(imageUrls);
+            // Get a list of everything in storage, update image array
+            listAll(storageRef)
+                .then((res) => {
+                const promises = res.items.map((itemRef) => {
+                    // Track the itemRef
+                    //console.log(itemRef.name);
 
-
-                const imageContainer = document.querySelector(".scroll-wrapper");
-                imageContainer.innerHTML = '';
-
-                const shuffledImgUrls = imageUrls;
-
-                if (isRandom === 'true'){
-                    // Shuffle and cut the available cards
-                    const shuffledImgUrls = shuffleArray(imageUrls);
-                    if (shuffledImgUrls.length > 5) {
-                        shuffledImgUrls.splice(5);
-                    }
-                }
-
-                // Dynamically create the <img> elements and append them to the container
-                shuffledImgUrls.forEach((imageUrl, index) => {
-                    const imgElement = document.createElement("img");
-                    imgElement.setAttribute('src', imageUrl);
-
-                    const itemRef = res.items[index];
-                    
-                    const dataRef = ref_database(database, 'Cards/' + itemRef.name);
-                    onValue(dataRef, (snapshot) => {
-                        const info = snapshot.val();
-                        imgElement.addEventListener("click", function() {
-                            
-                            openCardDisplay(imgElement, info.name);
-                        });
+                    return getDownloadURL(itemRef).catch((error) => {
+                    console.log('Error retrieving download URL:', error);
                     });
-                    
-                    imgElement.alt = "Image";
-
-                    imageContainer.appendChild(imgElement);
                 });
-            })
-            .catch((error) => {
-            console.log('Error retrieving storage files:', error);
-            });
+                
+                return Promise.all(promises).then( (urls) => {
+                    return { urls, res };
+                });
+                })
+                .then(({urls, res}) => {
+                    imageUrls.push(...urls);
+                    //console.log(imageUrls);
 
-        
+
+                    const imageContainer = document.querySelector(".scroll-wrapper");
+                    imageContainer.innerHTML = '';
+
+                    const shuffledImgUrls = imageUrls;
+
+                    if (isRandom === 'true'){
+                        // Shuffle and cut the available cards
+                        const shuffledImgUrls = shuffleArray(imageUrls);
+                        if (shuffledImgUrls.length > 5) {
+                            shuffledImgUrls.splice(5);
+                        }
+                    }
+
+                    // Dynamically create the <img> elements and append them to the container
+                    shuffledImgUrls.forEach((imageUrl, index) => {
+                        const imgElement = document.createElement("img");
+                        imgElement.setAttribute('src', imageUrl);
+                        
+
+                        const itemRef = res.items[index];
+                        
+                        const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+
+                        
+
+                        onValue(dataRef, (snapshot) => {
+                            const info = snapshot.val();
+                           
+                            imgElement.addEventListener("click", function() {
+
+                                openCardDisplay(imgElement, info.name);
+
+                            });
+                        });
+                        
+                        
+                        imgElement.alt = "Image";
+
+                        imageContainer.appendChild(imgElement);
+                    });
+                })
+                .catch((error) => {
+                console.log('Error retrieving storage files:', error);
+                });
+
+        }
     }
     
     
@@ -656,78 +729,78 @@
 
 
 
-    //  READS INFO FROM THE DATABASE AND SAVES TO TXT
-    document.getElementById("viewButton").addEventListener("click", viewDB);
-    function viewDB() {
+    // //  READS INFO FROM THE DATABASE AND SAVES TO TXT
+    // document.getElementById("viewButton").addEventListener("click", viewDB);
+    // function viewDB() {
         
-        const DataRef = ref_database(database, '/Cards');
-        onValue(DataRef, (snapshot) => {
-            const jsonData = snapshot.val();
-            //console.log(jsonData); // JSON representation of the database
+    //     const DataRef = ref_database(database, '/Cards');
+    //     onValue(DataRef, (snapshot) => {
+    //         const jsonData = snapshot.val();
+    //         //console.log(jsonData); // JSON representation of the database
 
-            const csvData = json2csv.parse(jsonData);
-            //console.log(csvData);
+    //         const csvData = json2csv.parse(jsonData);
+    //         //console.log(csvData);
 
-            const combinedDataArray = []; // Array to accumulate the data
+    //         const combinedDataArray = []; // Array to accumulate the data
 
-                    for (const key in jsonData) {
-                        if (jsonData.hasOwnProperty(key)) {
-                            const element = jsonData[key];
-                            const csvData2 = json2csv.parse(element);
+    //                 for (const key in jsonData) {
+    //                     if (jsonData.hasOwnProperty(key)) {
+    //                         const element = jsonData[key];
+    //                         const csvData2 = json2csv.parse(element);
 
-                            const dataArray = csvData2.split('\n');
-                            const dataElement1 = dataArray[1];
-                            const newDataArray = dataElement1.split('[');
-                            const newDataElement1 = newDataArray[1];
-                            const dataArray2 = newDataElement1.split(']');
+    //                         const dataArray = csvData2.split('\n');
+    //                         const dataElement1 = dataArray[1];
+    //                         const newDataArray = dataElement1.split('[');
+    //                         const newDataElement1 = newDataArray[1];
+    //                         const dataArray2 = newDataElement1.split(']');
 
-                            const modifiedElement1 = dataArray[0].replace(/"([^"]*)"/g, (match, content) => {
-                                // Perform desired modifications on the matched content
-                                return content; // Example: Convert the content to uppercase
-                            });
+    //                         const modifiedElement1 = dataArray[0].replace(/"([^"]*)"/g, (match, content) => {
+    //                             // Perform desired modifications on the matched content
+    //                             return content; // Example: Convert the content to uppercase
+    //                         });
                             
-                            const modifiedElement2 = newDataArray[0].replace(/"([^"]*)"/g, (match, content) => {
-                                // Perform desired modifications on the matched content
-                                return content; // Example: Convert the content to uppercase
-                            });
+    //                         const modifiedElement2 = newDataArray[0].replace(/"([^"]*)"/g, (match, content) => {
+    //                             // Perform desired modifications on the matched content
+    //                             return content; // Example: Convert the content to uppercase
+    //                         });
 
-                            const modifiedElement3 = dataArray2[0].replace(/"([^"]*)"/g, (match, content) => {
-                                // Perform desired modifications on the matched content
-                                return content; // Example: Convert the content to uppercase
-                            });
+    //                         const modifiedElement3 = dataArray2[0].replace(/"([^"]*)"/g, (match, content) => {
+    //                             // Perform desired modifications on the matched content
+    //                             return content; // Example: Convert the content to uppercase
+    //                         });
 
-                            const modifiedElement4 = dataArray2[1].replace(/"([^"]*)"/g, (match, content) => {
-                                // Perform desired modifications on the matched content
-                                return content; // Example: Convert the content to uppercase
-                            });
+    //                         const modifiedElement4 = dataArray2[1].replace(/"([^"]*)"/g, (match, content) => {
+    //                             // Perform desired modifications on the matched content
+    //                             return content; // Example: Convert the content to uppercase
+    //                         });
 
-                            const parsedMod2 = newDataArray[0].slice(0, -2);
-                            const parsedMod4 = modifiedElement4.replace(/[, "]/g, '').trim();
+    //                         const parsedMod2 = newDataArray[0].slice(0, -2);
+    //                         const parsedMod4 = modifiedElement4.replace(/[, "]/g, '').trim();
                             
                             
 
-                            const finalDataArray = [];
-                            finalDataArray.push(modifiedElement1, parsedMod2, modifiedElement3, parsedMod4);
+    //                         const finalDataArray = [];
+    //                         finalDataArray.push(modifiedElement1, parsedMod2, modifiedElement3, parsedMod4);
 
-                            console.log(finalDataArray);
-                            //console.log(dataArray);
-                            combinedDataArray.push(...finalDataArray); // Accumulate the data
-                        }
-                    }
+    //                         console.log(finalDataArray);
+    //                         //console.log(dataArray);
+    //                         combinedDataArray.push(...finalDataArray); // Accumulate the data
+    //                     }
+    //                 }
                 
-                    function downloadArrayAsTextFile(array, fileName) {
-                        const data = array.join('\n');
+    //                 function downloadArrayAsTextFile(array, fileName) {
+    //                     const data = array.join('\n');
 
-                        const blob = new Blob([data], { type: 'text/plain' });
-                        const url = URL.createObjectURL(blob);
+    //                     const blob = new Blob([data], { type: 'text/plain' });
+    //                     const url = URL.createObjectURL(blob);
 
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.download = fileName;
-                        link.click();
-                    }
+    //                     const link = document.createElement('a');
+    //                     link.href = url;
+    //                     link.download = fileName;
+    //                     link.click();
+    //                 }
 
-                    downloadArrayAsTextFile(combinedDataArray, "backup.txt");
+    //                 downloadArrayAsTextFile(combinedDataArray, "backup.txt");
 
 
 
@@ -738,214 +811,214 @@
 
 
 
-            // for (const key in jsonData) {
-            //     if (jsonData.hasOwnProperty(key)) {
-            //         const element = jsonData[key];
-            //         // Perform the desired action for each element
+    //         // for (const key in jsonData) {
+    //         //     if (jsonData.hasOwnProperty(key)) {
+    //         //         const element = jsonData[key];
+    //         //         // Perform the desired action for each element
 
-            //         const csvData2 = json2csv.parse(element);
+    //         //         const csvData2 = json2csv.parse(element);
                     
-            //         // Split the CSV data by commas
-            //         const dataArray = csvData2.split(',');
+    //         //         // Split the CSV data by commas
+    //         //         const dataArray = csvData2.split(',');
 
-            //        // console.log(dataArray);
+    //         //        // console.log(dataArray);
                    
-            //     //    const combinedDataArray = []; // Array to accumulate the data
+    //         //     //    const combinedDataArray = []; // Array to accumulate the data
 
                     
-            //     //     if (jsonData.hasOwnProperty(key)) {
-            //     //         const element = jsonData[key];
-            //     //         const csvData2 = json2csv.parse(element);
-            //     //         const dataArray = csvData2.split(',');
+    //         //     //     if (jsonData.hasOwnProperty(key)) {
+    //         //     //         const element = jsonData[key];
+    //         //     //         const csvData2 = json2csv.parse(element);
+    //         //     //         const dataArray = csvData2.split(',');
 
-            //     //         combinedDataArray.push(...dataArray); // Accumulate the data
-            //     //     }
+    //         //     //         combinedDataArray.push(...dataArray); // Accumulate the data
+    //         //     //     }
                     
                 
-            //     //     function downloadArrayAsTextFile(array, fileName) {
-            //     //         const data = array.join(',');
+    //         //     //     function downloadArrayAsTextFile(array, fileName) {
+    //         //     //         const data = array.join(',');
 
-            //     //         const blob = new Blob([data], { type: 'text/plain' });
-            //     //         const url = URL.createObjectURL(blob);
+    //         //     //         const blob = new Blob([data], { type: 'text/plain' });
+    //         //     //         const url = URL.createObjectURL(blob);
 
-            //     //         const link = document.createElement('a');
-            //     //         link.href = url;
-            //     //         link.download = fileName;
-            //     //         link.click();
-            //     //         }
+    //         //     //         const link = document.createElement('a');
+    //         //     //         link.href = url;
+    //         //     //         link.download = fileName;
+    //         //     //         link.click();
+    //         //     //         }
 
-            //     //     downloadArrayAsTextFile(combinedDataArray, "backup.txt");
+    //         //     //     downloadArrayAsTextFile(combinedDataArray, "backup.txt");
 
-            //         // // Usage example:
-            //         // const dataArray = ["item1", "item2", "item3"];
-            //         // const fileName = "data.txt";
+    //         //         // // Usage example:
+    //         //         // const dataArray = ["item1", "item2", "item3"];
+    //         //         // const fileName = "data.txt";
 
-            //         // downloadArrayAsTextFile(dataArray, fileName);
-
-
+    //         //         // downloadArrayAsTextFile(dataArray, fileName);
 
 
-            //     }
-            //  }
+
+
+    //         //     }
+    //         //  }
            
-        });
+    //     });
 
 
         
 
 
-    }
+    // }
 
-    function viewStorage() {
+    // function viewStorage() {
 
-        const storRef = ref_storage(storage, '/images');
-        const imageUrls = [];
-        const zip = new JSZip();
+    //     const storRef = ref_storage(storage, '/images');
+    //     const imageUrls = [];
+    //     const zip = new JSZip();
 
-        listAll(storRef)
-            .then((res) => {
-            const promises = res.items.map((itemRef) => {
-                // Track the itemRef
-                //console.log(itemRef.name);
+    //     listAll(storRef)
+    //         .then((res) => {
+    //         const promises = res.items.map((itemRef) => {
+    //             // Track the itemRef
+    //             //console.log(itemRef.name);
 
-                return getDownloadURL(itemRef).catch((error) => {
-                   console.log('Error retrieving download URL:', error);
-                 });
-             });
+    //             return getDownloadURL(itemRef).catch((error) => {
+    //                console.log('Error retrieving download URL:', error);
+    //              });
+    //          });
             
-            return Promise.all(promises).then( (urls) => {
-                return { urls, res };
-            });
-            })
-            .then(({urls, res}) => {
-                imageUrls.push(...urls);
-                //console.log(imageUrls);
+    //         return Promise.all(promises).then( (urls) => {
+    //             return { urls, res };
+    //         });
+    //         })
+    //         .then(({urls, res}) => {
+    //             imageUrls.push(...urls);
+    //             //console.log(imageUrls);
 
 
-                // Dynamically create the <img> elements and append them to the container
-                imageUrls.forEach((imageUrl, index) => {
-                    const itemRef = res.items[index];
-                    console.log(imageUrl);
-                    //downloadImageFromFirebase(imageUrl, itemRef.name + ".png");
+    //             // Dynamically create the <img> elements and append them to the container
+    //             imageUrls.forEach((imageUrl, index) => {
+    //                 const itemRef = res.items[index];
+    //                 console.log(imageUrl);
+    //                 //downloadImageFromFirebase(imageUrl, itemRef.name + ".png");
 
                     
-                    // const imgElement = document.createElement("img");
-                    // imgElement.setAttribute('src', imageUrl);
-                    // console.log(imgElement);
+    //                 // const imgElement = document.createElement("img");
+    //                 // imgElement.setAttribute('src', imageUrl);
+    //                 // console.log(imgElement);
 
-                    // const link = document.createElement('a');
-                    // link.href = imgElement;
-                    // link.download = itemRef.name + '.png';
-                    // link.click();
+    //                 // const link = document.createElement('a');
+    //                 // link.href = imgElement;
+    //                 // link.download = itemRef.name + '.png';
+    //                 // link.click();
                     
                     
-                    // const dataRef = ref_database(database, 'Cards/' + itemRef.name);
-                    // onValue(dataRef, (snapshot) => {
-                    //     const info = snapshot.val();
-                    //     imgElement.addEventListener("click", function() {
-                    //         openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
-                    //     });
-                    // });
+    //                 // const dataRef = ref_database(database, 'Cards/' + itemRef.name);
+    //                 // onValue(dataRef, (snapshot) => {
+    //                 //     const info = snapshot.val();
+    //                 //     imgElement.addEventListener("click", function() {
+    //                 //         openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
+    //                 //     });
+    //                 // });
                     
-                    // imgElement.alt = "Image";
+    //                 // imgElement.alt = "Image";
 
-                    // imageContainer.appendChild(imgElement);
-                });
-            })
-            .catch((error) => {
-            console.log('Error retrieving storage files:', error);
-            });
+    //                 // imageContainer.appendChild(imgElement);
+    //             });
+    //         })
+    //         .catch((error) => {
+    //         console.log('Error retrieving storage files:', error);
+    //         });
 
-    }
+    // }
 
-    function downloadImageFromFirebase(url, fileName) {
-        const ref = ref_storage(storage, url);
-        getDownloadURL(ref)
-            .then(downloadUrl => downloadUrl.blob())
-            .then(blob => {
-                const newDownloadUrl = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = newDownloadUrl;
-                link.download = fileName;
-                link.target = '_blank';
-                link.click();
-            })
-            .catch(error => {
-            console.error('Error downloading image from Firebase:', error);
-            });
-        }
+    // function downloadImageFromFirebase(url, fileName) {
+    //     const ref = ref_storage(storage, url);
+    //     getDownloadURL(ref)
+    //         .then(downloadUrl => downloadUrl.blob())
+    //         .then(blob => {
+    //             const newDownloadUrl = URL.createObjectURL(blob);
+    //             const link = document.createElement('a');
+    //             link.href = newDownloadUrl;
+    //             link.download = fileName;
+    //             link.target = '_blank';
+    //             link.click();
+    //         })
+    //         .catch(error => {
+    //         console.error('Error downloading image from Firebase:', error);
+    //         });
+    //     }
 
 
 
-    // PULL TEXT FILE AND UPDATE THE DB WITH ITS PARSED INFORMATION
-    document.getElementById("updateButton").addEventListener("click", function (event) {
-        const fileInput = document.getElementById("updateInputTextId");
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const fileContent = e.target.result;
-                // Handle the file content here
-                //console.log(fileContent);
+    // // PULL TEXT FILE AND UPDATE THE DB WITH ITS PARSED INFORMATION
+    // document.getElementById("updateButton").addEventListener("click", function (event) {
+    //     const fileInput = document.getElementById("updateInputTextId");
+    //     if (fileInput.files.length > 0) {
+    //         const file = fileInput.files[0];
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             const fileContent = e.target.result;
+    //             // Handle the file content here
+    //             //console.log(fileContent);
                
-                // Parse the file content here
+    //             // Parse the file content here
 
-                const lines = fileContent.trim().split('\n');
+    //             const lines = fileContent.trim().split('\n');
                 
 
-                if (lines.length >= 2) {
-                    const headers = lines[0].split(',');
+    //             if (lines.length >= 2) {
+    //                 const headers = lines[0].split(',');
 
-                    //console.log(headers);
-                    const dataLines = lines.slice(1); // Exclude the header line
-                    //console.log(dataLines);
+    //                 //console.log(headers);
+    //                 const dataLines = lines.slice(1); // Exclude the header line
+    //                 //console.log(dataLines);
 
-                    dataLines.forEach(dataLine => {
-                        const data = dataLine.split(',');
+    //                 dataLines.forEach(dataLine => {
+    //                     const data = dataLine.split(',');
                         
 
 
 
-                        const regex = /(\[.*?\])/;
-                        const matches = dataLine.match(regex);
+    //                     const regex = /(\[.*?\])/;
+    //                     const matches = dataLine.match(regex);
 
-                        if (matches && matches.length > 0) {
-                            const arrayString = matches[0];
-                            console.log(arrayString);
-                            //const parsedArray = JSON.parse(arrayString);
-                        } else {
-                        console.error('No array found in the text.');
-                        }
+    //                     if (matches && matches.length > 0) {
+    //                         const arrayString = matches[0];
+    //                         console.log(arrayString);
+    //                         //const parsedArray = JSON.parse(arrayString);
+    //                     } else {
+    //                     console.error('No array found in the text.');
+    //                     }
                         
 
 
 
 
 
-                        console.log("Data: " + data.length + ", Header: " + headers.length);
+    //                     console.log("Data: " + data.length + ", Header: " + headers.length);
 
-                        if (data.length === headers.length) {
+    //                     if (data.length === headers.length) {
 
                             
-                            for (let i = 0; i < headers.length; i++) {
+    //                         for (let i = 0; i < headers.length; i++) {
 
-                                console.log(headers[i].trim() + ': ' + data[i].trim());
+    //                             console.log(headers[i].trim() + ': ' + data[i].trim());
 
-                            }
-                        } else {
-                            console.error('Mismatch between headers and data in line: ' + dataLine);
-                        }
-                    });
+    //                         }
+    //                     } else {
+    //                         console.error('Mismatch between headers and data in line: ' + dataLine);
+    //                     }
+    //                 });
 
-                } else {
-                    console.error('Invalid file format');
-                }
+    //             } else {
+    //                 console.error('Invalid file format');
+    //             }
 
 
-            };
-            reader.readAsText(file);
-        }
-    });
+    //         };
+    //         reader.readAsText(file);
+    //     }
+    // });
 
 
 
@@ -1163,7 +1236,10 @@
 
     // TRUE SEARCH BUTTON
     document.getElementById("searchCardsButton").addEventListener("click", function (event) {
-        searchDB();
+        if (isAdmin)
+        {
+            searchDB();
+        }
     });
 
     function searchDB() {
@@ -1503,174 +1579,177 @@
     // DISPLAY NOTES TAB, SET LISTENERS AND ADD NOTES
     document.getElementById("displayNotesId").addEventListener("click", function(event) {
 
-        // hide the search bar above
-        const searchContainer = document.getElementById("searchBarContainer");
-        searchContainer.innerHTML = `
-        <div class= "add-note-button-container">
-            <button id="addNoteButtonId">Add Note</button>
-        </div>
-        `;
+        if (isAdmin) {
 
-        // set the default page html
-        const lowerPage = document.getElementById("lowerContentId");
-        lowerPage.innerHTML = `
-        <div class = "left-right-note-container">
-            <div class = "left-note-page-container" id = "leftNotePageId">
-                
+            const searchContainer = document.getElementById("searchBarContainer");
+            searchContainer.style.display = "block";
+            searchContainer.style.visibility = "visible";
+            searchContainer.innerHTML = `
+            <div class= "add-note-button-container">
+                <button id="addNoteButtonId">Add Note</button>
             </div>
-            <div class = "right-note-page-container" id = "rightNotePageId">
-                
+            `;
+
+            // set the default page html
+            const lowerPage = document.getElementById("lowerContentId");
+            lowerPage.innerHTML = `
+            <div class = "left-right-note-container">
+                <div class = "left-note-page-container" id = "leftNotePageId">
+                    
+                </div>
+                <div class = "right-note-page-container" id = "rightNotePageId">
+                    
+                </div>
             </div>
-        </div>
-        `;
+            `;
 
-        const leftNotesPage = document.getElementById("leftNotePageId");
-        const rightNotesPage = document.getElementById("rightNotePageId");
+            const leftNotesPage = document.getElementById("leftNotePageId");
+            const rightNotesPage = document.getElementById("rightNotePageId");
 
 
-        rightNotesPage.innerHTML = `
-                
-        <p id="notePreviewParagraph"></p>
+            rightNotesPage.innerHTML = `
+                    
+            <p id="notePreviewParagraph"></p>
 
-        `;
+            `;
 
-        const paragraphPreview = document.getElementById("notePreviewParagraph");
+            const paragraphPreview = document.getElementById("notePreviewParagraph");
 
-        
+            
 
-        // load the current notes in the db
-        const notesRef = ref_database(database, 'Notes');
+            // load the current notes in the db
+            const notesRef = ref_database(database, 'Notes');
 
-        onChildAdded(notesRef, (snapshot) => {
-            const noteData = snapshot.val();
-            const noteId = snapshot.key;
+            onChildAdded(notesRef, (snapshot) => {
+                const noteData = snapshot.val();
+                const noteId = snapshot.key;
 
-            const btnElement = document.createElement("button");
-            btnElement.id = "openNoteButtonId";
-            btnElement.textContent = noteData.title;
-            btnElement.addEventListener("click", function() {
-                rightNotesPage.innerHTML = `
-                    <p id="notePreviewParagraph"></p>
-                    <button id="editNoteButtonId">Edit</button>
-                `;
-
-                document.getElementById("editNoteButtonId").addEventListener("click", function() {
+                const btnElement = document.createElement("button");
+                btnElement.id = "openNoteButtonId";
+                btnElement.textContent = noteData.title;
+                btnElement.addEventListener("click", function() {
                     rightNotesPage.innerHTML = `
-                    <input type="text" id="addNoteTitleText" placeholder="Title" value="` + noteData.title + `">
-                    <textarea id="addNotePreviewTextarea">` + noteData.content + `</textarea>
-                    <button id ="addNoteToDatabaseId">Add</button>
-                    <button id ="cancelAddNewNoteButton">Cancel</button>
+                        <p id="notePreviewParagraph"></p>
+                        <button id="editNoteButtonId">Edit</button>
+                    `;
+
+                    document.getElementById("editNoteButtonId").addEventListener("click", function() {
+                        rightNotesPage.innerHTML = `
+                        <input type="text" id="addNoteTitleText" placeholder="Title" value="` + noteData.title + `">
+                        <textarea id="addNotePreviewTextarea">` + noteData.content + `</textarea>
+                        <button id ="addNoteToDatabaseId">Add</button>
+                        <button id ="cancelAddNewNoteButton">Cancel</button>
+                    `;
+
+                        // Set a listener on the add note button
+                        const inputTextarea = document.getElementById("addNotePreviewTextarea");
+                        const inputTitleText = document.getElementById("addNoteTitleText");
+
+                        const uploadNoteButton = document.getElementById("addNoteToDatabaseId");
+                        uploadNoteButton.addEventListener("click", function() {
+                            const inputText = inputTextarea.value;
+                            const inputTitle = inputTitleText.value;
+
+                            // Set the date and DB ID for updated note
+                            const currentTime = new Date();
+                            const stringTime = "" + currentTime;
+
+                            // Upload the note to the database
+                            const dataRef = ref_database(database, 'Notes/' + noteId);
+                            const data = {
+                                        title: inputTitle,
+                                        content: inputText,
+                                        user: 'Testuser',
+                                        created: "" + noteData.created,
+                                        updated: stringTime
+                                    }
+
+                                    set(dataRef, data);
+
+                                    console.log('Data set');
+
+                                    rightNotesPage.innerHTML = `
+                                    <p>` + inputText + `</p>
+                                    `;
+                        });
+
+                        // Set listener on the Cancel button
+                        const cancelAddNoteButton = document.getElementById("cancelAddNewNoteButton");
+                        cancelAddNoteButton.addEventListener("click", function() {
+                            rightNotesPage.innerHTML = `
+                            <p id="notePreviewParagraph">` + noteData.content +`</p>
+                            `;
+                        });
+
+
+                    });
+
+                    const paragraphPreview = document.getElementById("notePreviewParagraph");
+                    paragraphPreview.textContent = noteData.content;
+                    //showNoteOnPage();
+
+                });
+
+                leftNotesPage.appendChild(btnElement);
+
+
+            });
+
+            
+            // Set listener on add note button
+            const addNoteButton = document.getElementById("addNoteButtonId");
+            addNoteButton.addEventListener("click", function() {
+                rightNotesPage.innerHTML = `
+                <input type="text" id="addNoteTitleText" placeholder="Title" ></input>
+                <textarea id="addNotePreviewTextarea" placeholder="Fill out the note"></textarea>
+                <button id ="addNoteToDatabaseId">Add</button>
                 `;
 
-                    // Set a listener on the add note button
-                    const inputTextarea = document.getElementById("addNotePreviewTextarea");
-                    const inputTitleText = document.getElementById("addNoteTitleText");
+                // Set a listener on the upload new note button
+                const inputTextarea = document.getElementById("addNotePreviewTextarea");
+                const inputTitleText = document.getElementById("addNoteTitleText");
 
-                    const uploadNoteButton = document.getElementById("addNoteToDatabaseId");
-                    uploadNoteButton.addEventListener("click", function() {
-                        const inputText = inputTextarea.value;
-                        const inputTitle = inputTitleText.value;
+                const uploadNoteButton = document.getElementById("addNoteToDatabaseId");
+                uploadNoteButton.addEventListener("click", function() {
+                    const inputText = inputTextarea.value;
+                    const inputTitle = inputTitleText.value;
 
-                        // Set the date and DB ID for updated note
-                        const currentTime = new Date();
-                        const stringTime = "" + currentTime;
+                    // Set the date and DB ID for each new note
+                    const currentTime = new Date();
+                    const noteKeyId = inputTitle + " - " + currentTime;
+                    const stringTime = "" + currentTime;
 
-                        // Upload the note to the database
-                        const dataRef = ref_database(database, 'Notes/' + noteId);
-                        const data = {
-                                    title: inputTitle,
-                                    content: inputText,
-                                    user: 'Testuser',
-                                    created: "" + noteData.created,
-                                    updated: stringTime
-                                }
+                    // Upload the note to the database
+                    const dataRef = ref_database(database, 'Notes/' + noteKeyId);
+                    const data = {
+                                title: inputTitle,
+                                content: inputText,
+                                user: 'Testuser',
+                                created: stringTime,
+                                updated: stringTime
+                            }
 
-                                set(dataRef, data);
+                            set(dataRef, data);
 
-                                console.log('Data set');
+                            console.log('Data set');
+                            
+                            rightNotesPage.innerHTML = `
+                            <p>Note successfully added.</p>
+                            
+                            `;
+                            // TO DO, RIGHT ABOVE: Refresh the particular button whose data was changed
 
-                                rightNotesPage.innerHTML = `
-                                <p>` + inputText + `</p>
-                                `;
-                    });
 
-                    // Set listener on the Cancel button
-                    const cancelAddNoteButton = document.getElementById("cancelAddNewNoteButton");
-                    cancelAddNoteButton.addEventListener("click", function() {
-                        rightNotesPage.innerHTML = `
-                        <p id="notePreviewParagraph">` + noteData.content +`</p>
-                        `;
-                    });
+
+
+                            // 
 
 
                 });
 
-                const paragraphPreview = document.getElementById("notePreviewParagraph");
-                paragraphPreview.textContent = noteData.content;
-                //showNoteOnPage();
-
             });
 
-            leftNotesPage.appendChild(btnElement);
-
-
-        });
-
-        
-        // Set listener on add note button
-        const addNoteButton = document.getElementById("addNoteButtonId");
-        addNoteButton.addEventListener("click", function() {
-            rightNotesPage.innerHTML = `
-            <input type="text" id="addNoteTitleText" placeholder="Title" ></input>
-            <textarea id="addNotePreviewTextarea" placeholder="Fill out the note"></textarea>
-            <button id ="addNoteToDatabaseId">Add</button>
-            `;
-
-            // Set a listener on the upload new note button
-            const inputTextarea = document.getElementById("addNotePreviewTextarea");
-            const inputTitleText = document.getElementById("addNoteTitleText");
-
-            const uploadNoteButton = document.getElementById("addNoteToDatabaseId");
-            uploadNoteButton.addEventListener("click", function() {
-                const inputText = inputTextarea.value;
-                const inputTitle = inputTitleText.value;
-
-                // Set the date and DB ID for each new note
-                const currentTime = new Date();
-                const noteKeyId = inputTitle + " - " + currentTime;
-                const stringTime = "" + currentTime;
-
-                // Upload the note to the database
-                const dataRef = ref_database(database, 'Notes/' + noteKeyId);
-                const data = {
-                            title: inputTitle,
-                            content: inputText,
-                            user: 'Testuser',
-                            created: stringTime,
-                            updated: stringTime
-                        }
-
-                        set(dataRef, data);
-
-                        console.log('Data set');
-                        
-                        rightNotesPage.innerHTML = `
-                        <p>Note successfully added.</p>
-                        
-                        `;
-                        // TO DO, RIGHT ABOVE: Refresh the particular button whose data was changed
-
-
-
-
-                        // 
-
-
-            });
-
-        });
-
-
+        }
 
     });
 
@@ -1685,123 +1764,430 @@
     // DISPLAY HOME/SCROLL VIEW ALL DB
     document.getElementById("displayScrollWrapperId").addEventListener("click", function(event) {
 
-        searchToggleState = false;
-        // Reset the Search HTML
-        const searchContainer = document.getElementById("searchBarContainer");
-        searchContainer.innerHTML = `
-        <div id="toggleSearchButton" class="toggle-search-button">
-                    <img src="card_images/searchIcon.png" id="searchIconId" alt="">
-                </div>
-                <div id="searchFormsContainer" class="search-forms-container">
-                    
-                <div class="search-input-container">
-                    <input type="text" placeholder="Title" id="titleSearchPrompt">
-                    
-                    <input type="text" placeholder="Type" id="typeSearchPrompt">
-                    
-                    <input type="text" placeholder="Tags" id="tagSearchPrompt">
-                </div>
-                    <button type="submit" id="searchCardsButton">SEARCH</button>
-                </div>
-        `;
+        if (isAdmin) {
 
-        document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
-                const button = document.getElementById("toggleSearchButton");
-                const formsContainer = document.getElementById("searchFormsContainer");
-                const forms = document.getElementsByClassName("search-form");
+            searchToggleState = false;
+            // Reset the Search HTML
+            const searchContainer = document.getElementById("searchBarContainer");
+            searchContainer.style.display = "block";
+            searchContainer.style.visibility = "visible";
+            searchContainer.innerHTML = `
+            <div id="toggleSearchButton" class="toggle-search-button">
+                        <img src="card_images/searchIcon.png" id="searchIconId" alt="">
+                    </div>
+                    <div id="searchFormsContainer" class="search-forms-container">
+                        
+                    <div class="search-input-container">
+                        <input type="text" placeholder="Title" id="titleSearchPrompt">
+                        
+                        <input type="text" placeholder="Type" id="typeSearchPrompt">
+                        
+                        <input type="text" placeholder="Tags" id="tagSearchPrompt">
+                    </div>
+                        <button type="submit" id="searchCardsButton">SEARCH</button>
+                    </div>
+            `;
 
-                if (searchToggleState) {
-                    button.style.left = "50%";
-                    formsContainer.style.left = "100%";
-                    searchToggleState = false;
-                }
-                else {
-                    button.style.left = "10%";
-                    formsContainer.style.left = "20%";
-                    searchToggleState = true;
-                    
-                    for (let i = 0; i < forms.length; i++) {
-                        forms[i].style.display = "block";
+            document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
+                    const button = document.getElementById("toggleSearchButton");
+                    const formsContainer = document.getElementById("searchFormsContainer");
+                    const forms = document.getElementsByClassName("search-form");
+
+                    if (searchToggleState) {
+                        button.style.left = "50%";
+                        formsContainer.style.left = "100%";
+                        searchToggleState = false;
                     }
-                }
-        });
+                    else {
+                        button.style.left = "10%";
+                        formsContainer.style.left = "20%";
+                        searchToggleState = true;
+                        
+                        for (let i = 0; i < forms.length; i++) {
+                            forms[i].style.display = "block";
+                        }
+                    }
+            });
 
 
-        document.getElementById("searchCardsButton").addEventListener("click", function (event) {
-            searchDB();
-        });
+            document.getElementById("searchCardsButton").addEventListener("click", function (event) {
+                searchDB();
+            });
 
 
 
-        const lowerPage = document.getElementById("lowerContentId");
+            const lowerPage = document.getElementById("lowerContentId");
 
-        lowerPage.innerHTML = `
-        <div class="scroll-wrapper" id = "scrollWrapperId">
-           </div>
-        `;
+            lowerPage.innerHTML = `
+            <div class="scroll-wrapper" id = "scrollWrapperId">
+            </div>
+            `;
 
-        displayCards();
+            displayCards();
+
+        }
 
     });
 
     // DISPLAY RANDOM CARD HOME PAGE
     document.getElementById("displayScrollWrapperRandomId").addEventListener("click", function(event) {
 
-        searchToggleState = false;
-        // Reset the Search HTML
-        const searchContainer = document.getElementById("searchBarContainer");
-        searchContainer.innerHTML = `
-        <div id="toggleSearchButton" class="toggle-search-button">
-                    <img src="card_images/searchIcon.png" id="searchIconId" alt="">
-                </div>
-                <div id="searchFormsContainer" class="search-forms-container">
-                    
-                <div class="search-input-container">
-                    <input type="text" placeholder="Title" id="titleSearchPrompt">
-                    
-                    <input type="text" placeholder="Type" id="typeSearchPrompt">
-                    
-                    <input type="text" placeholder="Tags" id="tagSearchPrompt">
-                </div>
-                    <button type="submit" id="searchCardsButton">SEARCH</button>
-                </div>
-        `;
-        document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
-                const button = document.getElementById("toggleSearchButton");
-                const formsContainer = document.getElementById("searchFormsContainer");
-                const forms = document.getElementsByClassName("search-form");
+        if (isAdmin) {
 
-                if (searchToggleState) {
-                    button.style.left = "50%";
-                    formsContainer.style.left = "100%";
-                    searchToggleState = false;
-                }
-                else {
-                    button.style.left = "10%";
-                    formsContainer.style.left = "20%";
-                    searchToggleState = true;
-                    
-                    for (let i = 0; i < forms.length; i++) {
-                        forms[i].style.display = "block";
+            searchToggleState = false;
+            // Reset the Search HTML
+            const searchContainer = document.getElementById("searchBarContainer");
+            searchContainer.style.display = "block";
+            searchContainer.style.visibility = "visible";
+            searchContainer.innerHTML = `
+            <div id="toggleSearchButton" class="toggle-search-button">
+                        <img src="card_images/searchIcon.png" id="searchIconId" alt="">
+                    </div>
+                    <div id="searchFormsContainer" class="search-forms-container">
+                        
+                    <div class="search-input-container">
+                        <input type="text" placeholder="Title" id="titleSearchPrompt">
+                        
+                        <input type="text" placeholder="Type" id="typeSearchPrompt">
+                        
+                        <input type="text" placeholder="Tags" id="tagSearchPrompt">
+                    </div>
+                        <button type="submit" id="searchCardsButton">SEARCH</button>
+                    </div>
+            `;
+            document.getElementById("toggleSearchButton").addEventListener("click", function (event) {
+                    const button = document.getElementById("toggleSearchButton");
+                    const formsContainer = document.getElementById("searchFormsContainer");
+                    const forms = document.getElementsByClassName("search-form");
+
+                    if (searchToggleState) {
+                        button.style.left = "50%";
+                        formsContainer.style.left = "100%";
+                        searchToggleState = false;
                     }
-                }
-        });
+                    else {
+                        button.style.left = "10%";
+                        formsContainer.style.left = "20%";
+                        searchToggleState = true;
+                        
+                        for (let i = 0; i < forms.length; i++) {
+                            forms[i].style.display = "block";
+                        }
+                    }
+            });
 
-        document.getElementById("searchCardsButton").addEventListener("click", function (event) {
-            searchDB();
-        });
-        
-        const lowerPage = document.getElementById("lowerContentId");
+            document.getElementById("searchCardsButton").addEventListener("click", function (event) {
+                searchDB();
+            });
+            
+            const lowerPage = document.getElementById("lowerContentId");
 
-        lowerPage.innerHTML = `
-        <div class="scroll-wrapper" id = "scrollWrapperId">
-           </div>
-        `;
-        
-        // Display the scroll wrapper with Random parameter set to true
-        displayCards('true');
+            lowerPage.innerHTML = `
+            <div class="scroll-wrapper" id = "scrollWrapperId">
+            </div>
+            `;
+            
+            // Display the scroll wrapper with Random parameter set to true
+            displayCards('true');
+
+        }
 
     });
+
+
+
+    // // DISPLAY DECK BUILDER LOWER PAGE
+    // document.getElementById("displayDecksButtonId").addEventListener("click", function(event) {
+
+    //     if (isAdmin) {
+
+    //     const lowerPage = document.getElementById("lowerContentId");
+    //     const searchContainer = document.getElementById("searchBarContainer");
+    //     searchContainer.style.display = "block";
+    //     searchContainer.style.visibility = "visible";
+    //     lowerPage.innerHTML = `
+    //     <div class="scroll-wrapper" id = "scrollWrapperId">
+    //        </div>
+    //     `;
+    //     searchContainer.innerHTML = `
+    //     <div class="user-deck-container" id="userDeckContainerId"></div>
+    //     `;
+
+    //     // Check if Deck page is open before listening to User Decks
+    //    const currentUser = auth.currentUser;
+       
+    
+            
+
+    //             const userDeckContainer = document.getElementById('userDeckContainerId');
+    //             const imageContainer = document.querySelector(".scroll-wrapper");
+    //             imageContainer.innerHTML = '';
+
+
+    //             if (currentUser) {
+
+    //                 // User is signed in
+    //                 const dataRef = ref_database(database, 'Users/' + currentUser.uid + '/Decks');
+
+    //                 // For each Deck,
+    //                 onChildAdded(dataRef, (snapshot) => {
+    //                     const data = snapshot.val();
+
+
+    //                     // MAKE BUTTONS FOR EACH DECK THAT CHANGE THE LOWER SCREEN TO A DECK VIEW
+    //                     const btnElement = document.createElement("button");
+    //                     btnElement.id = "expandDeckViewButtonId";
+    //                     btnElement.textContent = data.name;
+    //                     //console.log(data);
+
+
+
+    //                     btnElement.addEventListener("click", function() {
+
+    //                         // When you click each Deck button, it opens a scroll wrapper below with all the cards
+    //                         imageContainer.textContent = '';
+
+                            
+    //                         const deckLength = Object.keys(data).length;
+    //                         for (let i = 0; i < deckLength; i++) {
+                                
+    //                             // If the Deck's data is a number, it is a card (not the deck title)
+    //                             if (!isNaN(Number(Object.keys(data)[i]))) {
+    //                                 const cardName = data[Object.keys(data)[i]];
+
+
+    //                                 // Make each card an img with openCardDisplay as its listener
+
+    //                                 const cardStorageRef = ref_storage(storage, 'images/' + cardName);
+
+    //                                 console.log(cardStorageRef);
+
+    //                                 getDownloadURL(cardStorageRef)
+    //                                 .then((url) => {
+    //                                     const imgElement = document.createElement("img");
+    //                                     imgElement.setAttribute('src', url);
+                                        
+    //                                     const cardDataRef = ref_database(database, 'Cards/' + cardName);
+    //                                     onValue(cardDataRef, (snapshot) => {
+    //                                         const info = snapshot.val();
+    //                                         imgElement.addEventListener("click", function() {
+                                                
+    //                                             openCardDisplay(imgElement, info.name);
+    //                                         });
+    //                                     });
+                                        
+    //                                     imgElement.alt = "Image";
+
+    //                                     imageContainer.appendChild(imgElement);
+
+    //                                 })
+    //                                 .catch((error) => {
+    //                                     console.error("Error getting Firebase image");
+    //                                 })
+                                    
+    //                             }
+
+    //                         }
+                            
+    //                     });
+
+
+    //                     // Add each Deck's button to the upper container
+    //                     userDeckContainer.appendChild(btnElement);
+
+    //                 });
+                    
+    //             } else {
+    //                 // User is signed out
+    //                 userDeckContainer.textContent = "Not logged in";
+    //             }
+            
+
+    //     }
+
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // // DISPLAY BATTLEGROUND LOWER PAGE
+    // document.getElementById("battleMenuButtonId").addEventListener("click", function(event) {
+
+    //     if (isAdmin) {
+
+    //         const lowerPage = document.getElementById("lowerContentId");
+    //         const searchContainer = document.getElementById("searchBarContainer");
+            
+    //         searchContainer.innerHTML = ``;
+    //         searchContainer.style.display = "none";
+    //         searchContainer.style.visibility = "hidden";
+
+    //         lowerPage.style.width = "100%";
+    //         lowerPage.style.height = "850px";
+
+    //         lowerPage.innerHTML = `
+    //         <div class="battleground-container">
+    //             <div id="playingField">
+    //                 <div class="card-container">
+    //                     <div class="card">
+                            
+    //                             <!-- Front of the card content -->
+    //                             <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 1">
+                            
+    //                     </div>
+    //                 </div>
+    //                 <div class="card-container">
+    //                     <div class="card">
+                        
+    //                             <!-- Front of the card content -->
+    //                             <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
+                            
+    //                     </div>
+    //                 </div>
+
+
+
+    //             </div>
+
+    //             <div id="cardStack">
+    //                 <!-- Replace with your card data -->
+                    
+    //                 <!-- Add more cards as needed -->
+    //             </div>
+    //         </div>
+
+            
+    //         `;
+
+    //         // Add your Firebase configuration and database code here if needed
+
+    //         const cards = document.querySelectorAll('.card');
+    //         let draggedCard = null;
+    //         let offsetX, offsetY;
+    //         let isDragging = false;
+
+    //         cards.forEach((card, index) => {
+    //             // Position all the cards on top of each other within the playingField
+    //             card.style.right = '0';
+    //             card.style.bottom = `0`; // Add some spacing between the cards
+
+    //             card.addEventListener('mousedown', (event) => {
+
+    //                 // Prevent the browser from dragging an image instead of the card
+    //                 event.preventDefault();
+    //                 // Start dragging the card when the mouse is pressed down on it
+    //                 draggedCard = card;
+    //                 card.style.opacity = '0.5'; // Make the card transparent while dragging
+
+    //                 // Calculate the offset between the mouse cursor and the card's position
+    //                 const rect = card.getBoundingClientRect();
+    //                 offsetX = event.clientX - rect.left;
+    //                 offsetY = event.clientY - rect.top;
+
+    //                 isDragging = true;
+    //             });
+
+
+                
+    //         });
+
+            
+
+    //         document.addEventListener('mousemove', (event) => {
+    //             // Move the dragged card with the mouse cursor
+    //             if (isDragging) {
+    //                 const fieldRect = playingField.getBoundingClientRect();
+    //                 const cardLeft = event.clientX - fieldRect.left - offsetX;
+    //                 const cardTop = event.clientY - fieldRect.top - offsetY;
+
+    //                 draggedCard.style.position = 'absolute';
+    //                 draggedCard.style.left = `${cardLeft}px`;
+    //                 draggedCard.style.top = `${cardTop}px`;
+    //             }
+    //         });
+
+    //         document.addEventListener('mouseup', (event) => {
+    //             // Drop the card into the playing field when the mouse is released
+    //             if (draggedCard) {
+    //                 console.log('test');
+    //                 const playingField = document.getElementById('playingField');
+
+    //                 // Calculate the card's position within the playingField container
+    //                 const fieldRect = playingField.getBoundingClientRect();
+    //                 const cardLeft = event.clientX - fieldRect.left - offsetX;
+    //                 const cardTop = event.clientY - fieldRect.top - offsetY;
+
+    //                 draggedCard.style.position = 'absolute';
+    //                 draggedCard.style.left = `${cardLeft}px`;
+    //                 draggedCard.style.top = `${cardTop}px`;
+    //                 playingField.appendChild(draggedCard);
+
+    //                 draggedCard.style.opacity = '1';
+    //                 draggedCard = null;
+
+    //                 isDragging = false;
+                    
+    //             }
+
+                
+
+    //         });
+
+
+    //     }
+        
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2052,14 +2438,14 @@
 
 
     // SAVE THE CARD PREVIEW TO YOUR LOCAL DOWNLOADS
-    document.getElementById("saveImageButton").addEventListener("click", function() {
-        saveImage().then((combinedImage) => {
-            const link = document.createElement('a');
-            link.href = combinedImage;
-            link.download = addCardNameId.value + '.png';
-            link.click();
-        })
-    });
+    // document.getElementById("saveImageButton").addEventListener("click", function() {
+    //     saveImage().then((combinedImage) => {
+    //         const link = document.createElement('a');
+    //         link.href = combinedImage;
+    //         link.download = addCardNameId.value + '.png';
+    //         link.click();
+    //     })
+    // });
 
    
 
@@ -2070,9 +2456,9 @@
     function openCardDisplay(picture, cardName) {
         viewCardOverlay.style.display = "block";
 
-
         const overlayImage = document.getElementById("newImagePreview");
         overlayImage.setAttribute('src', picture.src);
+        console.log(overlayImage);
 
         const titleParagraph = document.getElementById("overlayCardTitleP");
         titleParagraph.textContent = cardName;
@@ -2123,23 +2509,30 @@
 
     // Setting the listeners here
     addCardMenuButton.addEventListener('click', () => {
-        addCardOverlay.style.display = 'block';
-        toggleCardInputs();
-        hamburgerMenu.classList.toggle('open');
+        if (isAdmin) {
+            addCardOverlay.style.display = 'block';
+            toggleCardInputs();
+            hamburgerMenu.classList.toggle('open');
+        }
     });
 
     addCardNavButton.addEventListener('click', () => {
-        addCardOverlay.style.display = 'block';
-        toggleCardInputs();
+        if (isAdmin) {
+            addCardOverlay.style.display = 'block';
+            toggleCardInputs();
+        }
     });
 
     closeOverlayButton.addEventListener('click', () => {
         addCardOverlay.style.display = 'none';
     });
 
-    //Log in
+    //DISPLAY LOG IN PAGE
     accountButton.addEventListener('click', () => {
-        
+        const searchContainer = document.getElementById("searchBarContainer");
+        searchContainer.style.display = "none";
+        searchContainer.style.visibility = "hidden";
+
         hamburgerMenu.classList.toggle('open');
 
         lowerContentContainer.innerHTML = `
@@ -2228,7 +2621,8 @@
                         // Add user to DB
                         const dataRef = ref_database(database, 'Users/' + user.uid);
                         const data = {
-                            name: name
+                            name: name,
+                            admin: false
                         }
                         set (dataRef, data);
 
@@ -2244,14 +2638,6 @@
             });
 
 
-    });
-
-    deckBuildMenuButton.addEventListener('click', () => {
-        console.log('Build Deck button clicked');
-    });
-
-    battleMenuButton.addEventListener('click', () => {
-        console.log('Battleground button clicked');
     });
     
     viewOverlayContainer.addEventListener("click", function(event) {
@@ -2289,21 +2675,22 @@
 
 
     // Sets a listener on the tag update button when adding a card
+    // SHOULD BE FIXED LATER TO ALLOW YOU TO ADD AND REMOVE TAGS 
     tagUpdate();
     function tagUpdate() {
-    document.getElementById("addTagButton").addEventListener("click", function(event) {
-                //event.preventDefault(); // Prevent form submission and page reload
-                const input = document.getElementById("tagInputId");
-                 const paragraph = document.getElementById("tagListP");
-                 const newText = input.value;
-                 paragraph.innerHTML += newText;
-                 
+        // document.getElementById("addTagButton").addEventListener("click", function(event) {
+        //             //event.preventDefault(); // Prevent form submission and page reload
+        //             const input = document.getElementById("tagInputId");
+        //             const paragraph = document.getElementById("tagListP");
+        //             const newText = input.value;
+        //             paragraph.innerHTML += newText;
+                    
 
-                 //const cardTagInput = document.getElementById("tagInputId").value;
-            const tagArray = String(newText).split(', ');
-            console.log(tagArray);
-                input.value = "";
-            });
+        //             //const cardTagInput = document.getElementById("tagInputId").value;
+        //         const tagArray = String(newText).split(', ');
+        //         console.log(tagArray);
+        //             input.value = "";
+        //         });
     }
 
 
@@ -2666,140 +3053,170 @@
     // This changes the Add a Card overlay based on the input selected from dropdown
     document.getElementById("cardTypeSelect").addEventListener("change", function() {
         const cardSelect = document.getElementById("cardTypeSelect").value;
-        
+        console.log(cardSelect);
         toggleCardInputs();
     });
 
     function toggleCardInputs() {
-        const cardTypeSelect = document.getElementById("cardTypeSelect");
-        const leftColumn = document.getElementById("leftColumn");
-        const rightColumn = document.getElementById("rightColumn");
-
         
-        
-        const selectedOption = cardTypeSelect.value;
-        
-        // Reset inputs to default state
-        leftColumn.innerHTML = `
-            <h2>Add Card</h2>
-            <form action="" id="inputForm">
-                <label for="addCardNameId">Card Name:</label>
-                <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
-
-                <label for="addCardRulesId">Card Rules:</label>
-                <textarea id="addCardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
-
-                <label for="imageInput">Card Image:</label>
-                <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
-
-
-                <label for="tagInputId">Tag:</label>
-                <input type="text" id="tagInputId" name="tagInput">
-                <button type="button" id="addTagButton">Add Tag</button>
-                <p id="tagListP"></p>
-
-
-                <button type="submit" form="inputForm">Submit</button>
-
-            </form>
-        `;
-
-            
-        // Reset preview to default state (THIS MAKES THE PREVIEW NOT WORK RN)
-        // rightColumn.innerHTML = `
-        //     <label for="imagePreview">Preview</label>
-        //     <div class="image-container">
-        //     <img src="card_images/blankCard.PNG" alt="">
-        //     <img id="imagePreview" src="" alt="Card"/>
-        //     <div class="text-box-card-name">
-        //         <h2 id="cardNameTitleTextId">Card Title</h2>
-        //     </div>
-        //     <div class="text-box-card-rules">
-        //         <p id="cardRulesTextId">Card Rules</p>
-        //     </div>
+        // const parentLeftColumn = document.getElementById("leftColumn");
+        // parentLeftColumn.innerHTML = `
+        //     <div class="add-card-inner-left-column" id="addCardInnerLeftColumn">
+                
         //     </div>
         // `;
 
+        const leftColumn = document.getElementById("addCardInnerLeftColumn");
+        const rightColumn = document.getElementById("rightColumn");
+
+        
+        // Reset inputs to default state
+        // leftColumn.innerHTML = `
+        //     <div class="dropdown-container">
+        //                     <h2>Add</h2>
+        //                     <select class="add-dropdown-select" id="cardTypeSelect">
+        //                     <option value="bird">Bird</option>
+        //                     <option value="song">Song</option>
+        //                     <option value="feather">Feather</option>
+        //                     <option value="egg">Egg</option>
+        //                     </select>
+        //                     <h2>Card</h2>
+        //     </div>
+        // `;
+
+
+        const cardTypeSelect = document.getElementById("cardTypeSelect");       
+        const selectedOption = cardTypeSelect.value;
+
+        
+
         // Handle different options
+
+        
+
         if (selectedOption === "bird") {
 
             // Custom inputs for type 1
              leftColumn.innerHTML = `
-             <h2>Add Bird Card</h2>
-             <form action="" id="inputForm">
-             <label for="addCardNameId">Card Name:</label>
-             <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
+             
+                <div class="dropdown-container">
+                        <h2>Add</h2>
+                        <select class="add-dropdown-select" id="cardTypeSelect">
+                          <option value="bird">Bird</option>
+                          <option value="song">Song</option>
+                          <option value="feather">Feather</option>
+                          <option value="egg">Egg</option>
+                        </select>
+                        <h2>Card</h2>
+                </div>
+                
 
-             <label for="addCardRulesId">Card Rules:</label>
-             <textarea id="addCardRulesId" placeholder="Description" rows="4" cols="50"></textarea>
 
-             <label for="imageInput">Card Image:</label>
-             <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+                <form action="" id="inputForm">
 
-                    <div id="extraBirdInfo" class="hidden">
 
-                        <div class="faction-subtype-power-container">
-                            <div class="faction-subtype-sub-container">
-                                <div class="faction-container">
+                    <div class="add-card-first-row">
+                        <div class="power-faction-container">
+                            <div class="power-container">
+                                        <label for="addPowerInputId">Power:</label>
+                                        <input type="number" id="addPowerInputId" name="powerInput" value="0">
+                            </div>
+
+                            <div class="faction-container">
                                     <label for="addFactionInputId">Faction:</label>
                                     <select id="addFactionSelectId">
-                                        <option value=""></option>
-                                        <option value="red">Red</option>
-                                        <option value="blue">Blue</option>
-                                        <option value="black">Black</option>
+                                            <option value=""></option>
+                                            <option value="red">Red</option>
+                                            <option value="blue">Blue</option>
+                                            <option value="black">Black</option>
                                     </select>
-                                </div>
-                                
-                                <div class="subtype-container">
-                                    <label for="addSubtypeInputId">Subtype:</label>
-                                    <input type="text" id="addSubtypeInputId" name="subtypeInput">
-                                </div>
-                            </div>
-                            
-                            <div class="power-container">
-                                <label for="addPowerInputId">Power:</label>
-                                <input type="number" id="addPowerInputId" name="powerInput" value="0">
                             </div>
                         </div>
 
-
-                        <div class="color-cost-input-container">
-                            <label for="addRedCostInputId">Red:</label>
-                            <input type="number" id="addRedCostInputId" name="redCostInput" value="0">
-
-                            <label for="addBlueCostInputId">Blue:</label>
-                            <input type="number" id="addBlueCostInputId" name="blueCostInput" value="0">
-
-                            <label for="addBlackCostInputId">Black:</label>
-                            <input type="number" id="addBlackCostInputId" name="blackCostInput" value="0">
+                        <div class="name-container">
+                            <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
                         </div>
-
-
+                        
                     </div>
-                   
+                    
 
-                    <label for="tagInputId">Tag:</label>
-                    <input type="text" id="tagInputId" name="tagInput">
-                    <button type="button" id="addTagButton">Add Tag</button>
-                    <p id="tagListP"></p>
+                    <div class="add-card-second-row">
+                        <div class="color-cost-input-container">
+                                <div>
+                                    <label for="addRedCostInputId">Red:</label>
+                                    <input type="number" id="addRedCostInputId" name="redCostInput" value="0">
+                                </div>
+                                <div>
+                                    <label for="addBlueCostInputId">Blue:</label>
+                                    <input type="number" id="addBlueCostInputId" name="blueCostInput" value="0">
+                                </div>
+                                <div>
+                                    <label for="addBlackCostInputId">Black:</label>
+                                    <input type="number" id="addBlackCostInputId" name="blackCostInput" value="0">
+                                </div>
+                        </div>
+                    </div>
+
 
                     
-             <button type="submit" form="inputForm">Submit</button>
 
-             <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
-                    <div class="confirmation-message-container">
-                      <div id="confirmationMessage">Nice, you made a bird</div>
+
+                    <div class="add-card-third-row">
+                        <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
                     </div>
-                  </div>
 
-             </form>
 
-             <div class="add-card-add-note-container">
-                <button id="createNoteFromBird">Create New Note</button>
-                <p id="noteConfirmParagraphId"></p>
-             </div>
+
+
+                    <div class="add-card-fourth-row">
+                        <div class="subtype-container">
+                            <input type="text" placeholder="Subtype" id="addSubtypeInputId" name="subtypeInput">
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="add-card-fifth-row">
+                        <textarea id="addCardRulesId" placeholder="Card Rules" rows="4" cols="50"></textarea>
+                    </div>
+                    
+
+                        
+                    <div class="add-card-sixth-row">
+                        <input type="text" placeholder="Tags," id="tagInputId" name="tagInput">
+                    </div>
+
+                    <div class="add-card-eighth-row">
+                        <button type="submit" form="inputForm">Add to DB</button>
+                    </div>
+                
+
+
+                </form>
+
+                <div class="add-card-seventh-row">
+                        <div class="add-card-add-note-container">
+                            <button id="createNoteFromBird">Create New Note</button>
+                        </div>
+                        <div class="add-card-save-image-container">
+                            <button id="saveImageButton">Save Image</button>
+                        </div>                        
+                </div>
+                
+
+                <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+                        <div class="confirmation-message-container">
+                        <div id="confirmationMessage">Nice, you made a bird</div>
+                        </div>
+                </div>
+            
+
+
+             
+
          `;
-         extraBirdInfo.classList.remove("hidden");
         
 
 
@@ -2935,21 +3352,76 @@
 
         } else if (selectedOption === "song") {
             // Custom inputs for type 2
-            leftColumn.innerHTML += `
-            <label for="eggInputNumberId">Required Eggs:</label>
-            <input type="number" id="eggInputNumberId" name="eggInputNumber" value="0">
-            <label for="nestInputNumberId">Required Nest:</label>
-            <input type="number" id="nestInputNumberId" name="nestInputNumber" value="0">
-            <label for="airInputNumberId">Required Air:</label>
-            <input type="number" id="airInputNumberId" name="airInputNumber" value="0">
-            <label for="groundInputNumberId">Required Ground:</label>
-            <input type="number" id="groundInputNumberId" name="groundInputNumber" value="0">
+            leftColumn.innerHTML = `
+            <div class="dropdown-container">
+                        <h2>Add</h2>
+                        <select class="add-dropdown-select" id="cardTypeSelect">
+                          <option value="song">Song</option>
+                          <option value="feather">Feather</option>
+                          <option value="egg">Egg</option>
+                          <option value="bird">Bird</option>
+                        </select>
+                        <h2>Card</h2>
+            </div>
+
+            <form action="" id="inputForm">
+                <div class="add-card-first-row">
+                    <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
+                </div>
+
+                <div class="add-card-third-row">
+                    <label for="imageInput">Card Image:</label>
+                    <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+                </div>
+
+                
+
+                
+                <div class="song-requirement-input-container">
+                    <label for="eggInputNumberId">Eggs:</label>
+                    <input type="number" id="eggInputNumberId" name="eggInputNumber" value="0">
+                    <label for="nestInputNumberId">Nest:</label>
+                    <input type="number" id="nestInputNumberId" name="nestInputNumber" value="0">
+                    <label for="airInputNumberId">Air:</label>
+                    <input type="number" id="airInputNumberId" name="airInputNumber" value="0">
+                    <label for="groundInputNumberId">Ground:</label>
+                    <input type="number" id="groundInputNumberId" name="groundInputNumber" value="0">
+                </div>
+
+                <div class="add-card-fifth-row">
+                    <textarea id="addCardRulesId" placeholder="Card Rules" rows="4" cols="50"></textarea>
+                </div>
+                
+                <div class="add-card-sixth-row">
+                    <input type="text" placeholder="Tags," id="tagInputId" name="tagInput">
+                </div>
+
+
+
+                <div class="add-card-eighth-row">
+                        <button type="submit" form="inputForm">Add to DB</button>
+                </div>
+                
+
+                </form>
+
+
+
+                <div class="add-card-seventh-row">
+                        <div class="add-card-add-note-container">
+                            <button id="createNoteFromBird">Create New Note</button>
+                        </div>
+                        <div class="add-card-save-image-container">
+                            <button id="saveImageButton">Save Image</button>
+                        </div>                        
+                </div>
+
 
             <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
                     <div class="confirmation-message-container">
                       <div id="confirmationMessage">Cool Song!</div>
                     </div>
-                </div>
+            </div>
             `;
 
             rightColumn.innerHTML = `
@@ -3042,12 +3514,66 @@
 
         } else if (selectedOption === "feather") {
             // Custom inputs for type 3
-            leftColumn.innerHTML += `
-                <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+            leftColumn.innerHTML = `
+            <div class="dropdown-container">
+                        <h2>Add</h2>
+                        <select class="add-dropdown-select" id="cardTypeSelect">
+                          <option value="feather">Feather</option>
+                          <option value="egg">Egg</option>
+                          <option value="bird">Bird</option>
+                          <option value="song">Song</option>
+                        </select>
+                        <h2>Card</h2>
+            </div>
+
+            <form action="" id="inputForm">
+                <div class="add-card-first-row">
+                    <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
+                </div>
+
+                <div class="add-card-third-row">
+                    <label for="imageInput">Card Image:</label>
+                    <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+                </div>
+
+                
+
+        
+
+                <div class="add-card-fifth-row">
+                    <textarea id="addCardRulesId" placeholder="Card Rules" rows="4" cols="50"></textarea>
+                </div>
+                
+                <div class="add-card-sixth-row">
+                    <input type="text" placeholder="Tags," id="tagInputId" name="tagInput">
+                </div>
+
+
+
+                <div class="add-card-eighth-row">
+                        <button type="submit" form="inputForm">Add to DB</button>
+                </div>
+                
+
+                </form>
+
+
+
+                <div class="add-card-seventh-row">
+                        <div class="add-card-add-note-container">
+                            <button id="createNoteFromBird">Create New Note</button>
+                        </div>
+                        <div class="add-card-save-image-container">
+                            <button id="saveImageButton">Save Image</button>
+                        </div>                        
+                </div>
+
+
+            <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
                     <div class="confirmation-message-container">
                       <div id="confirmationMessage">Another feather in your cap</div>
                     </div>
-                  </div>
+            </div>
             `;
 
             rightColumn.innerHTML = `
@@ -3075,12 +3601,67 @@
         }
         else if (selectedOption === "egg") {
             // Custom inputs for type 3
-            leftColumn.innerHTML += `
-                <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
+            leftColumn.innerHTML = `
+            <div class="dropdown-container">
+                        <h2>Add</h2>
+                        <select class="add-dropdown-select" id="cardTypeSelect">
+                          <option value="egg">Egg</option>
+                          <option value="bird">Bird</option>
+                          <option value="song">Song</option>
+                          <option value="feather">Feather</option>
+                        </select>
+                        <h2>Card</h2>
+            </div>
+
+            <form action="" id="inputForm">
+                <div class="add-card-first-row">
+                    <input type="text" placeholder="Name" id="addCardNameId" name="cardName" required>
+                </div>
+
+                <div class="add-card-third-row">
+                    <label for="imageInput">Card Image:</label>
+                    <input type="file" id="imageInput" name="cardImage" accept="image/*" required>
+                </div>
+
+                
+
+        
+
+                <div class="add-card-fifth-row">
+                    <textarea id="addCardRulesId" placeholder="Card Rules" rows="4" cols="50"></textarea>
+                </div>
+                
+                <div class="add-card-sixth-row">
+                    <input type="text" placeholder="Tags," id="tagInputId" name="tagInput">
+                </div>
+
+
+
+                <div class="add-card-eighth-row">
+                        <button type="submit" form="inputForm">Add to DB</button>
+                </div>
+                
+
+                </form>
+
+
+
+                <div class="add-card-seventh-row">
+                        <div class="add-card-add-note-container">
+                            <button id="createNoteFromBird">Create New Note</button>
+                        </div>
+                        <div class="add-card-save-image-container">
+                            <button id="saveImageButton">Save Image</button>
+                        </div>                        
+                </div>
+
+
+
+            <div class="confirmation-message-overlay" id="confirmationMessageOverlayId">
                     <div class="confirmation-message-container">
-                      <div id="confirmationMessage">That Egg? ok</div>
+                      <div id="confirmationMessage">egg</div>
                     </div>
-                  </div>
+            </div>
             `;
 
             rightColumn.innerHTML = `
@@ -3132,7 +3713,24 @@
             });
 
             // Add the listener to the add tag button again
-            tagUpdate();
+            //tagUpdate();
+
+            // Add listener to the Save Image button again
+            document.getElementById("saveImageButton").addEventListener("click", function() {
+                saveImage().then((combinedImage) => {
+                    const link = document.createElement('a');
+                    link.href = combinedImage;
+                    link.download = addCardNameId.value + '.png';
+                    link.click();
+                })
+            });
+
+            // Add listener for the dropdown again
+            document.getElementById("cardTypeSelect").addEventListener("change", function() {
+                console.log('test');
+                toggleCardInputs();
+
+            });
 
             // Add listener to the Create New Note button
             document.getElementById("createNoteFromBird").addEventListener("click", function(event) {
@@ -3150,7 +3748,7 @@
                     const stringTime = "" + theDate;
                     const data = {
                         title: cardNameTitleText.textContent,
-                        content: 'Created ' + cardNameTitleText.textContent,
+                        content: 'Notes for ' + cardNameTitleText.textContent,
                         user: 'Testuser',   // user that first created note
                         created: stringTime // date created
                     }
@@ -3177,7 +3775,9 @@
 
             });
             
-        }
+
+            
+    }
 
 
     // This changes the Edit Card overlay based on the input selected from dropdown
@@ -3188,7 +3788,7 @@
 
     function toggleEditCardInputs() {
         const editSelect = document.getElementById("editSelect");
-        const leftColumn = document.getElementById("leftColumn");
+        const leftColumn = document.getElementById("viewCardInnerLeftColumn");
         const rightColumn = document.getElementById("innerRightColumnId");
 
         const cardTitle = document.getElementById("overlayCardTitleP");
@@ -3251,14 +3851,14 @@
         // Handle different options
         if (selectedOption === "view") {
             // Custom inputs for type 1
-             leftColumn.innerHTML = `
+             leftColumn.innerHTML += `
              
             `;
         
 
              rightColumn.innerHTML = `
              <button id="addPreviewButton" >Add to Preview</button>
-             <button id="addToDeckButton" >Add to Deck</button>
+             
              <p id="overlayCardTitleP">` + cardTitleText + `</p>
              
             `;
@@ -3268,17 +3868,7 @@
                     addCardToPreviewQueue();
             });
 
-             //set a listener for the deck button, after the View is selected
-             document.getElementById("addToDeckButton").addEventListener("click", function() {
-                    const cardToBeAdded = document.getElementById("overlayCardTitleP").textContent;
-                    const currentUser = auth.currentUser.uid;
-                    const dataRef = ref_database(database, 'Users/' + currentUser + '/Decks/Deck1');
-                    const newDataRef = push(dataRef);
-                    const data = {
-                        card: cardToBeAdded
-                    }
-                    set (newDataRef, data);
-            });
+            
 
             // Custom preview for type 1
             // rightColumn.innerHTML += `
@@ -3288,9 +3878,9 @@
             // `;
         } else if (selectedOption === "edit") {
             // Custom inputs for type 2
-            leftColumn.innerHTML += `
+            // leftColumn.innerHTML += `
     
-            `;
+            // `;
 
             rightColumn.innerHTML = `
             <p id="overlayCardTitleP">` + cardTitleText + `</p>

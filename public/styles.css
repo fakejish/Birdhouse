@@ -7,8 +7,9 @@ body {
 }
 
 /* #iconTopPage {
-
-} */
+  width: 50px;
+  height: 50px;
+}  */
 
 
 
@@ -20,10 +21,12 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 25vh;
-  width: 100%;
-  /* background: linear-gradient(to top, transparent, #ffffff); */
+  height: 9vh;
+  width: 99.3%;
   position: relative;
+  background-color: #770e008e;
+  border: 5px solid rgb(29, 0, 0);
+  border-radius: 15px 15px 15px 15px;
 }
 
 .header-icon-title {
@@ -218,6 +221,9 @@ body {
      width: 100%;
      height: 100%;
      overflow: visible;
+     background-color: #0c7ca86c;
+     border: 10px solid rgb(0, 7, 88);
+     border-radius: 20px 20px 20px 20px;
   }
   
   .scroll-wrapper img {
@@ -370,9 +376,10 @@ body {
 
 
   .content-container {
-    background-color: #f0f0f0; /* Set the desired background color for the content container */
+    background-color: #99df87; /* Set the desired background color for the content container */
     padding: 20px;
     border-radius: 8px;
+    border: 10px solid rgb(43, 119, 62);
     display: flex;
     justify-content: flex-start;
     height: 100%;
@@ -384,34 +391,29 @@ body {
 
 
 
-  .dropdown-container {
-    position: absolute;
-    top: 5%;
-    left: 45%;
-    transform: translateX(-50%);
-    z-index: 1;
-    margin-bottom: 10px;
+  .dropdown-container { /* Includes the headers and the dropdown itself*/
+    font-size: larger;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-style: italic;
   }
 
-  .left-section {
-    /* Position the image on the top-left corner */
-    flex-basis: 50%;
-    background-color: #11f51c;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+  .add-dropdown-select {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-style: italic;
+    font-size: larger;
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 50%;
   }
 
-  .right-section {
-    /* Position the buttons and paragraph on the right side */
-    flex-basis: 50%;
-    display: flex;
-    background-color: yellow;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-top: 20px; /* Add some spacing between left and right sections */
-  }
+
 
   .overlay-close {
     margin-top: 20px; /* Add spacing between sections and the close button */
@@ -423,6 +425,13 @@ body {
 
 
   /* View Card styles here */
+  .view-card-inner-left-column {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
   .new-image-container {
     position: relative;
     width: 100%;
@@ -459,7 +468,16 @@ body {
     background-color: #333333;
   }
 
+
+
 /* ADD A CARD OVERLAY OPTIONS */
+
+.add-card-inner-left-column {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
   #addCardOverlay h2 {
     margin-bottom: 10px;
@@ -480,37 +498,131 @@ body {
     margin-top: 10px;
   }
 
-  #addPowerInputId, #addRedCostInputId, #addBlueCostInputId, #addBlackCostInputId {
+  #addPowerInputId, #addRedCostInputId, #addBlueCostInputId, #addBlackCostInputId, #eggInputNumberId, #nestInputNumberId, #airInputNumberId, #groundInputNumberId {
     width: 40px;
     height: 40px;
   }
 
-  .color-cost-input-container {
+
+  .add-card-first-row, .add-card-second-row, .add-card-third-row, .add-card-fourth-row, .add-card-fifth-row, .add-card-sixth-row, .add-card-seventh-row, .add-card-eighth-row {
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+
+  .add-card-first-row {
+    justify-content: space-between;
+  }
+
+  .add-card-first-row input {
+    width: 100%;
+  }
+
+  .add-card-first-row select {
+    width: 50px;
+    height: 46px;
+  }
+
+  .power-faction-container {
     display: flex;
   }
 
-  .faction-subtype-power-container {
+  .name-container {
     display: flex;
-    flex-direction: row;
-}
-
-  .faction-subtype-sub-container {
-      display: flex;
-      flex-direction: column;
+    justify-content: flex-end;
   }
 
-  .faction-container {
-      order: 1;
+  /* .add-card-second-row {
+    
+  } */
+
+
+  .color-cost-input-container, .song-requirement-input-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
+
+  .add-card-third-row {
+    margin: 100px;
+  }
+
+  .add-card-third-row input {
+      color: transparent;
+  }
+
+  
+
+  /* .add-card-fourth-row {
+
+  } */
+
 
   .subtype-container {
-      order: 1;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
   }
 
-  .power-container {
-      order: 3;
-      margin: 30px;
+  .subtype-container input {
+    height: 100%;
+    text-align: center;
+    width: 50%;
   }
+
+
+  /* .add-card-fifth-row {
+
+  } */
+
+  .add-card-fifth-row textarea {
+    width: 100%;
+  }
+
+  .add-card-sixth-row input {
+    width: 100%;
+  }
+
+  .add-card-seventh-row  {
+    justify-content: space-between;
+  }
+
+  /*Add a note from the Add a Card overlay*/
+  .add-card-add-note-container{
+    margin-left: 50px;
+  }
+
+  .add-card-save-image-container{
+    margin-right: 50px;
+  }
+
+  .add-card-seventh-row {
+    margin-top: 50px;
+  }
+
+  /*Create note, Save image buttons*/
+  .add-card-seventh-row button {
+    height: 50px;
+    width: 120px;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  /*Submit button */
+  .add-card-eighth-row button {
+    height: 50px;
+  }
+
+
+
+
+
+
+
 
 
   .add-image-container {
@@ -812,15 +924,7 @@ body {
 
 
 
-/*Add a note from the Add a Card overlay*/
-.add-card-add-note-container{ 
-  display: flex;
-  flex-direction: row;
-}
 
-.add-card-add-note-container p {
-  margin: 20px;
-}
 
 
 
@@ -981,7 +1085,12 @@ body {
 
 .account-page-container {
   color: white;
-  background-color: #0c7ca8;
+  background-color: #5900ffa6;
+  border: 2px solid rgb(26, 0, 44);
+  border-radius: 5px 5px 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .account-page-container input {
@@ -992,3 +1101,58 @@ body {
 .account-page-container button {
   margin: 20px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*     BATTLEGROUND CSS STYLES          */
+.battleground-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: firebrick;
+}
+
+.card {
+  width: 110px;
+  height: 150px;
+  border: 1px solid #333;
+  position: absolute;
+}
+.playing-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the entire card */
+}
+#playingField {
+  width: 80%;
+  height: 800px;
+  background-color: #d3d3d3;
+  border: 2px dashed #000;
+  position: relative;
+}
+
