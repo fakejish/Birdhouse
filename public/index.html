@@ -2087,182 +2087,182 @@
 
 
 
-    // DISPLAY BATTLEGROUND LOWER PAGE
-    document.getElementById("battleMenuButtonId").addEventListener("click", function(event) {
+    // // DISPLAY BATTLEGROUND LOWER PAGE
+    // document.getElementById("battleMenuButtonId").addEventListener("click", function(event) {
 
 
 
 
 
-        if (isAdmin) {
+    //     if (isAdmin) {
 
-            hamburgerMenu.classList.toggle('open');
+    //         hamburgerMenu.classList.toggle('open');
 
-            // Reset the HTML to blank/battleground
-            const lowerPage = document.getElementById("lowerContentId");
-            const searchContainer = document.getElementById("searchBarContainer");
+    //         // Reset the HTML to blank/battleground
+    //         const lowerPage = document.getElementById("lowerContentId");
+    //         const searchContainer = document.getElementById("searchBarContainer");
             
-            searchContainer.innerHTML = ``;
-            searchContainer.style.display = "none";
-            searchContainer.style.visibility = "hidden";
+    //         searchContainer.innerHTML = ``;
+    //         searchContainer.style.display = "none";
+    //         searchContainer.style.visibility = "hidden";
 
-            lowerPage.style.width = "1500px";
-            lowerPage.style.height = "850px";
+    //         lowerPage.style.width = "1500px";
+    //         lowerPage.style.height = "850px";
 
-            lowerPage.innerHTML = `
-                <div class="battleground-container">
+    //         lowerPage.innerHTML = `
+    //             <div class="battleground-container">
 
-                    <div id="createJoinGameOverlay" class="create-join-game-overlay">
-                            <div class="create-join-button-existing-dropdown-container">
-                                <div class="create-game-button-container" id="createGameButtonContainer">
-                                    <button id="createNewGameButton">Create New Game</button>
-                                    <button id="joinGameButton">Join Game</button>
-                                    <button id="spectateGameButton">Spectate Game</button>
-                                </div>
+    //                 <div id="createJoinGameOverlay" class="create-join-game-overlay">
+    //                         <div class="create-join-button-existing-dropdown-container">
+    //                             <div class="create-game-button-container" id="createGameButtonContainer">
+    //                                 <button id="createNewGameButton">Create New Game</button>
+    //                                 <button id="joinGameButton">Join Game</button>
+    //                                 <button id="spectateGameButton">Spectate Game</button>
+    //                             </div>
                                 
-                                <div class="existing-games-container">
-                                    <select id="existingGameSelectId">
-                                        <!-- THIS IS WHERE GAMES FROM THE DB WILL SHOW UP --!>
-                                    </select>
-                                </div>
+    //                             <div class="existing-games-container">
+    //                                 <select id="existingGameSelectId">
+    //                                     <!-- THIS IS WHERE GAMES FROM THE DB WILL SHOW UP --!>
+    //                                 </select>
+    //                             </div>
 
-                            </div>
+    //                         </div>
                         
-                    </div>
+    //                 </div>
 
-                    <div id="playingField">
+    //                 <div id="playingField">
 
                         
                     
 
-                        <img id="deckImageId" src="card_images/blankCard.png">
+    //                     <img id="deckImageId" src="card_images/blankCard.png">
 
-                    </div>
+    //                 </div>
                     
                     
-                </div>
+    //             </div>
 
             
             
-            `;
+    //         `;
 
-            const gameMenuOverlay = document.getElementById("createJoinGameOverlay");
-            gameMenuOverlay.style.display = 'block';
+    //         const gameMenuOverlay = document.getElementById("createJoinGameOverlay");
+    //         gameMenuOverlay.style.display = 'block';
 
-            // Create a new game
-            document.getElementById("createNewGameButton").addEventListener("click", function(event) {
+    //         // Create a new game
+    //         document.getElementById("createNewGameButton").addEventListener("click", function(event) {
                 
-                const gameRef = ref_database(database, 'Games/');
+    //             const gameRef = ref_database(database, 'Games/');
 
-                const newGame = {
+    //             const newGame = {
 
-                    // Continue to fill this out to resemble a perfect empty new game state
-                    p1id: auth.currentUser.uid,
-                    p1name: 'Jake',
-                    p2name: 'Jeremy',
-                    p1LP: 20,
-                    p2LP: 20,
-                    p1deck: {
-                        0: 'Bird',
-                        1: 'Bird 3'
-                    },
-                    p2field: {
-                        0 :{
-                            name: 'Bird',
-                            inset: '24px'
-                        },
-                        1 :{
-                            name: 'Bird',
-                            inset: '32px'
-                        }
-                    }
-
-
-
-                }
-
-                // Create a new game in the database
-                push(gameRef, newGame);
-
-                // Open the battleground view with the loaded info
+    //                 // Continue to fill this out to resemble a perfect empty new game state
+    //                 p1id: auth.currentUser.uid,
+    //                 p1name: 'Jake',
+    //                 p2name: 'Jeremy',
+    //                 p1LP: 20,
+    //                 p2LP: 20,
+    //                 p1deck: {
+    //                     0: 'Bird',
+    //                     1: 'Bird 3'
+    //                 },
+    //                 p2field: {
+    //                     0 :{
+    //                         name: 'Bird',
+    //                         inset: '24px'
+    //                     },
+    //                     1 :{
+    //                         name: 'Bird',
+    //                         inset: '32px'
+    //                     }
+    //                 }
 
 
 
-                // UPDATE THE PLAYING FIELD
+    //             }
 
-                // Get a reference to each card that is in your Current Deck,
-                // Fill the playingField deck with cards that match your Deck
+    //             // Create a new game in the database
+    //             push(gameRef, newGame);
 
-                const playingField = document.getElementById("playingField");
-
-                const currentDeck = '34tr3ert34te'; // TEST DATA - Allow user to choose in the future
-                const userRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
-
-                onChildAdded(userRef, (snapshot) => {
-                    const data = snapshot.val();
-                    const key = snapshot.key;
-
-                    if (key !== 'name') {
+    //             // Open the battleground view with the loaded info
 
 
 
-                        //console.log(data); // A list of all the card names in the user's current deck
+    //             // UPDATE THE PLAYING FIELD
 
-                        const cardStorageRef = ref_storage(storage, 'images/' + data);
-                        getDownloadURL(cardStorageRef)
-                        .then((url) => {
+    //             // Get a reference to each card that is in your Current Deck,
+    //             // Fill the playingField deck with cards that match your Deck
 
-                            playingField.innerHTML += `
-                                <div class="card-container">
-                                    <div class="card">
+    //             const playingField = document.getElementById("playingField");
+
+    //             const currentDeck = '34tr3ert34te'; // TEST DATA - Allow user to choose in the future
+    //             const userRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
+
+    //             onChildAdded(userRef, (snapshot) => {
+    //                 const data = snapshot.val();
+    //                 const key = snapshot.key;
+
+    //                 if (key !== 'name') {
+
+
+
+    //                     //console.log(data); // A list of all the card names in the user's current deck
+
+    //                     const cardStorageRef = ref_storage(storage, 'images/' + data);
+    //                     getDownloadURL(cardStorageRef)
+    //                     .then((url) => {
+
+    //                         playingField.innerHTML += `
+    //                             <div class="card-container">
+    //                                 <div class="card">
                                     
-                                        <!-- Front of the card content -->
-                                        <img class="playing-card-image" src="` + url + `" alt="Card 1">
-                                    </div>
-                                </div>
-                            `
-                            ;
+    //                                     <!-- Front of the card content -->
+    //                                     <img class="playing-card-image" src="` + url + `" alt="Card 1">
+    //                                 </div>
+    //                             </div>
+    //                         `
+    //                         ;
 
-                        })
-                        .catch((error) => {
-                            console.log("Error: " + error);
-                        });
+    //                     })
+    //                     .catch((error) => {
+    //                         console.log("Error: " + error);
+    //                     });
 
-                    }
+    //                 }
 
-                });
-
-
+    //             });
 
 
 
 
-                // playingField.innerHTML += `
-                // <div class="card-container">
-                //             <div class="card">
+
+
+    //             // playingField.innerHTML += `
+    //             // <div class="card-container">
+    //             //             <div class="card">
                                 
-                //                     <!-- Front of the card content -->
-                //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 1">
+    //             //                     <!-- Front of the card content -->
+    //             //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 1">
                                 
-                //             </div>
-                //         </div>
-                //         <div class="card-container">
-                //             <div class="card">
+    //             //             </div>
+    //             //         </div>
+    //             //         <div class="card-container">
+    //             //             <div class="card">
                             
-                //                     <!-- Front of the card content -->
-                //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
+    //             //                     <!-- Front of the card content -->
+    //             //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
                                 
-                //             </div>
-                //         </div>
-                //         <div class="card-container">
-                //             <div class="card">
+    //             //             </div>
+    //             //         </div>
+    //             //         <div class="card-container">
+    //             //             <div class="card">
                             
-                //                     <!-- Front of the card content -->
-                //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
+    //             //                     <!-- Front of the card content -->
+    //             //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
                                 
-                //             </div>
-                //         </div>
-                // `;
+    //             //             </div>
+    //             //         </div>
+    //             // `;
 
 
 
@@ -2270,211 +2270,211 @@
 
 
 
-                setTimeout(function() {
-                    // MAKE THE CARDS DRAGGABLE 
-                    // Add your Firebase configuration and database code here if needed
+    //             setTimeout(function() {
+    //                 // MAKE THE CARDS DRAGGABLE 
+    //                 // Add your Firebase configuration and database code here if needed
 
-                    const cards = document.querySelectorAll('.card');
-                    let draggedCard = null;
-                    let offsetX, offsetY;
-                    let isDragging = false;
+    //                 const cards = document.querySelectorAll('.card');
+    //                 let draggedCard = null;
+    //                 let offsetX, offsetY;
+    //                 let isDragging = false;
 
-                    cards.forEach((card, index) => {
-                        // Position all the cards on top of each other within the playingField
-                        card.style.right = '0';
-                        card.style.bottom = `0`; // Add some spacing between the cards
+    //                 cards.forEach((card, index) => {
+    //                     // Position all the cards on top of each other within the playingField
+    //                     card.style.right = '0';
+    //                     card.style.bottom = `0`; // Add some spacing between the cards
 
-                        card.addEventListener('mousedown', (event) => {
+    //                     card.addEventListener('mousedown', (event) => {
 
-                            // Prevent the browser from dragging an image instead of the card
-                            event.preventDefault();
-                            // Start dragging the card when the mouse is pressed down on it
-                            draggedCard = card;
-                            card.style.opacity = '0.5'; // Make the card transparent while dragging
+    //                         // Prevent the browser from dragging an image instead of the card
+    //                         event.preventDefault();
+    //                         // Start dragging the card when the mouse is pressed down on it
+    //                         draggedCard = card;
+    //                         card.style.opacity = '0.5'; // Make the card transparent while dragging
 
-                            // Calculate the offset between the mouse cursor and the card's position
-                            const rect = card.getBoundingClientRect();
-                            offsetX = event.clientX - rect.left;
-                            offsetY = event.clientY - rect.top;
+    //                         // Calculate the offset between the mouse cursor and the card's position
+    //                         const rect = card.getBoundingClientRect();
+    //                         offsetX = event.clientX - rect.left;
+    //                         offsetY = event.clientY - rect.top;
 
-                            isDragging = true;
-                        });
+    //                         isDragging = true;
+    //                     });
 
 
                         
-                    });
+    //                 });
 
                     
 
-                    document.addEventListener('mousemove', (event) => {
-                        // Move the dragged card with the mouse cursor
-                        if (isDragging) {
-                            const fieldRect = playingField.getBoundingClientRect();
-                            const cardLeft = event.clientX - fieldRect.left - offsetX;
-                            const cardTop = event.clientY - fieldRect.top - offsetY;
+    //                 document.addEventListener('mousemove', (event) => {
+    //                     // Move the dragged card with the mouse cursor
+    //                     if (isDragging) {
+    //                         const fieldRect = playingField.getBoundingClientRect();
+    //                         const cardLeft = event.clientX - fieldRect.left - offsetX;
+    //                         const cardTop = event.clientY - fieldRect.top - offsetY;
 
-                            draggedCard.style.position = 'absolute';
-                            draggedCard.style.left = `${cardLeft}px`;
-                            draggedCard.style.top = `${cardTop}px`;
-                        }
-                    });
+    //                         draggedCard.style.position = 'absolute';
+    //                         draggedCard.style.left = `${cardLeft}px`;
+    //                         draggedCard.style.top = `${cardTop}px`;
+    //                     }
+    //                 });
 
-                    document.addEventListener('mouseup', (event) => {
-                        // Drop the card into the playing field when the mouse is released
-                        if (draggedCard) {
-                            console.log('test');
-                            const playingField = document.getElementById('playingField');
+    //                 document.addEventListener('mouseup', (event) => {
+    //                     // Drop the card into the playing field when the mouse is released
+    //                     if (draggedCard) {
+    //                         console.log('test');
+    //                         const playingField = document.getElementById('playingField');
 
-                            // Calculate the card's position within the playingField container
-                            const fieldRect = playingField.getBoundingClientRect();
-                            const cardLeft = event.clientX - fieldRect.left - offsetX;
-                            const cardTop = event.clientY - fieldRect.top - offsetY;
+    //                         // Calculate the card's position within the playingField container
+    //                         const fieldRect = playingField.getBoundingClientRect();
+    //                         const cardLeft = event.clientX - fieldRect.left - offsetX;
+    //                         const cardTop = event.clientY - fieldRect.top - offsetY;
 
-                            draggedCard.style.position = 'absolute';
-                            draggedCard.style.left = `${cardLeft}px`;
-                            draggedCard.style.top = `${cardTop}px`;
-                            playingField.appendChild(draggedCard);
+    //                         draggedCard.style.position = 'absolute';
+    //                         draggedCard.style.left = `${cardLeft}px`;
+    //                         draggedCard.style.top = `${cardTop}px`;
+    //                         playingField.appendChild(draggedCard);
 
-                            draggedCard.style.opacity = '1';
-                            draggedCard = null;
+    //                         draggedCard.style.opacity = '1';
+    //                         draggedCard = null;
 
-                            isDragging = false;
+    //                         isDragging = false;
                             
-                        }
+    //                     }
 
                         
 
-                    });
+    //                 });
 
-                }, 1000); // 1 second delay to update the card physics after loading from Firebase
-
-
+    //             }, 1000); // 1 second delay to update the card physics after loading from Firebase
 
 
-                gameMenuOverlay.style.display = 'none';
 
 
-            });
+    //             gameMenuOverlay.style.display = 'none';
+
+
+    //         });
             
-            // Get a list of all existing games to show on the choose game overlay
-            const gamesRef = ref_database(database, "Games/");
-            onChildAdded(gamesRef, (snapshot) => {
-                const gameData = snapshot.val();
-                //console.log(gameData);
-                const gameKey = snapshot.key;
-                //console.log(gameKey);
+    //         // Get a list of all existing games to show on the choose game overlay
+    //         const gamesRef = ref_database(database, "Games/");
+    //         onChildAdded(gamesRef, (snapshot) => {
+    //             const gameData = snapshot.val();
+    //             //console.log(gameData);
+    //             const gameKey = snapshot.key;
+    //             //console.log(gameKey);
 
-                const gameListContainer = document.getElementById("existingGameSelectId");
-                const newGameOption = document.createElement("option");
-                newGameOption.setAttribute("value", gameKey);
-                newGameOption.textContent = gameKey;
+    //             const gameListContainer = document.getElementById("existingGameSelectId");
+    //             const newGameOption = document.createElement("option");
+    //             newGameOption.setAttribute("value", gameKey);
+    //             newGameOption.textContent = gameKey;
 
-                // Add each game to the dropdown selection
-                gameListContainer.appendChild(newGameOption);
+    //             // Add each game to the dropdown selection
+    //             gameListContainer.appendChild(newGameOption);
 
-            });
-
-
-            // Join and become Player 2 in an existing game
-            document.getElementById("joinGameButton").addEventListener("click", function(event) {
-
-                const navHeader = document.getElementById("headerContainerId");
-                navHeader.style.display = 'none';
-                navHeader.style.visibility = 'hidden';
+    //         });
 
 
-                const gameToJoin = document.getElementById("existingGameSelectId").value;
+    //         // Join and become Player 2 in an existing game
+    //         document.getElementById("joinGameButton").addEventListener("click", function(event) {
 
-                // This will be the date/time and user that started the game, as the unique key for the game
-                console.log(gameToJoin);
+    //             const navHeader = document.getElementById("headerContainerId");
+    //             navHeader.style.display = 'none';
+    //             navHeader.style.visibility = 'hidden';
 
-                // Using 'gameToJoin', access the database at that node, and using the game data, display the game state in battleground
 
+    //             const gameToJoin = document.getElementById("existingGameSelectId").value;
 
+    //             // This will be the date/time and user that started the game, as the unique key for the game
+    //             console.log(gameToJoin);
+
+    //             // Using 'gameToJoin', access the database at that node, and using the game data, display the game state in battleground
 
 
 
-                // 1. Update your side of the field with your deck and data
+
+
+    //             // 1. Update your side of the field with your deck and data
 
 
                 
 
 
-                    // UPDATE THE PLAYING FIELD
+    //                 // UPDATE THE PLAYING FIELD
 
-                    // Get a reference to each card that is in your Current Deck,
-                    // Fill the playingField deck with cards that match your Deck
+    //                 // Get a reference to each card that is in your Current Deck,
+    //                 // Fill the playingField deck with cards that match your Deck
 
-                    const playingField = document.getElementById("playingField");
+    //                 const playingField = document.getElementById("playingField");
 
-                    const currentDeck = '34tr3ert34te'; // TEST DATA - Allow user to choose in the future
-                    const userRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
+    //                 const currentDeck = '34tr3ert34te'; // TEST DATA - Allow user to choose in the future
+    //                 const userRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
 
-                    onChildAdded(userRef, (snapshot) => {
-                        const data = snapshot.val();
-                        const key = snapshot.key;
+    //                 onChildAdded(userRef, (snapshot) => {
+    //                     const data = snapshot.val();
+    //                     const key = snapshot.key;
 
-                        if (key !== 'name') {
+    //                     if (key !== 'name') {
 
 
 
-                            //console.log(data); // A list of all the card names in the user's current deck
+    //                         //console.log(data); // A list of all the card names in the user's current deck
 
-                            const cardStorageRef = ref_storage(storage, 'images/' + data);
-                            getDownloadURL(cardStorageRef)
-                            .then((url) => {
+    //                         const cardStorageRef = ref_storage(storage, 'images/' + data);
+    //                         getDownloadURL(cardStorageRef)
+    //                         .then((url) => {
 
-                                playingField.innerHTML += `
-                                    <div class="card-container">
-                                        <div class="card">
+    //                             playingField.innerHTML += `
+    //                                 <div class="card-container">
+    //                                     <div class="card">
                                         
-                                            <!-- Front of the card content -->
-                                            <img class="playing-card-image" src="` + url + `" alt="Card 1">
-                                        </div>
-                                    </div>
-                                `
-                                ;
+    //                                         <!-- Front of the card content -->
+    //                                         <img class="playing-card-image" src="` + url + `" alt="Card 1">
+    //                                     </div>
+    //                                 </div>
+    //                             `
+    //                             ;
 
-                            })
-                            .catch((error) => {
-                                console.log("Error: " + error);
-                            });
+    //                         })
+    //                         .catch((error) => {
+    //                             console.log("Error: " + error);
+    //                         });
 
-                        }
+    //                     }
 
-                    });
-
-
+    //                 });
 
 
 
 
-                    // playingField.innerHTML += `
-                    // <div class="card-container">
-                    //             <div class="card">
+
+
+    //                 // playingField.innerHTML += `
+    //                 // <div class="card-container">
+    //                 //             <div class="card">
                                     
-                    //                     <!-- Front of the card content -->
-                    //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 1">
+    //                 //                     <!-- Front of the card content -->
+    //                 //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 1">
                                     
-                    //             </div>
-                    //         </div>
-                    //         <div class="card-container">
-                    //             <div class="card">
+    //                 //             </div>
+    //                 //         </div>
+    //                 //         <div class="card-container">
+    //                 //             <div class="card">
                                 
-                    //                     <!-- Front of the card content -->
-                    //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
+    //                 //                     <!-- Front of the card content -->
+    //                 //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
                                     
-                    //             </div>
-                    //         </div>
-                    //         <div class="card-container">
-                    //             <div class="card">
+    //                 //             </div>
+    //                 //         </div>
+    //                 //         <div class="card-container">
+    //                 //             <div class="card">
                                 
-                    //                     <!-- Front of the card content -->
-                    //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
+    //                 //                     <!-- Front of the card content -->
+    //                 //                     <img class="playing-card-image" src="card_images/Blue Birdington.png" alt="Card 2">
                                     
-                    //             </div>
-                    //         </div>
-                    // `;
+    //                 //             </div>
+    //                 //         </div>
+    //                 // `;
 
 
 
@@ -2482,94 +2482,94 @@
 
 
 
-                    setTimeout(function() {
-                        // MAKE THE CARDS DRAGGABLE 
-                        // Add your Firebase configuration and database code here if needed
+    //                 setTimeout(function() {
+    //                     // MAKE THE CARDS DRAGGABLE 
+    //                     // Add your Firebase configuration and database code here if needed
 
-                        const cards = document.querySelectorAll('.card');
-                        let draggedCard = null;
-                        let offsetX, offsetY;
-                        let isDragging = false;
+    //                     const cards = document.querySelectorAll('.card');
+    //                     let draggedCard = null;
+    //                     let offsetX, offsetY;
+    //                     let isDragging = false;
 
-                        cards.forEach((card, index) => {
-                            // Position all the cards on top of each other within the playingField
-                            card.style.right = '0';
-                            card.style.bottom = `0`; // Add some spacing between the cards
+    //                     cards.forEach((card, index) => {
+    //                         // Position all the cards on top of each other within the playingField
+    //                         card.style.right = '0';
+    //                         card.style.bottom = `0`; // Add some spacing between the cards
 
-                            card.addEventListener('mousedown', (event) => {
+    //                         card.addEventListener('mousedown', (event) => {
 
-                                // Prevent the browser from dragging an image instead of the card
-                                event.preventDefault();
-                                // Start dragging the card when the mouse is pressed down on it
-                                draggedCard = card;
-                                card.style.opacity = '0.5'; // Make the card transparent while dragging
+    //                             // Prevent the browser from dragging an image instead of the card
+    //                             event.preventDefault();
+    //                             // Start dragging the card when the mouse is pressed down on it
+    //                             draggedCard = card;
+    //                             card.style.opacity = '0.5'; // Make the card transparent while dragging
 
-                                // Calculate the offset between the mouse cursor and the card's position
-                                const rect = card.getBoundingClientRect();
-                                offsetX = event.clientX - rect.left;
-                                offsetY = event.clientY - rect.top;
+    //                             // Calculate the offset between the mouse cursor and the card's position
+    //                             const rect = card.getBoundingClientRect();
+    //                             offsetX = event.clientX - rect.left;
+    //                             offsetY = event.clientY - rect.top;
 
-                                isDragging = true;
-                            });
+    //                             isDragging = true;
+    //                         });
 
 
                             
-                        });
+    //                     });
 
                         
 
-                        document.addEventListener('mousemove', (event) => {
-                            // Move the dragged card with the mouse cursor
-                            if (isDragging) {
-                                const fieldRect = playingField.getBoundingClientRect();
-                                const cardLeft = event.clientX - fieldRect.left - offsetX;
-                                const cardTop = event.clientY - fieldRect.top - offsetY;
+    //                     document.addEventListener('mousemove', (event) => {
+    //                         // Move the dragged card with the mouse cursor
+    //                         if (isDragging) {
+    //                             const fieldRect = playingField.getBoundingClientRect();
+    //                             const cardLeft = event.clientX - fieldRect.left - offsetX;
+    //                             const cardTop = event.clientY - fieldRect.top - offsetY;
 
-                                draggedCard.style.position = 'absolute';
-                                draggedCard.style.left = `${cardLeft}px`;
-                                draggedCard.style.top = `${cardTop}px`;
-                            }
-                        });
+    //                             draggedCard.style.position = 'absolute';
+    //                             draggedCard.style.left = `${cardLeft}px`;
+    //                             draggedCard.style.top = `${cardTop}px`;
+    //                         }
+    //                     });
 
-                        document.addEventListener('mouseup', (event) => {
-                            // Drop the card into the playing field when the mouse is released
-                            if (draggedCard) {
-                                console.log('test');
-                                const playingField = document.getElementById('playingField');
+    //                     document.addEventListener('mouseup', (event) => {
+    //                         // Drop the card into the playing field when the mouse is released
+    //                         if (draggedCard) {
+    //                             console.log('test');
+    //                             const playingField = document.getElementById('playingField');
 
-                                // Calculate the card's position within the playingField container
-                                const fieldRect = playingField.getBoundingClientRect();
-                                const cardLeft = event.clientX - fieldRect.left - offsetX;
-                                const cardTop = event.clientY - fieldRect.top - offsetY;
+    //                             // Calculate the card's position within the playingField container
+    //                             const fieldRect = playingField.getBoundingClientRect();
+    //                             const cardLeft = event.clientX - fieldRect.left - offsetX;
+    //                             const cardTop = event.clientY - fieldRect.top - offsetY;
 
-                                draggedCard.style.position = 'absolute';
-                                draggedCard.style.left = `${cardLeft}px`;
-                                draggedCard.style.top = `${cardTop}px`;
-                                playingField.appendChild(draggedCard);
+    //                             draggedCard.style.position = 'absolute';
+    //                             draggedCard.style.left = `${cardLeft}px`;
+    //                             draggedCard.style.top = `${cardTop}px`;
+    //                             playingField.appendChild(draggedCard);
 
-                                draggedCard.style.opacity = '1';
-                                draggedCard = null;
+    //                             draggedCard.style.opacity = '1';
+    //                             draggedCard = null;
 
-                                isDragging = false;
+    //                             isDragging = false;
                                 
-                            }
+    //                         }
 
                             
 
-                        });
+    //                     });
 
-                    }, 1000); // 1 second delay to update the card physics after loading from Firebase
-
-
-
-
-                    gameMenuOverlay.style.display = 'none';
+    //                 }, 1000); // 1 second delay to update the card physics after loading from Firebase
 
 
 
 
+    //                 gameMenuOverlay.style.display = 'none';
 
-                // 2. Update the opposing side of the field with player 1's deck and data
+
+
+
+
+    //             // 2. Update the opposing side of the field with player 1's deck and data
 
 
                 
@@ -2615,7 +2615,7 @@
 
 
 
-            });
+    //         });
 
             
 
@@ -2628,9 +2628,9 @@
             
 
 
-        }
+    //     }
         
-    });
+    // });
 
 
 
