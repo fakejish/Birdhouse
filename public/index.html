@@ -23,16 +23,16 @@
           <!-- Your menu items go here -->
           <br><br><br><br><br><br><br><br><br>
           <button id="addCardMenuButton">Add a card</button>
-          <br><br><br><br><br><br><br><br><br>
           <!-- <button id="viewButton">Save (broken)</button> -->
-          <br><br>
           <!-- <button id="updateButton">Update (broken)</button> -->
           <!-- <input type="file" accept="text/*" id="updateInputTextId"> -->
           <br><br>
           <button id="displayDecksButtonId">Decks</button>
           <br><br>
+          <!-- <button id="printScreenButtonId">Print</button> -->
+          <br><br>
           <!-- <button id="battleMenuButtonId">Battleground</button> -->
-          <br><br><br><br><br><br><br><br>
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
           <button id="accountButton">Account</button>
         </div>
     </div>
@@ -301,7 +301,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
-    import { getDatabase, ref as ref_database, push, set, onValue, query, onChildAdded, orderByChild } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    import { getDatabase, ref as ref_database, push, set, onValue, query, onChildAdded, orderByChild, remove } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
     import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
     // ------ I imported ref as ref_database/storage because having 2 refs gave an error
@@ -539,7 +539,7 @@
                            
                             imgElement.addEventListener("click", function() {
 
-                                openCardDisplay(imgElement, info.name);
+                                openCardDisplayHomeView(imgElement, info.name);
 
                             });
                         });
@@ -606,7 +606,7 @@
                 imgElement.alt = "Image";
 
                 imgElement.addEventListener("click", function() {
-                    openCardDisplay(imgElement, cardId);
+                    openCardDisplayHomeView(imgElement, cardId);
                 });
 
                 imageContainer.appendChild(imgElement);
@@ -631,7 +631,7 @@
             // imgElement.alt = "Image";
 
             // imgElement.addEventListener("click", function() {
-            //     openCardDisplay(imgElement, cardId);
+            //     openCardDisplayHomeView(imgElement, cardId);
             // });
             
             // imageContainer.appendChild(imgElement);
@@ -681,7 +681,7 @@
         //                 const info = snapshot.val();
         //                 imgElement.addEventListener("click", function() {
                             
-        //                     openCardDisplay(imgElement, info.name);
+        //                     openCardDisplayHomeView(imgElement, info.name);
         //                 });
         //             });
                     
@@ -916,7 +916,7 @@
     //                 // onValue(dataRef, (snapshot) => {
     //                 //     const info = snapshot.val();
     //                 //     imgElement.addEventListener("click", function() {
-    //                 //         openCardDisplay(imgElement, info.type, itemRef.name, info.power, info.rules);
+    //                 //         openCardDisplayHomeView(imgElement, info.type, itemRef.name, info.power, info.rules);
     //                 //     });
     //                 // });
                     
@@ -1107,7 +1107,7 @@
                         onValue(dataRef, (snapshot) => {
                             const info = snapshot.val();
                             imgElement.addEventListener("click", function() {
-                                openCardDisplay(imgElement, itemRef.name, info.power, info.rules);
+                                openCardDisplayHomeView(imgElement, itemRef.name, info.power, info.rules);
                             });
                         });
                         
@@ -1216,7 +1216,7 @@
                     imgElement.alt = "Image";
 
                     imgElement.addEventListener("click", function() {
-                        openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                        openCardDisplayHomeView(imgElement, cardId, cardData.power, cardData.rules);
                     });
                     
                     imageContainer.appendChild(imgElement);
@@ -1315,7 +1315,7 @@
                                         imgElement.alt = "Image";
 
                                         imgElement.addEventListener("click", function() {
-                                            openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                            openCardDisplayHomeView(imgElement, cardId, cardData.power, cardData.rules);
                                         });
                                         
                                         imageContainer.appendChild(imgElement);
@@ -1343,7 +1343,7 @@
                                 imgElement.alt = "Image";
 
                                 imgElement.addEventListener("click", function() {
-                                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                    openCardDisplayHomeView(imgElement, cardId, cardData.power, cardData.rules);
                                 });
                                 
                                 imageContainer.appendChild(imgElement);
@@ -1385,7 +1385,7 @@
                                     imgElement.alt = "Image";
 
                                     imgElement.addEventListener("click", function() {
-                                        openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                        openCardDisplayHomeView(imgElement, cardId, cardData.power, cardData.rules);
                                     });
                                     
                                     imageContainer.appendChild(imgElement);
@@ -1471,7 +1471,7 @@
                                 imgElement.alt = "Image";
 
                                 imgElement.addEventListener("click", function() {
-                                    openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                    openCardDisplayHomeView(imgElement, cardId, cardData.power, cardData.rules);
                                 });
                                 
                                 imageContainer.appendChild(imgElement);
@@ -1541,7 +1541,7 @@
                             imgElement.alt = "Image";
 
                             imgElement.addEventListener("click", function() {
-                                openCardDisplay(imgElement, cardId, cardData.power, cardData.rules);
+                                openCardDisplayHomeView(imgElement, cardId, cardData.power, cardData.rules);
                             });
                             
                             imageContainer.appendChild(imgElement);
@@ -1901,158 +1901,172 @@
 
         if (isAdmin) {
 
-        hamburgerMenu.classList.toggle('open');
+            hamburgerMenu.classList.toggle('open');
 
-        const lowerPage = document.getElementById("lowerContentId");
-        const searchContainer = document.getElementById("searchBarContainer");
-        searchContainer.style.display = "block";
-        searchContainer.style.visibility = "visible";
-        lowerPage.innerHTML = `
-        <div class="scroll-wrapper" id = "scrollWrapperId">
-           </div>
-        `;
-        searchContainer.innerHTML = `
-        <div class="user-deck-container" id="userDeckContainerId">
-            <button id="createNewDeckButtonId">+</button>
-        </div>
-        `;
-
-        // press the Create New Deck button
-        document.getElementById("createNewDeckButtonId").addEventListener("click", function(event) {
-            const imageContainer = document.querySelector(".scroll-wrapper");
-            imageContainer.innerHTML = `
-
-            <div class="deck-name-create-container">
-                <input id="newDeckTitleInputId" type="text" placeholder="Deck Name">
-                <button id="submitNewDeckId">CREATE</button>
-            </div>
-
+            const lowerPage = document.getElementById("lowerContentId");
+            const searchContainer = document.getElementById("searchBarContainer");
+            searchContainer.style.display = "block";
+            searchContainer.style.visibility = "visible";
+            lowerPage.innerHTML = `
+                <div class="scroll-wrapper" id = "scrollWrapperId">
+                </div>
+            `;
+            searchContainer.innerHTML = `
+                <div class="user-deck-container" id="userDeckContainerId">
+                    <button id="createNewDeckButtonId">+</button>
+                </div>
             `;
 
+            // press the Create New Deck button
+            document.getElementById("createNewDeckButtonId").addEventListener("click", function(event) {
+                const imageContainer = document.querySelector(".scroll-wrapper");
+                imageContainer.innerHTML = `
 
-            // Send the created deck to the DB
-            document.getElementById("submitNewDeckId").addEventListener("click", function(event) {
-                const deckTitle = document.getElementById("newDeckTitleInputId");
-                
-                // If user entered a name for the deck
-                if (deckTitle.value) {
+                <div class="deck-name-create-container">
+                    <input id="newDeckTitleInputId" type="text" placeholder="Deck Name">
+                    <button id="submitNewDeckId">CREATE</button>
+                </div>
+
+                `;
+
+
+                // Send the created deck to the DB
+                document.getElementById("submitNewDeckId").addEventListener("click", function(event) {
+                    const deckTitle = document.getElementById("newDeckTitleInputId");
                     
-                    const deckRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks');
+                    // If user entered a name for the deck
+                    if (deckTitle.value) {
+                        
+                        const deckRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks');
 
-                    const deckData = {
-                        name: deckTitle.value
+                        const deckData = {
+                            name: deckTitle.value
+                        }
+
+                        push(deckRef, deckData);
+
+
+                        imageContainer.innerHTML = ``;
+
+
+                    }
+                    else {
+                        deckTitle.setAttribute('placeholder', 'ERROR: Name the Deck');
                     }
 
-                    push(deckRef, deckData);
+                });
 
-
-                    imageContainer.innerHTML = ``;
-
-
-                }
-                else {
-                    deckTitle.setAttribute('placeholder', 'ERROR: Name the Deck');
-                }
 
             });
 
-
-        });
-
-        // Check if Deck page is open before listening to User Decks
-       const currentUser = auth.currentUser;
-       
-    
-                const userDeckContainer = document.getElementById('userDeckContainerId');
-                const imageContainer = document.querySelector(".scroll-wrapper");
-                imageContainer.innerHTML = '';
+            // Check if Deck page is open before listening to User Decks
+        const currentUser = auth.currentUser;
+        
+        
+                    const userDeckContainer = document.getElementById('userDeckContainerId');
+                    const imageContainer = document.querySelector(".scroll-wrapper");
+                    imageContainer.innerHTML = '';
 
 
-                if (currentUser) {
+                    if (currentUser) {
 
-                    // User is signed in
-                    const dataRef = ref_database(database, 'Users/' + currentUser.uid + '/Decks');
+                        // User is signed in
+                        const dataRef = ref_database(database, 'Users/' + currentUser.uid + '/Decks');
 
-                    // For each Deck,
-                    onChildAdded(dataRef, (snapshot) => {
-                        const data = snapshot.val();
+                        // For each Deck,
+                        onChildAdded(dataRef, (snapshot) => {
+                            const data = snapshot.val();
 
 
-                        // MAKE BUTTONS FOR EACH DECK THAT CHANGE THE LOWER SCREEN TO A DECK VIEW
-                        const btnElement = document.createElement("button");
-                        btnElement.id = "expandDeckViewButtonId";
-                        btnElement.textContent = data.name;
-                        //console.log(data);
+                            // MAKE BUTTONS FOR EACH DECK THAT CHANGE THE LOWER SCREEN TO A DECK VIEW
+                            const btnElement = document.createElement("button");
+                            btnElement.id = "expandDeckViewButtonId";
+                            btnElement.textContent = data.name;
+                            //console.log(data);
 
 
 
-                        btnElement.addEventListener("click", function() {
+                            btnElement.addEventListener("click", function() {
 
-                            // When you click each Deck button, it opens a scroll wrapper below with all the cards
-                            imageContainer.textContent = '';
+                                // When you click each Deck button, it opens a scroll wrapper below with all the cards
+                                imageContainer.textContent = '';
 
-                            
-                            const deckLength = Object.keys(data).length;
-                            for (let i = 0; i < deckLength; i++) {
                                 
-                                // If the Deck's data is a number, it is a card (not the deck title)
-                                if (!isNaN(Number(Object.keys(data)[i]))) {
-                                    const cardName = data[Object.keys(data)[i]];
-
-
-                                    // Make each card an img with openCardDisplay as its listener
-
-                                    const cardStorageRef = ref_storage(storage, 'images/' + cardName);
-
+                                const deckLength = Object.keys(data).length;
+                                for (let i = 0; i < deckLength; i++) {
                                     
+                                    // If the Deck's data is a number, it is a card (not the deck title)
+                                    if (!isNaN(Number(Object.keys(data)[i]))) {
+                                        const cardName = data[Object.keys(data)[i]];
 
-                                    getDownloadURL(cardStorageRef)
-                                    .then((url) => {
-                                        const imgElement = document.createElement("img");
-                                        imgElement.setAttribute('src', url);
+
+                                        // Make each card an img with openCardDisplay as its listener
+
+                                        const cardStorageRef = ref_storage(storage, 'images/' + cardName);
+
                                         
-                                        const cardDataRef = ref_database(database, 'Cards/' + cardName);
-                                        onValue(cardDataRef, (snapshot) => {
-                                            const info = snapshot.val();
-                                            imgElement.addEventListener("click", function() {
-                                                
-                                                openCardDisplay(imgElement, info.name);
+
+                                        getDownloadURL(cardStorageRef)
+                                        .then((url) => {
+                                            const imgElement = document.createElement("img");
+                                            imgElement.setAttribute('src', url);
+                                            
+                                            const cardDataRef = ref_database(database, 'Cards/' + cardName);
+                                            onValue(cardDataRef, (snapshot) => {
+                                                const info = snapshot.val();
+                                                imgElement.addEventListener("click", function() {
+                                                    
+                                                    openCardDisplayDeckView(imgElement, info.name);
+                                                });
                                             });
-                                        });
+                                            
+                                            imgElement.alt = "Image";
+
+                                            imageContainer.appendChild(imgElement);
+
+                                        })
+                                        .catch((error) => {
+                                            console.error("Error getting Firebase image");
+                                        })
                                         
-                                        imgElement.alt = "Image";
+                                    }
 
-                                        imageContainer.appendChild(imgElement);
-
-                                    })
-                                    .catch((error) => {
-                                        console.error("Error getting Firebase image");
-                                    })
-                                    
                                 }
+                                
+                            });
 
-                            }
-                            
+
+                            // Add each Deck's button to the upper container
+                            userDeckContainer.appendChild(btnElement);
+
                         });
-
-
-                        // Add each Deck's button to the upper container
-                        userDeckContainer.appendChild(btnElement);
-
-                    });
-                    
-                } else {
-                    // User is signed out
-                    userDeckContainer.textContent = "Not logged in";
-                }
-            
+                        
+                    } else {
+                        // User is signed out
+                        userDeckContainer.textContent = "Not logged in";
+                    }
+                
 
         }
 
     });
 
 
+    // // DISPLAY PRINT SHEETS SCREEN
+    // document.getElementById("printScreenButtonId").addEventListener("click", function(event) {
+    //     const lowerContent = document.getElementById("lowerContentId");
+    //     const searchContainer= document.getElementById("searchBarContainer");
+    //     searchContainer.style.display = 'none';
+    //     searchContainer.style.visibility = 'hidden';
+    //     lowerContent.innerHTML = `
 
+    //     <div class="print-sheet-button-container">
+    //         <input type="file">
+    //         <button id="createSheetButton">Create a sheet</button>
+    //     </div>
+    //     `;
+
+    // });
 
 
 
@@ -2913,9 +2927,73 @@
 
 
 
-    // OPENS THE OVERLAY CARD PREVIEW
-    function openCardDisplay(picture, cardName) {
+    // OPENS THE OVERLAY CARD PREVIEW ON HOME SCREEN
+    function openCardDisplayHomeView(picture, cardName) {
+
+        // Reset the card overlay
         viewCardOverlay.style.display = "block";
+
+        viewCardOverlay.innerHTML = `
+        
+        
+            <div class="overlay-content" id="viewOverlayContainerId">
+                <div class="content-container" id="contentContainerId">
+                    <div class="left-column" id="previewLeftColumn">
+                        <div class = "view-card-inner-left-column" id="viewCardInnerLeftColumn">
+                            <div class="new-image-container">
+                                <img id = "newImagePreview" src="" alt="Card"/>
+                            <!-- <div class="text-box-card-name">
+                                <h2 id="newCardNameTitleTextId">Card Title</h2>
+                            </div>
+                            <div class="text-box-card-rules">
+                                <p id="newCardRulesTextId">Card Rules</p> 
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-column" id="previewRightColumn">
+                        <div class="dropdown">
+                            <select id="editSelect">
+                            <option value="view">View</option>
+                            <option value="edit">Edit</option>
+                            <option value="delete">Delete</option>
+                            </select>
+                        </div>
+                        <div class="innerRightColumn" id="innerRightColumnId">
+
+                            
+                            
+
+                            <h2>View Card</h2>
+                            <div id="cardInformation">
+                                <!-- Add fields for the cards to be populated here-->
+                            </div>
+
+                            <p id="overlayTypeTest">Type</p>
+
+                            <p id="overlayCardTitleP">Type</p>
+
+                            <button id="addPreviewButton">Add to Preview</button>
+
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    
+        
+        `;
+
+        // Close the overlay if clicking away
+        const viewOverlayContainer = document.getElementById("viewOverlayContainerId");
+        
+        viewOverlayContainer.addEventListener("click", function(event) {
+            if (event.target === viewOverlayContainer) {
+                viewCardOverlay.style.display = "none";
+            }
+        });
+
 
         const overlayImage = document.getElementById("newImagePreview");
         overlayImage.setAttribute('src', picture.src);
@@ -2924,6 +3002,12 @@
         titleParagraph.textContent = cardName;
 
 
+        // // Close the overlay if you click away 
+        // viewOverlayContainer.addEventListener("click", function(event) {
+        //     if (event.target === viewOverlayContainer) {
+        //         viewCardOverlay.style.display = "none";
+        //     }
+        // });
         
         
 
@@ -2932,7 +3016,211 @@
     }
 
 
-    
+    // OPENS THE OVERLAY CARD PREVIEW IN THE DECK BUILDER
+    function openCardDisplayDeckView(picture, cardName) {
+
+        // Reset the card overlay
+        viewCardOverlay.style.display = "block";
+
+        viewCardOverlay.innerHTML = `
+        
+        <div class="overlay-content" id="viewOverlayContainerId">
+                <div class="content-container" id="contentContainerId">
+                    <div class="left-column" id="previewLeftColumn">
+                        <div class = "view-card-inner-left-column" id="viewCardInnerLeftColumn">
+                            <div class="new-image-container">
+                                <img id = "newImagePreview" src="" alt="Card"/>
+                            <!-- <div class="text-box-card-name">
+                                <h2 id="newCardNameTitleTextId">Card Title</h2>
+                            </div>
+                            <div class="text-box-card-rules">
+                                <p id="newCardRulesTextId">Card Rules</p> 
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-column" id="previewRightColumn">
+                        
+                        <div class="innerRightColumn" id="innerRightColumnId">
+
+                            
+                            
+
+                            
+                            <div id="cardInformation">
+                                <!-- Add fields for the cards to be populated here-->
+                            </div>
+
+                            <button id="deleteCardFromDeckButton">Delete</button>
+
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        
+        `;
+
+        // Close the overlay when clicking off
+        const viewOverlayContainer = document.getElementById("viewOverlayContainerId");
+        
+        viewOverlayContainer.addEventListener("click", function(event) {
+            if (event.target === viewOverlayContainer) {
+                viewCardOverlay.style.display = "none";
+            }
+        });
+
+
+        const overlayImage = document.getElementById("newImagePreview");
+        overlayImage.setAttribute('src', picture.src);
+
+        
+        // Make the delete button remove a card from the Deck and re-sort the rest
+        document.getElementById("deleteCardFromDeckButton").addEventListener("click", function(event) {
+            
+            // 1. Find a card in the deck that has this card's name
+
+            const currentDeck = '-NaKAfESjI1MQSEkNyOr'; //Replace this with real current deck
+            const dataRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
+
+
+
+            let deckCount = 0; // Set a counter to use later when you reorganize the data
+            onChildAdded(dataRef, (counterSnapshot) => {
+                const key = counterSnapshot.key;
+                if (key !== 'name') {
+                    deckCount++;
+                }
+            });
+
+            console.log("deckCount: " + deckCount);
+            const constDeckCount = deckCount; // Immutable constDeckCount is equal to the number of cards BEFORE you delete a card
+
+
+
+            let success = false;
+
+            onChildAdded (dataRef, (snapshot) => {
+                const cardData = snapshot.val(); // card name
+                const cardKey = snapshot.key; // card index
+
+                const keyValue = parseInt(cardKey, 10); // Use the index to set data recursively
+                
+
+                // Enter the resetting part of the function - success is true, we've found the card to be removed and we are now one past it
+                if (success && cardKey !== 'name') {
+                    const previousCardRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + (keyValue - 1));
+                    set (previousCardRef, cardData);
+                }
+
+                // 'success' handles cases where there are two cards and you only want to delete one
+                if (cardData === cardName && !success) {
+                    success = true;
+        
+                    // When you find one, stop deleting cards (exit the loop in case there are multiples of this card)
+                    
+
+                    //console.log(cardData + ', ' + cardName);
+
+                    // 3. Remove the data at that position
+                    // 3. NEW Reset each node, then remove the last node
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    // const cardRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + cardKey);
+                    // remove(cardRef)
+                    //     .then(() => {
+                    //         console.log('Deleted successfully!');
+
+
+
+                    //         // 4. For each card that is still in the deck, get the value of each node (card title) and reset each key again from 1-20
+                    //         // i.e. rewrite each Deck with new numbers each time it is changed
+                    //         const deckRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
+                    //         let numberCards = 1;
+
+                    //         onChildAdded(deckRef, (newSnapshot) => {
+                    //             const nameOfCard = newSnapshot.val();
+                    //             const cardIndex = newSnapshot.key;
+
+                                
+                    //             console.log('Deck Count: ' + constDeckCount + ', Counter: ' + numberCards);
+
+                    //             if (cardIndex !== 'name' && numberCards < constDeckCount - 1) {
+                                    
+                    //                 numberCards++;
+
+                    //                 // Don't add the last card back to the deck
+                                    
+                                        
+
+                    //                     // Create a reference at each new spot in the DB (starting at 1)
+                    //                     const finalCardRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + numberCards);
+                    //                     console.log(numberCards + ': ' + cardIndex + ', ' + nameOfCard);
+                    //                     set (finalCardRef, nameOfCard);
+
+                                        
+
+                    //                 // right now it is deleting a node, then taking the node that follows it and adding the followed node to the end of the list (20)
+                    //             }
+
+
+                    //         });
+
+
+                    //     })
+                    //     .catch((error) => {
+                    //         console.error('Error deleting:', error);
+                    //     });
+
+
+
+                    
+                }
+
+                // If you've reached the last node, remove it
+                if (keyValue === constDeckCount) {
+                    const cardRemoveRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + cardKey);
+                    remove(cardRemoveRef)
+                        .then(() => {
+                                console.log('Deleted successfully!');
+                        })
+                        .catch((error) => {
+                            console.log('Error deleting data');
+                        });
+                }
+
+
+            });
+
+            
+                            
+            
+
+        });
+
+
+
+
+
+
+        //toggleEditCardInputs();
+
+    }
+
+
 
 
     // Buttons
@@ -4333,13 +4621,21 @@
             
             const deckDropdown = document.getElementById("addDeckSelectionId");
 
+            // For each Deck,
             onChildAdded(deckRef, (snapshot) => {
                 const value = snapshot.val();
                 const key = snapshot.key;
-                
+
+                // get a reference of how many cards are in the deck for a counter
+                const cardsRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + key);
+                let cardCounter = 0;
+                onChildAdded(cardsRef, (snapshot) => {
+                    cardCounter++;
+                });
+                cardCounter--; // account for the Deck Name in the card list
 
                 const deckSelectOption = document.createElement("option");
-                deckSelectOption.textContent = value.name;
+                deckSelectOption.textContent = value.name + '(' + cardCounter + ')';
                 deckSelectOption.setAttribute('value', key);
 
                 deckDropdown.appendChild(deckSelectOption);
