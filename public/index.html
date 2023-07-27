@@ -301,7 +301,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
-    import { getDatabase, ref as ref_database, push, set, onValue, query, onChildAdded, orderByChild, remove } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    import { getDatabase, ref as ref_database, push, set, onValue, query, onChildAdded, orderByChild, remove, off } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
     import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
     // ------ I imported ref as ref_database/storage because having 2 refs gave an error
@@ -428,6 +428,8 @@
     
     // DISPLAY ALL THE IMAGES IN STORAGE WHEN YOU OPEN THE PAGE (displays 5 random cards right now)
     let isAdmin = false;
+    let contentSelected = 'home';
+
     function checkUserLoggedIn() {
     // Delay the execution of the onAuthStateChanged callback function
         setTimeout(() => {
@@ -445,7 +447,11 @@
                             {
                                 //console.log('truth');
                                 isAdmin = true;
-                                displayCards('false'); // Don't shuffle the cards on home screen
+                                if (contentSelected === 'home') { // Only refresh the bottom screen when home page is up
+                                    displayCards('false'); // Don't shuffle the cards on home screen
+                                }
+                                
+
                             }
 
 
@@ -1581,6 +1587,10 @@
 
         if (isAdmin) {
 
+            contentSelected = 'notes';
+
+            console.log('Content ' + contentSelected);
+
             const searchContainer = document.getElementById("searchBarContainer");
             searchContainer.style.display = "block";
             searchContainer.style.visibility = "visible";
@@ -1766,6 +1776,8 @@
 
         if (isAdmin) {
 
+            contentSelected = 'home';
+
             searchToggleState = false;
             // Reset the Search HTML
             const searchContainer = document.getElementById("searchBarContainer");
@@ -1834,6 +1846,9 @@
 
         if (isAdmin) {
 
+            contentSelected = 'random';
+
+
             searchToggleState = false;
             // Reset the Search HTML
             const searchContainer = document.getElementById("searchBarContainer");
@@ -1901,7 +1916,11 @@
 
         if (isAdmin) {
 
-            hamburgerMenu.classList.toggle('open');
+            if (contentSelected !== 'decks') {
+                hamburgerMenu.classList.toggle('open');
+            }
+
+            contentSelected = 'decks';
 
             const lowerPage = document.getElementById("lowerContentId");
             const searchContainer = document.getElementById("searchBarContainer");
@@ -1980,7 +1999,7 @@
 
                             // MAKE BUTTONS FOR EACH DECK THAT CHANGE THE LOWER SCREEN TO A DECK VIEW
                             const btnElement = document.createElement("button");
-                            btnElement.id = "expandDeckViewButtonId";
+                            btnElement.id = key;
                             btnElement.textContent = data.name;
                             //console.log(data);
 
@@ -2010,6 +2029,7 @@
                                         .then((url) => {
                                             const imgElement = document.createElement("img");
                                             imgElement.setAttribute('src', url);
+                                            
                                             
                                             const cardDataRef = ref_database(database, 'Cards/' + cardName);
                                             onValue(cardDataRef, (snapshot) => {
@@ -2929,6 +2949,7 @@
 
    
 
+    
 
 
 
@@ -2998,7 +3019,11 @@
                 viewCardOverlay.style.display = "none";
             }
         });
-
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                viewCardOverlay.style.display = "none";
+            }
+        });
 
         const overlayImage = document.getElementById("newImagePreview");
         overlayImage.setAttribute('src', picture.src);
@@ -3076,6 +3101,12 @@
             }
         });
 
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                viewCardOverlay.style.display = "none";
+            }
+        });
+
 
         const overlayImage = document.getElementById("newImagePreview");
         overlayImage.setAttribute('src', picture.src);
@@ -3098,7 +3129,7 @@
                 }
             });
 
-            console.log("deckCount: " + deckCount);
+            //console.log("deckCount: " + deckCount);
             const constDeckCount = deckCount; // Immutable constDeckCount is equal to the number of cards BEFORE you delete a card
 
 
@@ -3121,75 +3152,6 @@
                 // 'success' handles cases where there are two cards and you only want to delete one
                 if (cardData === cardName && !success) {
                     success = true;
-        
-                    // When you find one, stop deleting cards (exit the loop in case there are multiples of this card)
-                    
-
-                    //console.log(cardData + ', ' + cardName);
-
-                    // 3. Remove the data at that position
-                    // 3. NEW Reset each node, then remove the last node
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    // const cardRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + cardKey);
-                    // remove(cardRef)
-                    //     .then(() => {
-                    //         console.log('Deleted successfully!');
-
-
-
-                    //         // 4. For each card that is still in the deck, get the value of each node (card title) and reset each key again from 1-20
-                    //         // i.e. rewrite each Deck with new numbers each time it is changed
-                    //         const deckRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
-                    //         let numberCards = 1;
-
-                    //         onChildAdded(deckRef, (newSnapshot) => {
-                    //             const nameOfCard = newSnapshot.val();
-                    //             const cardIndex = newSnapshot.key;
-
-                                
-                    //             console.log('Deck Count: ' + constDeckCount + ', Counter: ' + numberCards);
-
-                    //             if (cardIndex !== 'name' && numberCards < constDeckCount - 1) {
-                                    
-                    //                 numberCards++;
-
-                    //                 // Don't add the last card back to the deck
-                                    
-                                        
-
-                    //                     // Create a reference at each new spot in the DB (starting at 1)
-                    //                     const finalCardRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + numberCards);
-                    //                     console.log(numberCards + ': ' + cardIndex + ', ' + nameOfCard);
-                    //                     set (finalCardRef, nameOfCard);
-
-                                        
-
-                    //                 // right now it is deleting a node, then taking the node that follows it and adding the followed node to the end of the list (20)
-                    //             }
-
-
-                    //         });
-
-
-                    //     })
-                    //     .catch((error) => {
-                    //         console.error('Error deleting:', error);
-                    //     });
-
-
 
                     
                 }
@@ -3199,10 +3161,28 @@
                     const cardRemoveRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck + '/' + cardKey);
                     remove(cardRemoveRef)
                         .then(() => {
-                                console.log('Deleted successfully!');
+                                //console.log('Deleted successfully!');
+
+                                viewCardOverlay.style.display = 'none';
+
+                                const decksButton = document.getElementById("displayDecksButtonId");
+                                decksButton.click(); // First, click the deck button in nav bar
+                                
+                                const thisDeckButton = document.getElementById(deckKey);
+                                thisDeckButton.click(); // Then, reselect the deck you were working on, refreshed
+
+
+                            // Turn off the listener. It is causing problems in the Add a Card function after you delete
+                            off(dataRef);
+                            off(previousCardRef);
+                            off(cardRemoveRef);
+
+
+
+
                         })
                         .catch((error) => {
-                            console.log('Error deleting data');
+                            //console.log('Error deleting data');
                         });
                 }
 
@@ -3296,6 +3276,10 @@
         searchContainer.style.visibility = "hidden";
 
         hamburgerMenu.classList.toggle('open');
+
+        contentSelected = 'login';
+
+        console.log('Content ' + contentSelected);
 
         lowerContentContainer.innerHTML = `
         <div class="account-page-container">
@@ -4688,14 +4672,13 @@
                     let counter = 0;
                     // For each card found in the deck, increment a counter for new card position
                     onChildAdded(dataRef, (snapshot) => {
-                        
-                        counter++;
-                        
+                        //console.log(snapshot.val());
+                            counter++;
                     });
 
                     
                    
-                    //console.log(counter);
+                   
                     
                     
                     // Data may not need to look like this if it's being set specifically at a location (tbd)
@@ -4709,7 +4692,7 @@
                     set (cardPositionRef, cardToBeAdded);
 
 
-
+                    viewCardOverlay.style.display = 'none';
 
             });
 
