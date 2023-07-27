@@ -1960,7 +1960,7 @@
             });
 
             // Check if Deck page is open before listening to User Decks
-        const currentUser = auth.currentUser;
+            const currentUser = auth.currentUser;
         
         
                     const userDeckContainer = document.getElementById('userDeckContainerId');
@@ -1976,7 +1976,7 @@
                         // For each Deck,
                         onChildAdded(dataRef, (snapshot) => {
                             const data = snapshot.val();
-
+                            const key = snapshot.key;
 
                             // MAKE BUTTONS FOR EACH DECK THAT CHANGE THE LOWER SCREEN TO A DECK VIEW
                             const btnElement = document.createElement("button");
@@ -2016,7 +2016,7 @@
                                                 const info = snapshot.val();
                                                 imgElement.addEventListener("click", function() {
                                                     
-                                                    openCardDisplayDeckView(imgElement, info.name);
+                                                    openCardDisplayDeckView(imgElement, info.name, key); // 'key' passes to Deck Display as the Deck key
                                                 });
                                             });
                                             
@@ -2912,6 +2912,11 @@
 
 
 
+
+
+
+
+
     // SAVE THE CARD PREVIEW TO YOUR LOCAL DOWNLOADS
     // document.getElementById("saveImageButton").addEventListener("click", function() {
     //     saveImage().then((combinedImage) => {
@@ -3017,7 +3022,7 @@
 
 
     // OPENS THE OVERLAY CARD PREVIEW IN THE DECK BUILDER
-    function openCardDisplayDeckView(picture, cardName) {
+    function openCardDisplayDeckView(picture, cardName, deckKey) {
 
         // Reset the card overlay
         viewCardOverlay.style.display = "block";
@@ -3080,8 +3085,7 @@
         document.getElementById("deleteCardFromDeckButton").addEventListener("click", function(event) {
             
             // 1. Find a card in the deck that has this card's name
-
-            const currentDeck = '-NaKAfESjI1MQSEkNyOr'; //Replace this with real current deck
+            const currentDeck = deckKey; //Replace this with real current deck
             const dataRef = ref_database(database, 'Users/' + auth.currentUser.uid + '/Decks/' + currentDeck);
 
 
@@ -3219,6 +3223,19 @@
         //toggleEditCardInputs();
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
